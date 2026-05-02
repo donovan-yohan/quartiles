@@ -10,10 +10,11 @@ The repository name is `quartiles`, but the app intentionally avoids Apple namin
 - Daily generated board from five four-part target words
 - Custom puzzle builder: paste up to five lines of four word parts each
 - Clean-room solver/generator for finding valid tile combinations from a generated dictionary
-- Daily dictionary generated from the MIT-licensed `wordlist-english` package, backed by SCOWL, so constructible words like `flower` and `flowers` are accepted without falling back to Scrabble-only cruft
+- Daily dictionary generated from the MIT-licensed `wordlist-english` package, backed by SCOWL, so constructible words like `flowers` are accepted without falling back to Scrabble-only cruft
 - Hint system powered by the same solver data
 - Score tracking, found-word list, shuffle, clear, and submit controls
 - Wrong-word and duplicate-word error states with accessible alerts
+- Local browser progress storage, so daily found words survive refreshes/navigation
 - Five-quartet completion bonus scoring
 - Accessible button labels and live status messages
 - Vercel-ready static deployment
@@ -33,6 +34,8 @@ npm run dev
 ```
 
 `npm run generate:daily-words` refreshes `src/data/daily-words.ts` from `src/data/daily-quartets.json` and the MIT-licensed `wordlist-english` npm package. The generator treats the configured word source as the playable dictionary: it enumerates every 1-4 tile string that can be built from the daily board, keeps every match in that source, always includes the five target quartet words, and filters a small explicit blocklist for inappropriate entries.
+
+Generation fails unless the board has exactly the five target four-tile words and no extra valid four-tile words. This prevents accidental “extra quartets” from showing up outside the intended five.
 
 ## Verification
 
@@ -65,14 +68,14 @@ vercel --prod
 Custom puzzles accept one quartet per line:
 
 ```text
-sun flow er s
+sun flo we rs
 af ter gl ow
 bl ack bi rd
 but ter cu p
-dr ift wo od
+d ri ft wood
 ```
 
-Each line creates one four-part target word. The board solver finds shorter valid words from the built-in generated dictionary, while only the original five target words count toward the quartet counter and completion bonus.
+Each line creates one four-part target word. The board solver finds shorter valid words from the built-in generated dictionary. Daily puzzle generation also validates that exactly five valid four-tile words exist: the five configured targets, and nothing else.
 
 ## License
 

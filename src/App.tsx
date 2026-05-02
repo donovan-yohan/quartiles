@@ -1,14 +1,16 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Check, Lightbulb, Shuffle, Sparkles, X } from 'lucide-react'
 import { createCustomPuzzle, createDailyPuzzle } from './lib/daily'
 import { calculateScore, scoreWord, validateGuess, type TilePuzzle, type PuzzleWord } from './lib/puzzle'
 import './App.css'
 
-const customStarter = `sun flow er s
+const customStarter = `sun flo we rs
 af ter gl ow
 bl ack bi rd
 but ter cu p
-dr ift wo od`
+d ri ft wood`
+
+const progressStoragePrefix = 'lexi-tiles-progress'
 
 type StatusKind = 'info' | 'success' | 'error'
 
@@ -18,6 +20,53 @@ type StatusMessage = {
 }
 
 const createStatus = (text: string, kind: StatusKind = 'info'): StatusMessage => ({ text, kind })
+
+type SavedProgress = {
+  foundWords: string[]
+  tileOrder: number[]
+}
+
+const storageKeyForPuzzle = (puzzle: TilePuzzle) => `${progressStoragePrefix}:${puzzle.id}`
+
+const defaultTileOrder = (puzzle: TilePuzzle) => puzzle.tiles.map((_, index) => index)
+
+const isValidTileOrder = (tileOrder: unknown, puzzle: TilePuzzle): tileOrder is number[] =>
+  Array.isArray(tileOrder) &&
+  tileOrder.length === puzzle.tiles.length &&
+  new Set(tileOrder).size === puzzle.tiles.length &&
+  tileOrder.every((tileId) => Number.isInteger(tileId) && tileId >= 0 && tileId < puzzle.tiles.length)
+
+const readSavedProgress = (puzzle: TilePuzzle): SavedProgress | null => {
+  if (typeof window === 'undefined') {
+    return null
+  }
+
+  try {
+    const rawProgress = window.localStorage.getItem(storageKeyForPuzzle(puzzle))
+    if (!rawProgress) {
+      return null
+    }
+
+    const parsed = JSON.parse(rawProgress) as Partial<SavedProgress>
+    const knownWords = new Set(puzzle.words.map((word) => word.word))
+    const foundWords = Array.isArray(parsed.foundWords)
+      ? [...new Set(parsed.foundWords.filter((word): word is string => typeof word === 'string' && knownWords.has(word)))]
+      : []
+    const tileOrder = isValidTileOrder(parsed.tileOrder, puzzle) ? parsed.tileOrder : defaultTileOrder(puzzle)
+
+    return { foundWords, tileOrder }
+  } catch {
+    return null
+  }
+}
+
+const writeSavedProgress = (puzzle: TilePuzzle, foundWords: string[], tileOrder: number[]) => {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  window.localStorage.setItem(storageKeyForPuzzle(puzzle), JSON.stringify({ foundWords, tileOrder }))
+}
 
 const formatWord = (word: PuzzleWord) => `${word.word} (${scoreWord(word.tileIds)} pts)`
 
@@ -86,24 +135,39 @@ function Controls({ selectedCount, onClear, onShuffle, onSubmit, onHint }: Contr
 }
 
 function App() {
-  const [puzzle, setPuzzle] = useState<TilePuzzle>(() => createDailyPuzzle())
+  const [initialGame] = useState(() => {
+    const puzzle = createDailyPuzzle()
+    const savedProgress = readSavedProgress(puzzle)
+    return {
+      puzzle,
+      foundWords: savedProgress?.foundWords ?? [],
+      tileOrder: savedProgress?.tileOrder ?? defaultTileOrder(puzzle),
+    }
+  })
+  const [puzzle, setPuzzle] = useState<TilePuzzle>(initialGame.puzzle)
   const [selectedTileIds, setSelectedTileIds] = useState<number[]>([])
-  const [foundWords, setFoundWords] = useState<string[]>([])
+  const [foundWords, setFoundWords] = useState<string[]>(initialGame.foundWords)
   const [message, setMessage] = useState<StatusMessage>(() => createStatus('Build words by tapping tiles in order.'))
-  const [tileOrder, setTileOrder] = useState<number[]>(() => createDailyPuzzle().tiles.map((_, index) => index))
+  const [tileOrder, setTileOrder] = useState<number[]>(initialGame.tileOrder)
   const [customOpen, setCustomOpen] = useState(false)
   const [customSource, setCustomSource] = useState(customStarter)
+
+  useEffect(() => {
+    writeSavedProgress(puzzle, foundWords, tileOrder)
+  }, [foundWords, puzzle, tileOrder])
 
   const foundWordSet = useMemo(() => new Set(foundWords), [foundWords])
   const selectedWord = selectedTileIds.map((tileId) => puzzle.tiles[tileId]).join('')
   const score = calculateScore(puzzle, foundWords)
   const remaining = puzzle.words.length - foundWords.length
 
-  const resetForPuzzle = (nextPuzzle: TilePuzzle, nextMessage: string) => {
+  const resetForPuzzle = (nextPuzzle: TilePuzzle, nextMessage: string, restoreProgress = false) => {
+    const savedProgress = restoreProgress ? readSavedProgress(nextPuzzle) : null
+
     setPuzzle(nextPuzzle)
     setSelectedTileIds([])
-    setFoundWords([])
-    setTileOrder(nextPuzzle.tiles.map((_, index) => index))
+    setFoundWords(savedProgress?.foundWords ?? [])
+    setTileOrder(savedProgress?.tileOrder ?? defaultTileOrder(nextPuzzle))
     setMessage(createStatus(nextMessage))
   }
 
@@ -205,7 +269,7 @@ function App() {
             <button
               type="button"
               className="control-button"
-              onClick={() => resetForPuzzle(createDailyPuzzle(), 'Daily puzzle restored.')}
+              onClick={() => resetForPuzzle(createDailyPuzzle(), 'Daily puzzle restored.', true)}
             >
               Daily puzzle
             </button>

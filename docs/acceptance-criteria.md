@@ -28,9 +28,10 @@ Product/legal constraint:
 - [x] Hints only suggest unfound words.
 - [x] Custom puzzles reject malformed input with a clear error.
 - [x] The daily puzzle dictionary is generated from the MIT-licensed `wordlist-english` SCOWL-backed source instead of a hand-maintained mini list or Scrabble dictionary.
-- [x] Daily puzzles accept valid constructible shorter/root/plural words from that source, including `flower` and `flowers`.
-- [x] Daily puzzles reject Scrabble-only/generated-dictionary cruft such as `glift` and `drack`.
-- [x] Extra valid four-tile words can score as words without changing the five intended target-quartet counter or completion bonus requirement.
+- [x] Daily puzzles accept valid constructible shorter/root/plural words from that source, including `flowers` where it is constructible from the board.
+- [x] Daily puzzles reject Scrabble-only/generated-dictionary cruft.
+- [x] Daily generation rejects boards unless exactly the five configured target quartet words are the only valid four-tile words.
+- [x] Daily found-word progress is stored in local browser storage and restored after refresh/navigation.
 
 ## Build/deploy acceptance criteria
 
@@ -45,7 +46,7 @@ Product/legal constraint:
 These are nice-to-have, not blockers for the current public repo:
 
 - [ ] Expand the explicit moderation filters for proper nouns, technical terms, slurs/profanity, and obscure entries as playtesting finds bad accepts/rejects.
-- [ ] Add persistent local progress and stats per daily puzzle.
+- [ ] Add richer stats per daily puzzle.
 - [ ] Add shareable result text without spoiling found words.
 - [ ] Add an optional reveal-all flow that clearly separates revealed words from player-found words.
 - [ ] Add drag/reorder support for selected tiles on touch devices.

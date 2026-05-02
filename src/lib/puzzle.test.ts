@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { createDailyPuzzle } from './daily'
+import { createDailyPuzzle, DAILY_QUARTETS } from './daily'
 import {
   buildCandidateWords,
   buildPuzzleFromQuartets,
   calculateScore,
   scoreWord,
+  validateExactQuartetPuzzle,
   validateGuess,
   type TilePuzzle,
 } from './puzzle'
@@ -114,11 +115,7 @@ describe('daily puzzle dictionary coverage', () => {
   it('accepts all valid words constructible from the daily tiles, including shorter roots and plurals', () => {
     const puzzle = createDailyPuzzle(new Date('2026-05-02T00:00:00.000Z'))
 
-    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['flow', 'er']))).toMatchObject({
-      ok: true,
-      word: 'flower',
-    })
-    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['flow', 'er', 's']))).toMatchObject({
+    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['flo', 'we', 'rs']))).toMatchObject({
       ok: true,
       word: 'flowers',
     })
@@ -128,13 +125,47 @@ describe('daily puzzle dictionary coverage', () => {
   it('does not accept Scrabble-only dictionary cruft as daily puzzle words', () => {
     const puzzle = createDailyPuzzle(new Date('2026-05-02T00:00:00.000Z'))
 
-    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['gl', 'ift']))).toEqual({
+    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['gl', 'ft']))).toEqual({
       ok: false,
       reason: 'Not in this puzzle.',
     })
-    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['dr', 'ack']))).toEqual({
+    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['d', 'ack']))).toEqual({
       ok: false,
       reason: 'Not in this puzzle.',
+    })
+  })
+
+  it('rejects generated daily boards unless exactly the five target quartets are valid four-tile words', () => {
+    const puzzle = createDailyPuzzle(new Date('2026-05-02T00:00:00.000Z'))
+    const targetQuartets = DAILY_QUARTETS.map((quartet) => quartet.join(''))
+
+    expect(validateExactQuartetPuzzle(puzzle, targetQuartets)).toEqual({
+      ok: true,
+      quartetWords: ['afterglow', 'blackbird', 'buttercup', 'driftwood', 'sunflowers'],
+    })
+  })
+
+  it('reports extra valid four-tile words when a candidate puzzle is not strict enough', () => {
+    const puzzle = buildPuzzleFromQuartets({
+      seed: 'extra-four-tile-word',
+      title: 'Invalid quartet board',
+      quartets: [
+        ['a', 'b', 'c', 'd'],
+        ['e', 'f', 'g', 'h'],
+        ['i', 'j', 'k', 'l'],
+        ['m', 'n', 'o', 'p'],
+        ['q', 'r', 's', 't'],
+      ],
+      dictionary: ['abcd', 'abce', 'efgh', 'ijkl', 'mnop', 'qrst'],
+    })
+
+    expect(validateExactQuartetPuzzle(puzzle, ['abcd', 'efgh', 'ijkl', 'mnop', 'qrst'])).toEqual({
+      ok: false,
+      quartetWords: ['abcd', 'abce', 'efgh', 'ijkl', 'mnop', 'qrst'],
+      targetQuartetWords: ['abcd', 'efgh', 'ijkl', 'mnop', 'qrst'],
+      extraQuartetWords: ['abce'],
+      missingTargetQuartetWords: [],
+      reason: 'Expected exactly 5 target quartets and no extra four-tile words.',
     })
   })
 })

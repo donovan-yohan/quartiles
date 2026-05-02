@@ -174,6 +174,58 @@ export const calculateScore = (puzzle: TilePuzzle, foundWords: string[]) => {
   return foundScore + (earnedQuartetBonus ? QUARTILE_COMPLETION_BONUS : 0)
 }
 
+export type ExactQuartetPuzzleValidation =
+  | {
+      ok: true
+      quartetWords: string[]
+    }
+  | {
+      ok: false
+      quartetWords: string[]
+      targetQuartetWords: string[]
+      extraQuartetWords: string[]
+      missingTargetQuartetWords: string[]
+      reason: string
+    }
+
+export const getFourTileWords = (puzzle: TilePuzzle) =>
+  puzzle.words
+    .filter((word) => word.tileIds.length === MAX_TILES_PER_WORD)
+    .map((word) => word.word)
+    .sort((left, right) => left.localeCompare(right))
+
+export const validateExactQuartetPuzzle = (
+  puzzle: TilePuzzle,
+  targetQuartetWords: string[],
+): ExactQuartetPuzzleValidation => {
+  const quartetWords = getFourTileWords(puzzle)
+  const targetWords = [...new Set(targetQuartetWords.map(normalize).filter(Boolean))].sort((left, right) =>
+    left.localeCompare(right),
+  )
+  const quartetWordSet = new Set(quartetWords)
+  const targetWordSet = new Set(targetWords)
+  const extraQuartetWords = quartetWords.filter((word) => !targetWordSet.has(word))
+  const missingTargetQuartetWords = targetWords.filter((word) => !quartetWordSet.has(word))
+
+  if (
+    quartetWords.length === QUARTILE_COMPLETION_COUNT &&
+    targetWords.length === QUARTILE_COMPLETION_COUNT &&
+    extraQuartetWords.length === 0 &&
+    missingTargetQuartetWords.length === 0
+  ) {
+    return { ok: true, quartetWords }
+  }
+
+  return {
+    ok: false,
+    quartetWords,
+    targetQuartetWords: targetWords,
+    extraQuartetWords,
+    missingTargetQuartetWords,
+    reason: 'Expected exactly 5 target quartets and no extra four-tile words.',
+  }
+}
+
 export const buildPuzzleFromQuartets = ({
   seed,
   title,

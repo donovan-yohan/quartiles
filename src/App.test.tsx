@@ -1,7 +1,11 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from './App'
+
+afterEach(() => {
+  localStorage.clear()
+})
 
 describe('Lexi Tiles app', () => {
   it('renders a mobile-first word tile game with hint and custom puzzle controls', async () => {
@@ -20,9 +24,9 @@ describe('Lexi Tiles app', () => {
     render(<App />)
 
     await userEvent.click(screen.getByRole('button', { name: /^sun$/i }))
-    await userEvent.click(screen.getByRole('button', { name: /^flow$/i }))
-    await userEvent.click(screen.getByRole('button', { name: /^er$/i }))
-    await userEvent.click(screen.getByRole('button', { name: /^s$/i }))
+    await userEvent.click(screen.getByRole('button', { name: /^flo$/i }))
+    await userEvent.click(screen.getByRole('button', { name: /^we$/i }))
+    await userEvent.click(screen.getByRole('button', { name: /^rs$/i }))
     await userEvent.click(screen.getByRole('button', { name: /submit word/i }))
 
     expect(screen.getByText(/sunflowers/i)).toBeInTheDocument()
@@ -47,9 +51,9 @@ describe('Lexi Tiles app', () => {
 
     const submitSunflowers = async () => {
       await userEvent.click(screen.getByRole('button', { name: /^sun$/i }))
-      await userEvent.click(screen.getByRole('button', { name: /^flow$/i }))
-      await userEvent.click(screen.getByRole('button', { name: /^er$/i }))
-      await userEvent.click(screen.getByRole('button', { name: /^s$/i }))
+      await userEvent.click(screen.getByRole('button', { name: /^flo$/i }))
+      await userEvent.click(screen.getByRole('button', { name: /^we$/i }))
+      await userEvent.click(screen.getByRole('button', { name: /^rs$/i }))
       await userEvent.click(screen.getByRole('button', { name: /submit word/i }))
     }
 
@@ -60,5 +64,23 @@ describe('Lexi Tiles app', () => {
     expect(screen.getByText(/score: 8/i)).toBeInTheDocument()
     expect(screen.getAllByRole('listitem')).toHaveLength(1)
     expect(screen.getByRole('listitem')).toHaveTextContent(/sunflowers/i)
+  })
+
+  it('restores daily progress after navigating away and coming back', async () => {
+    const firstSession = render(<App />)
+
+    await userEvent.click(screen.getByRole('button', { name: /^flo$/i }))
+    await userEvent.click(screen.getByRole('button', { name: /^we$/i }))
+    await userEvent.click(screen.getByRole('button', { name: /^rs$/i }))
+    await userEvent.click(screen.getByRole('button', { name: /submit word/i }))
+
+    expect(screen.getByRole('listitem')).toHaveTextContent(/flowers/i)
+    expect(screen.getByText(/score: 4/i)).toBeInTheDocument()
+
+    firstSession.unmount()
+    render(<App />)
+
+    expect(screen.getByRole('listitem')).toHaveTextContent(/flowers/i)
+    expect(screen.getByText(/score: 4/i)).toBeInTheDocument()
   })
 })
