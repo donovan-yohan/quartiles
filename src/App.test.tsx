@@ -33,7 +33,8 @@ describe('Lexi Tiles app', () => {
     render(<App />)
 
     await userEvent.click(screen.getByRole('button', { name: /^sun$/i }))
-    await userEvent.click(screen.getByRole('button', { name: /^s$/i }))
+    await userEvent.click(screen.getByRole('button', { name: /^cu$/i }))
+    await userEvent.click(screen.getByRole('button', { name: /^rd$/i }))
     await userEvent.click(screen.getByRole('button', { name: /submit word/i }))
 
     expect(screen.getByRole('alert')).toHaveTextContent(/not in this puzzle/i)

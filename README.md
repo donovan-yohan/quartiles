@@ -9,7 +9,8 @@ The repository name is `quartiles`, but the app intentionally avoids Apple namin
 - Mobile-first React + TypeScript + Vite app
 - Daily generated board from five four-part target words
 - Custom puzzle builder: paste up to five lines of four word parts each
-- Clean-room solver/generator for finding valid tile combinations from a dictionary
+- Clean-room solver/generator for finding valid tile combinations from a generated dictionary
+- Daily dictionary generated from the MIT-licensed `word-list` package so constructible words like `flower` and `flowers` are accepted without manually maintaining every entry
 - Hint system powered by the same solver data
 - Score tracking, found-word list, shuffle, clear, and submit controls
 - Wrong-word and duplicate-word error states with accessible alerts
@@ -27,12 +28,16 @@ The implementation may be conceptually inspired by word-fragment puzzle mechanic
 
 ```bash
 npm install
+npm run generate:daily-words
 npm run dev
 ```
+
+`npm run generate:daily-words` refreshes `src/data/daily-words.ts` from `src/data/daily-quartets.json` and the MIT-licensed `word-list` npm package.
 
 ## Verification
 
 ```bash
+npm run check:daily-words
 npm test
 npm run build
 npm run lint
@@ -67,7 +72,7 @@ but ter cu p
 dr ift wo od
 ```
 
-Each line creates one four-part target word and the board solver also finds shorter valid words from the built-in dictionary.
+Each line creates one four-part target word. The board solver finds shorter valid words from the built-in generated dictionary, while only the original five target words count toward the quartet counter and completion bonus.
 
 ## License
 

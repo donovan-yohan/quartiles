@@ -1,29 +1,10 @@
+import dailyQuartets from '../data/daily-quartets.json'
+import { DAILY_WORDS } from '../data/daily-words'
 import { buildPuzzleFromQuartets, type TilePuzzle, type QuartetPuzzleInput } from './puzzle'
 
-export const BUILT_IN_DICTIONARY = [
-  'after',
-  'afterglow',
-  'black',
-  'blackbird',
-  'bird',
-  'cup',
-  'drift',
-  'driftwood',
-  'glow',
-  'sunflower',
-  'sunflowers',
-  'butter',
-  'buttercup',
-  'wood',
-]
+export const BUILT_IN_DICTIONARY = [...DAILY_WORDS]
 
-export const DAILY_QUARTETS: QuartetPuzzleInput['quartets'] = [
-  ['sun', 'flow', 'er', 's'],
-  ['af', 'ter', 'gl', 'ow'],
-  ['bl', 'ack', 'bi', 'rd'],
-  ['but', 'ter', 'cu', 'p'],
-  ['dr', 'ift', 'wo', 'od'],
-]
+export const DAILY_QUARTETS = dailyQuartets as QuartetPuzzleInput['quartets']
 
 export const todaySeed = (date = new Date()) => date.toISOString().slice(0, 10)
 

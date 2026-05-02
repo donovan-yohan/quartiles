@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { createDailyPuzzle } from './daily'
 import {
   buildCandidateWords,
   buildPuzzleFromQuartets,
@@ -15,7 +16,7 @@ const miniPuzzle: TilePuzzle = {
   words: [
     { word: 'fronted', tileIds: [0, 1, 2] },
     { word: 'ocean', tileIds: [3, 4] },
-    { word: 'groceries', tileIds: [5, 6, 7, 8] },
+    { word: 'groceries', tileIds: [5, 6, 7, 8], isQuartet: true },
   ],
 }
 
@@ -57,24 +58,25 @@ describe('scoring', () => {
     expect(scoreWord([5, 6, 7, 8])).toBe(8)
   })
 
-  it('adds the completion bonus only after all five quartet words are found', () => {
+  it('adds the completion bonus only after all five target quartet words are found', () => {
     const puzzle: TilePuzzle = {
       id: 'bonus',
       title: 'Bonus board',
       tiles: [],
       words: [
-        { word: 'one', tileIds: [0, 1, 2, 3] },
-        { word: 'two', tileIds: [4, 5, 6, 7] },
-        { word: 'three', tileIds: [8, 9, 10, 11] },
-        { word: 'four', tileIds: [12, 13, 14, 15] },
-        { word: 'five', tileIds: [16, 17, 18, 19] },
+        { word: 'one', tileIds: [0, 1, 2, 3], isQuartet: true },
+        { word: 'two', tileIds: [4, 5, 6, 7], isQuartet: true },
+        { word: 'three', tileIds: [8, 9, 10, 11], isQuartet: true },
+        { word: 'four', tileIds: [12, 13, 14, 15], isQuartet: true },
+        { word: 'five', tileIds: [16, 17, 18, 19], isQuartet: true },
+        { word: 'otherfour', tileIds: [0, 4, 8, 12] },
         { word: 'short', tileIds: [0, 1] },
       ],
     }
 
     expect(calculateScore(puzzle, ['one', 'two', 'three', 'four'])).toBe(32)
     expect(calculateScore(puzzle, ['one', 'two', 'three', 'four', 'five'])).toBe(80)
-    expect(calculateScore(puzzle, ['one', 'two', 'three', 'four', 'five', 'short'])).toBe(82)
+    expect(calculateScore(puzzle, ['one', 'two', 'three', 'four', 'five', 'otherfour', 'short'])).toBe(90)
   })
 })
 
@@ -98,6 +100,29 @@ describe('candidate solving', () => {
     const candidates = buildCandidateWords(['a', 'b', 'c', 'd', 'e'], ['abcd', 'abcde'])
 
     expect(candidates.map((candidate) => candidate.word)).toEqual(['abcd'])
+  })
+})
+
+describe('daily puzzle dictionary coverage', () => {
+  const tileIdsForFragments = (puzzle: TilePuzzle, fragments: string[]) =>
+    fragments.map((fragment) => {
+      const tileId = puzzle.tiles.indexOf(fragment)
+      expect(tileId, `expected daily board to contain tile ${fragment}`).toBeGreaterThanOrEqual(0)
+      return tileId
+    })
+
+  it('accepts all valid words constructible from the daily tiles, including shorter roots and plurals', () => {
+    const puzzle = createDailyPuzzle(new Date('2026-05-02T00:00:00.000Z'))
+
+    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['flow', 'er']))).toMatchObject({
+      ok: true,
+      word: 'flower',
+    })
+    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['flow', 'er', 's']))).toMatchObject({
+      ok: true,
+      word: 'flowers',
+    })
+    expect(puzzle.words.filter((word) => word.isQuartet)).toHaveLength(5)
   })
 })
 

@@ -223,7 +223,7 @@ function App() {
           <small>found</small>
         </div>
         <div>
-          <span>{puzzle.words.filter((word) => word.tileIds.length === 4).length}</span>
+          <span>{puzzle.words.filter((word) => word.isQuartet).length}</span>
           <small>quartets</small>
         </div>
       </section>

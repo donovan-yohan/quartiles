@@ -1,6 +1,7 @@
 export type PuzzleWord = {
   word: string
   tileIds: number[]
+  isQuartet?: boolean
 }
 
 export type TilePuzzle = {
@@ -156,7 +157,7 @@ export const validateGuess = (puzzle: TilePuzzle, tileIds: number[]): GuessResul
     word: word.word,
     tileIds: [...tileIds],
     points: scoreWord(tileIds),
-    isQuartet: tileIds.length === 4,
+    isQuartet: Boolean(word.isQuartet),
   }
 }
 
@@ -166,7 +167,7 @@ export const calculateScore = (puzzle: TilePuzzle, foundWords: string[]) => {
     (total, word) => total + (foundWordSet.has(word.word) ? scoreWord(word.tileIds) : 0),
     0,
   )
-  const quartets = puzzle.words.filter((word) => word.tileIds.length === MAX_TILES_PER_WORD)
+  const quartets = puzzle.words.filter((word) => word.isQuartet)
   const earnedQuartetBonus =
     quartets.length >= QUARTILE_COMPLETION_COUNT && quartets.every((word) => foundWordSet.has(word.word))
 
@@ -181,7 +182,11 @@ export const buildPuzzleFromQuartets = ({
 }: QuartetPuzzleInput): TilePuzzle => {
   const sourceTiles = quartets.flat()
   const tiles = shuffleWithSeed(sourceTiles, seed)
-  const words = buildCandidateWords(tiles, dictionary)
+  const targetQuartetWords = new Set(quartets.map((quartet) => normalize(quartet.join(''))))
+  const words = buildCandidateWords(tiles, dictionary).map((word) => ({
+    ...word,
+    isQuartet: targetQuartetWords.has(word.word),
+  }))
 
   return {
     id: seed,
