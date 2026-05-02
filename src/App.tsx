@@ -1,16 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Check, Lightbulb, Shuffle, Sparkles, X } from 'lucide-react'
-import { createCustomPuzzle, createDailyPuzzle } from './lib/daily'
+import {
+  createCustomPuzzle,
+  createDailyPuzzle,
+  getAdjacentDailyDate,
+  resolveDailyPuzzleData,
+  todaySeed,
+} from './lib/daily'
 import { calculateScore, scoreWord, validateGuess, type TilePuzzle, type PuzzleWord } from './lib/puzzle'
 import './App.css'
 
-const customStarter = `sun flo we rs
-af ter gl ow
-bl ack bi rd
-but ter cu p
-d ri ft wood`
+const customStarter = `eve ry whe re
+ex ec ut ed
+au tho ri ty
+ass oc ia te
+sop his tic ate`
 
 const progressStoragePrefix = 'lexi-tiles-progress'
+const dailyPathPattern = /^\/daily\/(\d{4}-\d{2}-\d{2})\/?$/
 
 type StatusKind = 'info' | 'success' | 'error'
 
@@ -27,6 +34,29 @@ type SavedProgress = {
 }
 
 const storageKeyForPuzzle = (puzzle: TilePuzzle) => `${progressStoragePrefix}:${puzzle.id}`
+const dailyPathForDate = (date: string) => `/daily/${date}`
+
+const readDailyDateFromUrl = () => {
+  if (typeof window === 'undefined') {
+    return null
+  }
+
+  return window.location.pathname.match(dailyPathPattern)?.[1] ?? null
+}
+
+const updateDailyUrl = (date: string, replace = false) => {
+  if (typeof window === 'undefined') {
+    return
+  }
+
+  const path = dailyPathForDate(date)
+  if (window.location.pathname === path) {
+    return
+  }
+
+  const method = replace ? 'replaceState' : 'pushState'
+  window.history[method](null, '', path)
+}
 
 const defaultTileOrder = (puzzle: TilePuzzle) => puzzle.tiles.map((_, index) => index)
 
@@ -83,6 +113,13 @@ const rotateOrder = (order: number[]) => {
   return [...order.slice(3), ...order.slice(0, 3)]
 }
 
+const rotateUnlockedTiles = (order: number[], lockedTileIds: Set<number>) => {
+  const lockedOrder = order.filter((tileId) => lockedTileIds.has(tileId))
+  const unlockedOrder = order.filter((tileId) => !lockedTileIds.has(tileId))
+
+  return [...lockedOrder, ...rotateOrder(unlockedOrder)]
+}
+
 type TileButtonProps = {
   index: number
   label: string
@@ -136,7 +173,9 @@ function Controls({ selectedCount, onClear, onShuffle, onSubmit, onHint }: Contr
 
 function App() {
   const [initialGame] = useState(() => {
-    const puzzle = createDailyPuzzle()
+    const requestedDate = readDailyDateFromUrl() ?? todaySeed()
+    const puzzle = createDailyPuzzle(requestedDate)
+    updateDailyUrl(puzzle.id, true)
     const savedProgress = readSavedProgress(puzzle)
     return {
       puzzle,
@@ -157,6 +196,18 @@ function App() {
   }, [foundWords, puzzle, tileOrder])
 
   const foundWordSet = useMemo(() => new Set(foundWords), [foundWords])
+  const foundQuartets = useMemo(
+    () => foundWords.flatMap((word) => puzzle.words.find((candidate) => candidate.word === word && candidate.isQuartet) ?? []),
+    [foundWords, puzzle.words],
+  )
+  const lockedTileIds = useMemo(
+    () => new Set(foundQuartets.flatMap((quartet) => quartet.tileIds)),
+    [foundQuartets],
+  )
+  const activeTileOrder = useMemo(
+    () => tileOrder.filter((tileId) => !lockedTileIds.has(tileId)),
+    [lockedTileIds, tileOrder],
+  )
   const selectedWord = selectedTileIds.map((tileId) => puzzle.tiles[tileId]).join('')
   const score = calculateScore(puzzle, foundWords)
   const remaining = puzzle.words.length - foundWords.length
@@ -171,7 +222,21 @@ function App() {
     setMessage(createStatus(nextMessage))
   }
 
+  const loadDailyPuzzleByDate = (date: string, replaceUrl = false) => {
+    const nextPuzzle = createDailyPuzzle(date)
+    updateDailyUrl(nextPuzzle.id, replaceUrl)
+    resetForPuzzle(nextPuzzle, `Daily puzzle loaded for ${nextPuzzle.id}.`, true)
+    setCustomOpen(false)
+  }
+
+  const previousDailyDate = getAdjacentDailyDate(puzzle.id, -1)
+  const nextDailyDate = getAdjacentDailyDate(puzzle.id, 1)
+
   const toggleTile = (tileId: number) => {
+    if (lockedTileIds.has(tileId)) {
+      return
+    }
+
     setSelectedTileIds((current) =>
       current.includes(tileId) ? current.filter((selected) => selected !== tileId) : [...current, tileId],
     )
@@ -250,6 +315,28 @@ function App() {
         </button>
       </section>
 
+      <section className="date-nav" aria-label="Daily puzzle date">
+        <button
+          type="button"
+          className="date-nav__button"
+          onClick={() => previousDailyDate && loadDailyPuzzleByDate(previousDailyDate)}
+          disabled={!previousDailyDate}
+        >
+          Previous
+        </button>
+        <a className="date-nav__date" href={dailyPathForDate(puzzle.id)}>
+          {puzzle.id}
+        </a>
+        <button
+          type="button"
+          className="date-nav__button"
+          onClick={() => nextDailyDate && loadDailyPuzzleByDate(nextDailyDate)}
+          disabled={!nextDailyDate}
+        >
+          Next
+        </button>
+      </section>
+
       {customOpen ? (
         <section className="custom-panel" aria-labelledby="custom-title">
           <div>
@@ -269,7 +356,7 @@ function App() {
             <button
               type="button"
               className="control-button"
-              onClick={() => resetForPuzzle(createDailyPuzzle(), 'Daily puzzle restored.', true)}
+              onClick={() => loadDailyPuzzleByDate(resolveDailyPuzzleData(todaySeed()).date, true)}
             >
               Daily puzzle
             </button>
@@ -298,8 +385,22 @@ function App() {
           <small>{selectedTileIds.length > 0 ? `${selectedTileIds.length} selected` : 'No tiles selected'}</small>
         </div>
 
+        {foundQuartets.length > 0 ? (
+          <div className="quartet-rows" aria-label="Solved quartets">
+            {foundQuartets.map((quartet) => (
+              <div className="quartet-row" key={quartet.word} aria-label={`Solved quartet: ${quartet.word}`}>
+                {quartet.tileIds.map((tileId) => (
+                  <span className="quartet-tile" key={tileId}>
+                    {puzzle.tiles[tileId]}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        ) : null}
+
         <div className="tile-grid">
-          {tileOrder.map((tileId) => (
+          {activeTileOrder.map((tileId) => (
             <TileButton
               key={tileId}
               index={tileId}
@@ -313,7 +414,7 @@ function App() {
         <Controls
           selectedCount={selectedTileIds.length}
           onClear={() => setSelectedTileIds([])}
-          onShuffle={() => setTileOrder((current) => rotateOrder(current))}
+          onShuffle={() => setTileOrder((current) => rotateUnlockedTiles(current, lockedTileIds))}
           onSubmit={submitWord}
           onHint={showHint}
         />

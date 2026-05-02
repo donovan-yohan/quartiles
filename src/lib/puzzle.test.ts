@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createDailyPuzzle, DAILY_QUARTETS } from './daily'
+import { AVAILABLE_DAILY_DATES, createDailyPuzzle, DAILY_QUARTETS } from './daily'
 import {
   buildCandidateWords,
   buildPuzzleFromQuartets,
@@ -112,12 +112,28 @@ describe('daily puzzle dictionary coverage', () => {
       return tileId
     })
 
-  it('accepts all valid words constructible from the daily tiles, including shorter roots and plurals', () => {
+  it('backfills one week of date-addressable daily puzzles', () => {
+    expect(AVAILABLE_DAILY_DATES).toEqual([
+      '2026-04-26',
+      '2026-04-27',
+      '2026-04-28',
+      '2026-04-29',
+      '2026-04-30',
+      '2026-05-01',
+      '2026-05-02',
+    ])
+  })
+
+  it('accepts valid shorter words constructible from the daily tiles', () => {
     const puzzle = createDailyPuzzle(new Date('2026-05-02T00:00:00.000Z'))
 
-    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['flo', 'we', 'rs']))).toMatchObject({
+    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['eve', 'ry']))).toMatchObject({
       ok: true,
-      word: 'flowers',
+      word: 'every',
+    })
+    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['whe', 're']))).toMatchObject({
+      ok: true,
+      word: 'where',
     })
     expect(puzzle.words.filter((word) => word.isQuartet)).toHaveLength(5)
   })
@@ -125,14 +141,21 @@ describe('daily puzzle dictionary coverage', () => {
   it('does not accept Scrabble-only dictionary cruft as daily puzzle words', () => {
     const puzzle = createDailyPuzzle(new Date('2026-05-02T00:00:00.000Z'))
 
-    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['gl', 'ft']))).toEqual({
+    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['whe', 'tic']))).toEqual({
       ok: false,
       reason: 'Not in this puzzle.',
     })
-    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['d', 'ack']))).toEqual({
+    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['sop', 'ry']))).toEqual({
       ok: false,
       reason: 'Not in this puzzle.',
     })
+  })
+
+  it('keeps daily source tiles unique and at least two letters long', () => {
+    const sourceTiles = DAILY_QUARTETS.flat()
+
+    expect(sourceTiles.every((tile) => tile.length >= 2)).toBe(true)
+    expect(new Set(sourceTiles).size).toBe(sourceTiles.length)
   })
 
   it('rejects generated daily boards unless exactly the five target quartets are valid four-tile words', () => {
@@ -141,7 +164,7 @@ describe('daily puzzle dictionary coverage', () => {
 
     expect(validateExactQuartetPuzzle(puzzle, targetQuartets)).toEqual({
       ok: true,
-      quartetWords: ['afterglow', 'blackbird', 'buttercup', 'driftwood', 'sunflowers'],
+      quartetWords: ['associate', 'authority', 'everywhere', 'executed', 'sophisticate'],
     })
   })
 

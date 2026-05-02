@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "generate:daily-words": "node scripts/generate-daily-words.mjs",
+    "add:daily-puzzle": "node scripts/add-daily-puzzle.mjs",
     "check:daily-words": "node scripts/generate-daily-words.mjs --check",
     "dev": "vite",
     "build": "tsc -b && vite build",

@@ -28,10 +28,13 @@ Product/legal constraint:
 - [x] Hints only suggest unfound words.
 - [x] Custom puzzles reject malformed input with a clear error.
 - [x] The daily puzzle dictionary is generated from the MIT-licensed `wordlist-english` SCOWL-backed source instead of a hand-maintained mini list or Scrabble dictionary.
-- [x] Daily puzzles accept valid constructible shorter/root/plural words from that source, including `flowers` where it is constructible from the board.
+- [x] Daily puzzles accept valid constructible shorter/root/plural words from that source when they are constructible from the board.
 - [x] Daily puzzles reject Scrabble-only/generated-dictionary cruft.
 - [x] Daily generation rejects boards unless exactly the five configured target quartet words are the only valid four-tile words.
+- [x] Daily generation rejects boards with duplicate tile text or one-letter tiles.
+- [x] Daily puzzles are addressable by date in the URL and include a one-week backfill.
 - [x] Daily found-word progress is stored in local browser storage and restored after refresh/navigation.
+- [x] Found quartet tiles move into solved rows and stay out of shuffle.
 
 ## Build/deploy acceptance criteria
 
@@ -39,6 +42,7 @@ Product/legal constraint:
 - [x] Project builds as a static app for Vercel.
 - [x] Unit and UI tests cover core solver, validation, scoring, and interaction behavior.
 - [x] GitHub Actions runs tests, build, and lint on pushes and PRs to `main`.
+- [x] GitHub Actions can generate and commit a new daily puzzle around America/New_York midnight.
 - [x] MIT license is included.
 
 ## Follow-up TODOs

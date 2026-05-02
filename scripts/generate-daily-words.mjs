@@ -3,49 +3,73 @@ import { fileURLToPath } from 'node:url'
 import wordlistEnglish from 'wordlist-english'
 
 const minimumWordLength = 3
+const minimumTileLength = 2
 const maxTilesPerWord = 4
+const targetQuartetCount = 5
 const blockedWords = new Set(['wop', 'wops'])
 
-const dailyQuartetsPath = fileURLToPath(new URL('../src/data/daily-quartets.json', import.meta.url))
-const outputPath = fileURLToPath(new URL('../src/data/daily-words.ts', import.meta.url))
+const dailyPuzzlesPath = fileURLToPath(new URL('../src/data/daily-puzzles.json', import.meta.url))
+const outputPath = fileURLToPath(new URL('../src/data/generated-daily-puzzles.ts', import.meta.url))
 
 const normalize = (value) => value.toLowerCase().replace(/[^a-z]/g, '')
-const dailyQuartets = JSON.parse(readFileSync(dailyQuartetsPath, 'utf8'))
-const tiles = dailyQuartets.flat().map(normalize)
-
-const constructibleWords = new Set()
-const search = (prefix, usedTileIds) => {
-  if (prefix.length >= minimumWordLength) {
-    constructibleWords.add(prefix)
-  }
-
-  if (usedTileIds.size >= maxTilesPerWord) {
-    return
-  }
-
-  for (let tileId = 0; tileId < tiles.length; tileId += 1) {
-    if (usedTileIds.has(tileId)) {
-      continue
-    }
-
-    usedTileIds.add(tileId)
-    search(`${prefix}${tiles[tileId]}`, usedTileIds)
-    usedTileIds.delete(tileId)
-  }
-}
-
-search('', new Set())
-
+const datePattern = /^\d{4}-\d{2}-\d{2}$/
+const dailyPuzzles = JSON.parse(readFileSync(dailyPuzzlesPath, 'utf8'))
 const sourceWords = wordlistEnglish.english
   .map(normalize)
   .filter((word) => word.length >= minimumWordLength && !blockedWords.has(word))
 
-const requiredQuartets = dailyQuartets.map((quartet) => quartet.map(normalize).join(''))
-const generatedWords = [...new Set([...sourceWords, ...requiredQuartets])]
-  .filter((word) => constructibleWords.has(word))
-  .sort((left, right) => left.localeCompare(right))
+const validateSourcePuzzle = (sourcePuzzle) => {
+  if (!datePattern.test(sourcePuzzle.date)) {
+    throw new Error(`Daily puzzle date must be YYYY-MM-DD: ${sourcePuzzle.date}`)
+  }
 
-const findFourTileWords = () => {
+  const quartets = sourcePuzzle.quartets
+  if (!Array.isArray(quartets) || quartets.length !== targetQuartetCount || quartets.some((quartet) => quartet.length !== maxTilesPerWord)) {
+    throw new Error(`${sourcePuzzle.date}: daily source must contain exactly ${targetQuartetCount} quartets of ${maxTilesPerWord} tiles each.`)
+  }
+
+  const tiles = quartets.flat().map(normalize)
+  const duplicateTiles = tiles.filter((tile, index) => tiles.indexOf(tile) !== index)
+  const shortTiles = tiles.filter((tile) => tile.length < minimumTileLength)
+
+  if (shortTiles.length > 0 || duplicateTiles.length > 0) {
+    throw new Error(
+      `${sourcePuzzle.date}: source tiles must be unique and at least ${minimumTileLength} letters long. Short: ${[
+        ...new Set(shortTiles),
+      ].join(', ') || '(none)'}. Duplicate: ${[...new Set(duplicateTiles)].join(', ') || '(none)'}.`,
+    )
+  }
+
+  return quartets.map((quartet) => quartet.map(normalize))
+}
+
+const findConstructibleWords = (tiles) => {
+  const constructibleWords = new Set()
+  const search = (prefix, usedTileIds) => {
+    if (prefix.length >= minimumWordLength) {
+      constructibleWords.add(prefix)
+    }
+
+    if (usedTileIds.size >= maxTilesPerWord) {
+      return
+    }
+
+    for (let tileId = 0; tileId < tiles.length; tileId += 1) {
+      if (usedTileIds.has(tileId)) {
+        continue
+      }
+
+      usedTileIds.add(tileId)
+      search(`${prefix}${tiles[tileId]}`, usedTileIds)
+      usedTileIds.delete(tileId)
+    }
+  }
+
+  search('', new Set())
+  return constructibleWords
+}
+
+const findFourTileWords = (tiles, generatedWords) => {
   const generatedWordSet = new Set(generatedWords)
   const fourTileWords = new Set()
 
@@ -72,25 +96,50 @@ const findFourTileWords = () => {
   return [...fourTileWords].sort((left, right) => left.localeCompare(right))
 }
 
-const fourTileWords = findFourTileWords()
-const requiredQuartetSet = new Set(requiredQuartets)
-const fourTileWordSet = new Set(fourTileWords)
-const extraQuartets = fourTileWords.filter((word) => !requiredQuartetSet.has(word))
-const missingQuartets = requiredQuartets.filter((word) => !fourTileWordSet.has(word))
-const hasExactTargetQuartets =
-  fourTileWords.length === requiredQuartets.length && extraQuartets.length === 0 && missingQuartets.length === 0
+const buildGeneratedPuzzle = (sourcePuzzle) => {
+  const quartets = validateSourcePuzzle(sourcePuzzle)
+  const tiles = quartets.flat()
+  const constructibleWords = findConstructibleWords(tiles)
+  const requiredQuartets = quartets.map((quartet) => quartet.join(''))
+  const generatedWords = [...new Set([...sourceWords, ...requiredQuartets])]
+    .filter((word) => constructibleWords.has(word))
+    .sort((left, right) => left.localeCompare(right))
+  const fourTileWords = findFourTileWords(tiles, generatedWords)
+  const requiredQuartetSet = new Set(requiredQuartets)
+  const fourTileWordSet = new Set(fourTileWords)
+  const extraQuartets = fourTileWords.filter((word) => !requiredQuartetSet.has(word))
+  const missingQuartets = requiredQuartets.filter((word) => !fourTileWordSet.has(word))
+  const hasExactTargetQuartets =
+    fourTileWords.length === requiredQuartets.length && extraQuartets.length === 0 && missingQuartets.length === 0
 
-if (!hasExactTargetQuartets) {
-  console.error('Daily quartet board is invalid: expected exactly the target quartets as valid four-tile words.')
-  console.error(`Target quartets: ${requiredQuartets.join(', ')}`)
-  console.error(`Valid four-tile words: ${fourTileWords.join(', ')}`)
-  console.error(`Extra four-tile words: ${extraQuartets.join(', ') || '(none)'}`)
-  console.error(`Missing target quartets: ${missingQuartets.join(', ') || '(none)'}`)
-  process.exit(1)
+  if (!hasExactTargetQuartets) {
+    throw new Error(
+      `${sourcePuzzle.date}: invalid quartet board. Target quartets: ${requiredQuartets.join(', ')}. Valid four-tile words: ${fourTileWords.join(', ')}. Extra: ${extraQuartets.join(', ') || '(none)'}. Missing: ${missingQuartets.join(', ') || '(none)'}.`,
+    )
+  }
+
+  return {
+    date: sourcePuzzle.date,
+    quartets,
+    words: generatedWords,
+  }
 }
 
-const formattedWords = generatedWords.map((word) => `  '${word}',`).join('\n')
-const content = `// Generated by scripts/generate-daily-words.mjs from the MIT-licensed wordlist-english package, backed by SCOWL.\n// Do not edit by hand; run npm run generate:daily-words.\n// Generation fails unless the board has exactly the five target four-tile words and no extra valid quartets.\n\nexport const DAILY_WORDS = [\n${formattedWords}\n] as const\n`
+const generatedPuzzles = [...dailyPuzzles]
+  .sort((left, right) => left.date.localeCompare(right.date))
+  .map(buildGeneratedPuzzle)
+
+const formattedPuzzles = generatedPuzzles
+  .map(
+    (puzzle) => `  {
+    date: '${puzzle.date}',
+    quartets: ${JSON.stringify(puzzle.quartets)},
+    words: [${puzzle.words.map((word) => `'${word}'`).join(', ')}],
+  },`,
+  )
+  .join('\n')
+
+const content = `// Generated by scripts/generate-daily-words.mjs from src/data/daily-puzzles.json and the MIT-licensed wordlist-english package, backed by SCOWL.\n// Do not edit by hand; run npm run generate:daily-words.\n// Generation fails unless source tiles are unique, all tiles have at least two letters, and each board has exactly the five target four-tile words with no extra valid quartets.\n\nexport const DAILY_PUZZLES = [\n${formattedPuzzles}\n] as const\n`
 
 if (process.argv.includes('--check')) {
   const currentContent = existsSync(outputPath) ? readFileSync(outputPath, 'utf8') : ''
@@ -98,8 +147,8 @@ if (process.argv.includes('--check')) {
     console.error(`${outputPath} is stale. Run npm run generate:daily-words and commit the result.`)
     process.exit(1)
   }
-  console.log(`Daily words are up to date (${generatedWords.length} words).`)
+  console.log(`Daily puzzles are up to date (${generatedPuzzles.length} puzzles).`)
 } else {
   writeFileSync(outputPath, content)
-  console.log(`Generated ${generatedWords.length} daily words at ${outputPath}`)
+  console.log(`Generated ${generatedPuzzles.length} daily puzzles at ${outputPath}`)
 }
