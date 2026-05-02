@@ -10,7 +10,7 @@ The repository name is `quartiles`, but the app intentionally avoids Apple namin
 - Daily generated board from five four-part target words
 - Custom puzzle builder: paste up to five lines of four word parts each
 - Clean-room solver/generator for finding valid tile combinations from a generated dictionary
-- Daily dictionary generated from the MIT-licensed `word-list` package so constructible words like `flower` and `flowers` are accepted without manually maintaining every entry
+- Daily dictionary generated from the MIT-licensed `wordlist-english` package, backed by SCOWL, so constructible words like `flower` and `flowers` are accepted without falling back to Scrabble-only cruft
 - Hint system powered by the same solver data
 - Score tracking, found-word list, shuffle, clear, and submit controls
 - Wrong-word and duplicate-word error states with accessible alerts
@@ -32,7 +32,7 @@ npm run generate:daily-words
 npm run dev
 ```
 
-`npm run generate:daily-words` refreshes `src/data/daily-words.ts` from `src/data/daily-quartets.json` and the MIT-licensed `word-list` npm package.
+`npm run generate:daily-words` refreshes `src/data/daily-words.ts` from `src/data/daily-quartets.json` and the MIT-licensed `wordlist-english` npm package. The generator treats the configured word source as the playable dictionary: it enumerates every 1-4 tile string that can be built from the daily board, keeps every match in that source, always includes the five target quartet words, and filters a small explicit blocklist for inappropriate entries.
 
 ## Verification
 

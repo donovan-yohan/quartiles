@@ -27,8 +27,9 @@ Product/legal constraint:
 - [x] Finding all five four-tile words adds a 40-point completion bonus.
 - [x] Hints only suggest unfound words.
 - [x] Custom puzzles reject malformed input with a clear error.
-- [x] The daily puzzle dictionary is generated from an MIT-licensed English word source instead of a hand-maintained mini list.
+- [x] The daily puzzle dictionary is generated from the MIT-licensed `wordlist-english` SCOWL-backed source instead of a hand-maintained mini list or Scrabble dictionary.
 - [x] Daily puzzles accept valid constructible shorter/root/plural words from that source, including `flower` and `flowers`.
+- [x] Daily puzzles reject Scrabble-only/generated-dictionary cruft such as `glift` and `drack`.
 - [x] Extra valid four-tile words can score as words without changing the five intended target-quartet counter or completion bonus requirement.
 
 ## Build/deploy acceptance criteria
@@ -43,7 +44,7 @@ Product/legal constraint:
 
 These are nice-to-have, not blockers for the current public repo:
 
-- [ ] Replace or supplement `word-list` with a stronger curated word list plus explicit moderation filters for proper nouns, technical terms, slurs/profanity, and obscure entries.
+- [ ] Expand the explicit moderation filters for proper nouns, technical terms, slurs/profanity, and obscure entries as playtesting finds bad accepts/rejects.
 - [ ] Add persistent local progress and stats per daily puzzle.
 - [ ] Add shareable result text without spoiling found words.
 - [ ] Add an optional reveal-all flow that clearly separates revealed words from player-found words.

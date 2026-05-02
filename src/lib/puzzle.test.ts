@@ -124,6 +124,19 @@ describe('daily puzzle dictionary coverage', () => {
     })
     expect(puzzle.words.filter((word) => word.isQuartet)).toHaveLength(5)
   })
+
+  it('does not accept Scrabble-only dictionary cruft as daily puzzle words', () => {
+    const puzzle = createDailyPuzzle(new Date('2026-05-02T00:00:00.000Z'))
+
+    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['gl', 'ift']))).toEqual({
+      ok: false,
+      reason: 'Not in this puzzle.',
+    })
+    expect(validateGuess(puzzle, tileIdsForFragments(puzzle, ['dr', 'ack']))).toEqual({
+      ok: false,
+      reason: 'Not in this puzzle.',
+    })
+  })
 })
 
 describe('puzzle generation', () => {

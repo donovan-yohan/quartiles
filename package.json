@@ -37,6 +37,6 @@
     "typescript-eslint": "^8.58.2",
     "vite": "^8.0.10",
     "vitest": "^4.1.5",
-    "word-list": "^4.1.0"
+    "wordlist-english": "^1.2.1"
   }
 }
