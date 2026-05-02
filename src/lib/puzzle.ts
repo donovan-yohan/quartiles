@@ -32,6 +32,10 @@ export type QuartetPuzzleInput = {
   dictionary: string[]
 }
 
+export const MAX_TILES_PER_WORD = 4
+export const QUARTILE_COMPLETION_COUNT = 5
+export const QUARTILE_COMPLETION_BONUS = 40
+
 const normalize = (value: string) => value.toLowerCase().replace(/[^a-z]/g, '')
 
 const hashSeed = (seed: string) => {
@@ -67,7 +71,7 @@ const shuffleWithSeed = <T>(items: T[], seed: string) => {
 }
 
 export const scoreWord = (tileIds: number[]) => {
-  if (tileIds.length >= 4) {
+  if (tileIds.length === MAX_TILES_PER_WORD) {
     return 8
   }
 
@@ -88,7 +92,7 @@ export const buildCandidateWords = (tiles: string[], dictionary: string[]): Puzz
         return path
       }
 
-      if (!word.startsWith(prefix)) {
+      if (path.length >= MAX_TILES_PER_WORD || !word.startsWith(prefix)) {
         return null
       }
 
@@ -136,6 +140,10 @@ export const validateGuess = (puzzle: TilePuzzle, tileIds: number[]): GuessResul
     return { ok: false, reason: 'That tile is not on this board.' }
   }
 
+  if (tileIds.length > MAX_TILES_PER_WORD) {
+    return { ok: false, reason: 'Words can use at most four tiles.' }
+  }
+
   const guess = normalize(tileIds.map((tileId) => puzzle.tiles[tileId]).join(''))
   const word = puzzle.words.find((candidate) => candidate.word === guess)
 
@@ -150,6 +158,19 @@ export const validateGuess = (puzzle: TilePuzzle, tileIds: number[]): GuessResul
     points: scoreWord(tileIds),
     isQuartet: tileIds.length === 4,
   }
+}
+
+export const calculateScore = (puzzle: TilePuzzle, foundWords: string[]) => {
+  const foundWordSet = new Set(foundWords)
+  const foundScore = puzzle.words.reduce(
+    (total, word) => total + (foundWordSet.has(word.word) ? scoreWord(word.tileIds) : 0),
+    0,
+  )
+  const quartets = puzzle.words.filter((word) => word.tileIds.length === MAX_TILES_PER_WORD)
+  const earnedQuartetBonus =
+    quartets.length >= QUARTILE_COMPLETION_COUNT && quartets.every((word) => foundWordSet.has(word.word))
+
+  return foundScore + (earnedQuartetBonus ? QUARTILE_COMPLETION_BONUS : 0)
 }
 
 export const buildPuzzleFromQuartets = ({

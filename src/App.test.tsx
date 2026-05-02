@@ -28,4 +28,36 @@ describe('Lexi Tiles app', () => {
     expect(screen.getByText(/sunflowers/i)).toBeInTheDocument()
     expect(screen.getByText(/score: 8/i)).toBeInTheDocument()
   })
+
+  it('shows an error state for wrong words without adding them to found words', async () => {
+    render(<App />)
+
+    await userEvent.click(screen.getByRole('button', { name: /^sun$/i }))
+    await userEvent.click(screen.getByRole('button', { name: /^s$/i }))
+    await userEvent.click(screen.getByRole('button', { name: /submit word/i }))
+
+    expect(screen.getByRole('alert')).toHaveTextContent(/not in this puzzle/i)
+    expect(screen.getByText(/score: 0/i)).toBeInTheDocument()
+    expect(screen.getByText(/found words will collect here/i)).toBeInTheDocument()
+  })
+
+  it('tracks already-entered words and does not double score duplicates', async () => {
+    render(<App />)
+
+    const submitSunflowers = async () => {
+      await userEvent.click(screen.getByRole('button', { name: /^sun$/i }))
+      await userEvent.click(screen.getByRole('button', { name: /^flow$/i }))
+      await userEvent.click(screen.getByRole('button', { name: /^er$/i }))
+      await userEvent.click(screen.getByRole('button', { name: /^s$/i }))
+      await userEvent.click(screen.getByRole('button', { name: /submit word/i }))
+    }
+
+    await submitSunflowers()
+    await submitSunflowers()
+
+    expect(screen.getByRole('alert')).toHaveTextContent(/already on your found list/i)
+    expect(screen.getByText(/score: 8/i)).toBeInTheDocument()
+    expect(screen.getAllByRole('listitem')).toHaveLength(1)
+    expect(screen.getByRole('listitem')).toHaveTextContent(/sunflowers/i)
+  })
 })

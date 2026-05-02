@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   buildCandidateWords,
   buildPuzzleFromQuartets,
+  calculateScore,
   scoreWord,
   validateGuess,
   type TilePuzzle,
@@ -29,9 +30,23 @@ describe('word validation', () => {
     })
   })
 
-  it('rejects unknown tile combinations and duplicate tile use', () => {
-    expect(validateGuess(miniPuzzle, [3, 8])).toMatchObject({ ok: false })
-    expect(validateGuess(miniPuzzle, [3, 3])).toMatchObject({ ok: false })
+  it('rejects unknown tile combinations and duplicate tile use with clear reasons', () => {
+    expect(validateGuess(miniPuzzle, [3, 8])).toEqual({ ok: false, reason: 'Not in this puzzle.' })
+    expect(validateGuess(miniPuzzle, [3, 3])).toEqual({ ok: false, reason: 'Each tile can only be used once.' })
+  })
+
+  it('rejects guesses longer than four tiles because puzzle words use up to four tiles', () => {
+    const longPuzzle: TilePuzzle = {
+      id: 'long',
+      title: 'Long board',
+      tiles: ['a', 'b', 'c', 'd', 'e'],
+      words: [{ word: 'abcde', tileIds: [0, 1, 2, 3, 4] }],
+    }
+
+    expect(validateGuess(longPuzzle, [0, 1, 2, 3, 4])).toEqual({
+      ok: false,
+      reason: 'Words can use at most four tiles.',
+    })
   })
 })
 
@@ -40,6 +55,26 @@ describe('scoring', () => {
     expect(scoreWord([3, 4])).toBe(2)
     expect(scoreWord([0, 1, 2])).toBe(4)
     expect(scoreWord([5, 6, 7, 8])).toBe(8)
+  })
+
+  it('adds the completion bonus only after all five quartet words are found', () => {
+    const puzzle: TilePuzzle = {
+      id: 'bonus',
+      title: 'Bonus board',
+      tiles: [],
+      words: [
+        { word: 'one', tileIds: [0, 1, 2, 3] },
+        { word: 'two', tileIds: [4, 5, 6, 7] },
+        { word: 'three', tileIds: [8, 9, 10, 11] },
+        { word: 'four', tileIds: [12, 13, 14, 15] },
+        { word: 'five', tileIds: [16, 17, 18, 19] },
+        { word: 'short', tileIds: [0, 1] },
+      ],
+    }
+
+    expect(calculateScore(puzzle, ['one', 'two', 'three', 'four'])).toBe(32)
+    expect(calculateScore(puzzle, ['one', 'two', 'three', 'four', 'five'])).toBe(80)
+    expect(calculateScore(puzzle, ['one', 'two', 'three', 'four', 'five', 'short'])).toBe(82)
   })
 })
 
@@ -57,6 +92,12 @@ describe('candidate solving', () => {
       'sunhouse',
     ])
     expect(candidates.find((candidate) => candidate.word === 'sunflower')?.tileIds).toEqual([0, 1, 2])
+  })
+
+  it('does not generate candidate words that need more than four tiles', () => {
+    const candidates = buildCandidateWords(['a', 'b', 'c', 'd', 'e'], ['abcd', 'abcde'])
+
+    expect(candidates.map((candidate) => candidate.word)).toEqual(['abcd'])
   })
 })
 

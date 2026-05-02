@@ -357,10 +357,26 @@
   font-size: 14px;
   color: var(--text-h);
   background: var(--pill-bg);
+  border: 1px solid transparent;
   border-radius: 12px;
   padding: 12px 14px;
   text-align: center;
   min-height: 20px;
+}
+
+.status-panel--success {
+  background: rgba(17, 185, 129, 0.16);
+  border-color: rgba(52, 211, 153, 0.35);
+}
+
+.status-panel--error {
+  background: rgba(248, 113, 113, 0.16);
+  border-color: rgba(248, 113, 113, 0.5);
+  color: #ffe4e6;
+}
+
+.status-panel--info {
+  background: var(--pill-bg);
 }
 
 .found-panel {

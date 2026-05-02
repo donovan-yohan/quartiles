@@ -12,8 +12,12 @@ The repository name is `quartiles`, but the app intentionally avoids Apple namin
 - Clean-room solver/generator for finding valid tile combinations from a dictionary
 - Hint system powered by the same solver data
 - Score tracking, found-word list, shuffle, clear, and submit controls
+- Wrong-word and duplicate-word error states with accessible alerts
+- Five-quartet completion bonus scoring
 - Accessible button labels and live status messages
 - Vercel-ready static deployment
+
+See [`docs/acceptance-criteria.md`](docs/acceptance-criteria.md) for the researched gameplay checklist and follow-up TODOs.
 
 ## Clean-room note
 

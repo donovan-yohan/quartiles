@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Check, Lightbulb, Shuffle, Sparkles, X } from 'lucide-react'
 import { createCustomPuzzle, createDailyPuzzle } from './lib/daily'
-import { scoreWord, validateGuess, type TilePuzzle, type PuzzleWord } from './lib/puzzle'
+import { calculateScore, scoreWord, validateGuess, type TilePuzzle, type PuzzleWord } from './lib/puzzle'
 import './App.css'
 
 const customStarter = `sun flow er s
@@ -9,6 +9,15 @@ af ter gl ow
 bl ack bi rd
 but ter cu p
 dr ift wo od`
+
+type StatusKind = 'info' | 'success' | 'error'
+
+type StatusMessage = {
+  text: string
+  kind: StatusKind
+}
+
+const createStatus = (text: string, kind: StatusKind = 'info'): StatusMessage => ({ text, kind })
 
 const formatWord = (word: PuzzleWord) => `${word.word} (${scoreWord(word.tileIds)} pts)`
 
@@ -80,17 +89,14 @@ function App() {
   const [puzzle, setPuzzle] = useState<TilePuzzle>(() => createDailyPuzzle())
   const [selectedTileIds, setSelectedTileIds] = useState<number[]>([])
   const [foundWords, setFoundWords] = useState<string[]>([])
-  const [message, setMessage] = useState('Build words by tapping tiles in order.')
+  const [message, setMessage] = useState<StatusMessage>(() => createStatus('Build words by tapping tiles in order.'))
   const [tileOrder, setTileOrder] = useState<number[]>(() => createDailyPuzzle().tiles.map((_, index) => index))
   const [customOpen, setCustomOpen] = useState(false)
   const [customSource, setCustomSource] = useState(customStarter)
 
   const foundWordSet = useMemo(() => new Set(foundWords), [foundWords])
   const selectedWord = selectedTileIds.map((tileId) => puzzle.tiles[tileId]).join('')
-  const score = foundWords.reduce((total, word) => {
-    const candidate = puzzle.words.find((puzzleWord) => puzzleWord.word === word)
-    return total + (candidate ? scoreWord(candidate.tileIds) : 0)
-  }, 0)
+  const score = calculateScore(puzzle, foundWords)
   const remaining = puzzle.words.length - foundWords.length
 
   const resetForPuzzle = (nextPuzzle: TilePuzzle, nextMessage: string) => {
@@ -98,7 +104,7 @@ function App() {
     setSelectedTileIds([])
     setFoundWords([])
     setTileOrder(nextPuzzle.tiles.map((_, index) => index))
-    setMessage(nextMessage)
+    setMessage(createStatus(nextMessage))
   }
 
   const toggleTile = (tileId: number) => {
@@ -111,37 +117,49 @@ function App() {
     const result = validateGuess(puzzle, selectedTileIds)
 
     if (!result.ok) {
-      setMessage(result.reason)
+      setMessage(createStatus(result.reason, 'error'))
       return
     }
 
     if (foundWordSet.has(result.word)) {
-      setMessage(`${result.word} is already on your found list.`)
+      setMessage(createStatus(`${result.word} is already on your found list.`, 'error'))
       setSelectedTileIds([])
       return
     }
 
-    setFoundWords((current) => [...current, result.word])
+    const nextFoundWords = [...foundWords, result.word]
+    const oldScore = calculateScore(puzzle, foundWords)
+    const nextScore = calculateScore(puzzle, nextFoundWords)
+    const bonusPoints = nextScore - oldScore - result.points
+
+    setFoundWords(nextFoundWords)
     setSelectedTileIds([])
-    setMessage(`Nice one — ${result.points} points added.`)
+    setMessage(
+      createStatus(
+        bonusPoints > 0
+          ? `Nice one — ${result.points} points added, plus ${bonusPoints} quartet bonus points.`
+          : `Nice one — ${result.points} points added.`,
+        'success',
+      ),
+    )
   }
 
   const showHint = () => {
     const hint = nextHint(puzzle.words, foundWordSet)
 
     if (!hint) {
-      setMessage('Every known word on this board has been found.')
+      setMessage(createStatus('Every known word on this board has been found.'))
       return
     }
 
-    setMessage(`Try a ${hint.tileIds.length}-tile word worth ${scoreWord(hint.tileIds)} points: starts with ${hint.word.slice(0, 2)}.`)
+    setMessage(createStatus(`Try a ${hint.tileIds.length}-tile word worth ${scoreWord(hint.tileIds)} points: starts with ${hint.word.slice(0, 2)}.`))
   }
 
   const loadCustomPuzzle = () => {
     const customPuzzle = createCustomPuzzle(customSource)
 
     if (!customPuzzle) {
-      setMessage('Custom puzzles need at least one line with four tile parts.')
+      setMessage(createStatus('Custom puzzles need at least one line with four tile parts.', 'error'))
       return
     }
 
@@ -237,8 +255,12 @@ function App() {
         />
       </section>
 
-      <section className="status-panel" aria-live="polite">
-        {message}
+      <section
+        className={`status-panel status-panel--${message.kind}`}
+        role={message.kind === 'error' ? 'alert' : 'status'}
+        aria-live={message.kind === 'error' ? 'assertive' : 'polite'}
+      >
+        {message.text}
       </section>
 
       <section className="found-panel" aria-labelledby="found-title">
