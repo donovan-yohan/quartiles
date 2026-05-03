@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from './App'
-import { LATEST_DAILY_DATE } from './lib/daily'
+import { createDailyPuzzle, LATEST_DAILY_DATE } from './lib/daily'
 
 const latestDailyDate = LATEST_DAILY_DATE
 const gameplayDailyDate = '2026-05-02'
@@ -103,6 +103,83 @@ describe('Lexi Tiles app', () => {
       appCss.match(/\.tile--selected,\s*\.tile\[aria-pressed='true'\]\s*{[^}]*}/)?.[0] ?? '',
     ].join('\n')
     expect(playableTileBlocks).not.toMatch(/linear-gradient/)
+  })
+
+  it('marks a tile exhausted after the last remaining word using it is found', async () => {
+    const puzzle = createDailyPuzzle(gameplayDailyDate)
+    const assTileId = puzzle.tiles.indexOf('ass')
+    const wordsUsingAss = puzzle.words
+      .filter((word) => word.tileIds.includes(assTileId))
+      .map((word) => word.word)
+      .sort()
+
+    expect(wordsUsingAss).toEqual(['ass', 'associate'])
+
+    writeProgressCookie(gameplayDailyDate, {
+      foundWords: ['associate'],
+      tileOrder: Array.from({ length: 20 }, (_, index) => index),
+      hintedWords: [],
+    })
+    renderDaily()
+
+    const assTile = screen.getByRole('button', { name: /^ass$/i })
+    expect(assTile).not.toHaveClass('tile--exhausted')
+
+    await submitTiles(['ass'])
+
+    expect(assTile).toHaveClass('tile--exhausted')
+  })
+
+  it('lets exhausted styling override solved quartet styling while selection remains highest priority', async () => {
+    const puzzle = createDailyPuzzle(gameplayDailyDate)
+    const eveTileId = puzzle.tiles.indexOf('eve')
+    const wordsUsingEve = puzzle.words
+      .filter((word) => word.tileIds.includes(eveTileId))
+      .map((word) => word.word)
+      .sort()
+
+    expect(wordsUsingEve).toEqual(['eve', 'every', 'everywhere', 'reeve'])
+
+    writeProgressCookie(gameplayDailyDate, {
+      foundWords: wordsUsingEve.filter((word) => word !== 'everywhere'),
+      tileOrder: Array.from({ length: 20 }, (_, index) => index),
+      hintedWords: [],
+    })
+    renderDaily()
+
+    const eveTile = screen.getByRole('button', { name: /^eve$/i })
+    expect(eveTile).not.toHaveClass('tile--quartet')
+    expect(eveTile).not.toHaveClass('tile--exhausted')
+
+    await submitTiles(['eve', 'ry', 'whe', 're'])
+
+    expect(eveTile).toHaveClass('tile--quartet', 'tile--exhausted')
+
+    await userEvent.click(eveTile)
+
+    expect(eveTile).toHaveAttribute('aria-pressed', 'true')
+    expect(eveTile).toHaveClass('tile--selected')
+
+    const quartetIndex = appCss.indexOf('.tile--quartet')
+    const exhaustedIndex = appCss.indexOf('.tile--exhausted')
+    const selectedIndex = appCss.indexOf(".tile--selected,\n.tile[aria-pressed='true']")
+    expect(quartetIndex).toBeGreaterThan(-1)
+    expect(exhaustedIndex).toBeGreaterThan(quartetIndex)
+    expect(selectedIndex).toBeGreaterThan(exhaustedIndex)
+    expect(appCss).toMatch(/--platinum-fg:\s*#eefcff/)
+    expect(appCss).toMatch(/--platinum-bg:\s*rgba\(60,\s*106,\s*122,\s*0\.55\)/)
+    expect(appCss).toMatch(/--platinum-border:\s*rgba\(191,\s*245,\s*255,\s*0\.68\)/)
+    expect(appCss).toMatch(/\.tile--exhausted\s*{[^}]*color:\s*var\(--platinum-fg\)/)
+    expect(appCss).toMatch(/\.tile--exhausted\s*{[^}]*background:\s*var\(--platinum-bg\)/)
+    expect(appCss).toMatch(/\.tile--exhausted\s*{[^}]*border-color:\s*var\(--platinum-border\)/)
+
+    const tileStateBlocks = [
+      appCss.match(/\.tile\s*{[^}]*}/)?.[0] ?? '',
+      appCss.match(/\.tile--quartet\s*{[^}]*}/)?.[0] ?? '',
+      appCss.match(/\.tile--exhausted\s*{[^}]*}/)?.[0] ?? '',
+      appCss.match(/\.tile--selected,\s*\.tile\[aria-pressed='true'\]\s*{[^}]*}/)?.[0] ?? '',
+    ].join('\n')
+    expect(tileStateBlocks).not.toMatch(/linear-gradient/)
   })
 
   it('renders the root tutorial with a latest puzzle CTA and 7 recent puzzle entries', () => {

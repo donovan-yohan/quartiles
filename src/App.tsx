@@ -247,12 +247,13 @@ type TileButtonProps = {
   label: string
   selected: boolean
   foundQuartetTile: boolean
+  exhausted: boolean
   onClick: (index: number) => void
   buttonRef?: (node: HTMLButtonElement | null) => void
 }
 
-function TileButton({ index, label, selected, foundQuartetTile, onClick, buttonRef }: TileButtonProps) {
-  const className = `tile${foundQuartetTile ? ' tile--quartet' : ''}${selected ? ' tile--selected' : ''}`
+function TileButton({ index, label, selected, foundQuartetTile, exhausted, onClick, buttonRef }: TileButtonProps) {
+  const className = `tile${foundQuartetTile ? ' tile--quartet' : ''}${exhausted ? ' tile--exhausted' : ''}${selected ? ' tile--selected' : ''}`
 
   return (
     <button
@@ -494,6 +495,19 @@ function App() {
   const allQuartetsFound = quartetWords.length > 0 && quartetWords.every((word) => foundWordSet.has(word.word))
   const foundQuartetTileOrder = useMemo(() => foundQuartets.flatMap((quartet) => quartet.tileIds), [foundQuartets])
   const foundQuartetTileIds = useMemo(() => new Set(foundQuartetTileOrder), [foundQuartetTileOrder])
+  const exhaustedTileIds = useMemo(() => {
+    const remainingTileIds = new Set<number>()
+
+    puzzle.words.forEach((word) => {
+      if (foundWordSet.has(word.word)) {
+        return
+      }
+
+      word.tileIds.forEach((tileId) => remainingTileIds.add(tileId))
+    })
+
+    return new Set(puzzle.tiles.flatMap((_, tileId) => (remainingTileIds.has(tileId) ? [] : [tileId])))
+  }, [foundWordSet, puzzle.tiles, puzzle.words])
   const pinnedTileOrder = useMemo(
     () => (allQuartetsFound ? [] : foundQuartetTileOrder),
     [allQuartetsFound, foundQuartetTileOrder],
@@ -717,6 +731,7 @@ function App() {
               label={puzzle.tiles[tileId]}
               selected={selectedTileIds.includes(tileId)}
               foundQuartetTile={foundQuartetTileIds.has(tileId)}
+              exhausted={exhaustedTileIds.has(tileId)}
               onClick={toggleTile}
               buttonRef={setTileNode(tileId)}
             />

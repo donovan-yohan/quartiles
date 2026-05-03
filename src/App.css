@@ -11,6 +11,10 @@
   --tile-found-bg: #16876f;
   --tile-found-border: rgba(62, 225, 184, 0.56);
   --tile-found-shadow: 0 8px 18px rgba(22, 135, 111, 0.3);
+  --platinum-fg: #eefcff;
+  --platinum-border: rgba(191, 245, 255, 0.68);
+  --platinum-bg: rgba(60, 106, 122, 0.55);
+  --tile-exhausted-shadow: 0 8px 18px rgba(60, 106, 122, 0.28);
   --panel-bg: rgba(255, 255, 255, 0.08);
   --panel-border: rgba(255, 255, 255, 0.14);
   --panel-radius: 10px;
@@ -330,9 +334,9 @@
 }
 
 .medal-badge--platinum {
-  color: #eefcff;
-  border-color: rgba(191, 245, 255, 0.68);
-  background: rgba(60, 106, 122, 0.55);
+  color: var(--platinum-fg);
+  border-color: var(--platinum-border);
+  background: var(--platinum-bg);
 }
 
 .board-panel {
@@ -426,6 +430,17 @@
 
 .tile--quartet:hover {
   border-color: rgba(133, 255, 224, 0.78);
+}
+
+.tile--exhausted {
+  color: var(--platinum-fg);
+  background: var(--platinum-bg);
+  border-color: var(--platinum-border);
+  box-shadow: var(--tile-exhausted-shadow);
+}
+
+.tile--exhausted:hover {
+  border-color: var(--platinum-border);
 }
 
 .tile:active {
