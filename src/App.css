@@ -381,21 +381,10 @@
   gap: 6px;
 }
 
-.tile-grid--platinum::after {
-  position: absolute;
-  inset: -3px;
-  z-index: 2;
-  pointer-events: none;
-  content: '';
-  border-radius: 10px;
-  background: linear-gradient(115deg, transparent 18%, rgba(244, 253, 255, 0.72) 48%, transparent 78%);
-  mix-blend-mode: screen;
-  opacity: 0.7;
-  animation: platinum-shine 2.8s ease-in-out infinite;
-}
-
 .tile {
   position: relative;
+  overflow: hidden;
+  isolation: isolate;
   min-width: 0;
   min-height: 52px;
   padding: 11px 4px;
@@ -415,6 +404,11 @@
     box-shadow 0.15s ease;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+}
+
+.tile__label {
+  position: relative;
+  z-index: 2;
 }
 
 .tile:hover {
@@ -437,13 +431,63 @@
   background: var(--platinum-bg);
   border-color: var(--platinum-border);
   box-shadow: var(--tile-exhausted-shadow);
+  cursor: default;
 }
 
-.tile--exhausted:hover {
+.tile--exhausted::before,
+.tile--exhausted::after {
+  position: absolute;
+  pointer-events: none;
+  content: '';
+  border-radius: inherit;
+}
+
+.tile--exhausted::before {
+  inset: -58%;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 30% 24%, hsla(calc(var(--tile-holo-hue) + 18deg), 90%, 86%, 0.45), transparent 28%),
+    radial-gradient(circle at 74% 64%, hsla(calc(var(--tile-holo-hue) + 142deg), 88%, 82%, 0.38), transparent 30%),
+    linear-gradient(
+      var(--tile-holo-angle),
+      hsla(calc(var(--tile-holo-hue) + 208deg), 92%, 88%, 0),
+      hsla(calc(var(--tile-holo-hue) + 208deg), 92%, 88%, 0.34) 42%,
+      hsla(calc(var(--tile-holo-hue) + 302deg), 92%, 86%, 0.3) 58%,
+      hsla(calc(var(--tile-holo-hue) + 302deg), 92%, 86%, 0)
+    );
+  mix-blend-mode: screen;
+  opacity: 0.68;
+  transform: translate3d(var(--tile-holo-x), var(--tile-holo-y), 0) rotate(var(--tile-holo-angle)) scale(1.06);
+  animation: tile-holo-drift var(--tile-holo-speed) ease-in-out var(--tile-holo-delay) infinite alternate;
+  will-change: transform, opacity;
+}
+
+.tile--exhausted::after {
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.3), transparent 28%),
+    radial-gradient(circle at 86% 86%, rgba(206, 255, 247, 0.2), transparent 34%);
+  mix-blend-mode: soft-light;
+  opacity: 0.55;
+}
+
+.tile--exhausted:hover,
+.tile--exhausted:disabled {
   border-color: var(--platinum-border);
 }
 
-.tile:active {
+.tile--exhausted:disabled {
+  color: var(--platinum-fg);
+  background: var(--platinum-bg);
+  opacity: 1;
+}
+
+.tile--exhausted:active {
+  transform: none;
+}
+
+.tile:active:not(:disabled) {
   transform: scale(0.97);
 }
 
@@ -453,6 +497,13 @@
   color: var(--tile-selected-fg);
   border-color: var(--tile-selected-border);
   box-shadow: var(--tile-selected-shadow);
+}
+
+.tile--selected::before,
+.tile--selected::after,
+.tile[aria-pressed='true']::before,
+.tile[aria-pressed='true']::after {
+  display: none;
 }
 
 .tile--selected:hover,
@@ -684,30 +735,34 @@
   }
 }
 
-@keyframes platinum-shine {
+@keyframes tile-holo-drift {
   0%,
-  18% {
-    transform: translateX(-42%);
-    opacity: 0;
+  14% {
+    transform: translate3d(var(--tile-holo-x), var(--tile-holo-y), 0) rotate(var(--tile-holo-angle)) scale(1.06);
+    opacity: 0.5;
   }
 
-  42%,
-  62% {
-    opacity: 0.72;
+  52% {
+    transform: translate3d(calc(var(--tile-holo-x) + 9%), calc(var(--tile-holo-y) - 7%), 0)
+      rotate(calc(var(--tile-holo-angle) + 18deg)) scale(1.1);
+    opacity: 0.74;
   }
 
   100% {
-    transform: translateX(42%);
+    transform: translate3d(calc(var(--tile-holo-x) - 7%), calc(var(--tile-holo-y) + 8%), 0)
+      rotate(calc(var(--tile-holo-angle) - 10deg)) scale(1.08);
+    opacity: 0.58;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .status-panel--celebration,
-  .tile-grid--platinum::after {
+  .tile--exhausted::before {
     animation: none;
   }
 
-  .tile-grid--platinum::after {
-    opacity: 0.28;
+  .tile--exhausted::before {
+    opacity: 0.5;
+    transform: translate3d(var(--tile-holo-x), var(--tile-holo-y), 0) rotate(var(--tile-holo-angle)) scale(1.06);
   }
 }

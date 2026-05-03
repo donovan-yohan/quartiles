@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { type CSSProperties, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Check, Info, Lightbulb, Medal, Shuffle, Sparkles, X } from 'lucide-react'
 import {
   AVAILABLE_DAILY_DATES,
@@ -252,6 +252,21 @@ type TileButtonProps = {
   buttonRef?: (node: HTMLButtonElement | null) => void
 }
 
+const tileHoloVariation = (tileId: number, label: string): CSSProperties => {
+  const labelSeed = [...label].reduce((total, character, characterIndex) => {
+    return total + character.charCodeAt(0) * (characterIndex + 3)
+  }, tileId * 97)
+
+  return {
+    '--tile-holo-angle': `${28 + (labelSeed % 116)}deg`,
+    '--tile-holo-delay': `${-(labelSeed % 2100)}ms`,
+    '--tile-holo-x': `${-18 + (labelSeed % 37)}%`,
+    '--tile-holo-y': `${-16 + ((labelSeed * 7) % 33)}%`,
+    '--tile-holo-hue': `${(labelSeed * 11) % 360}deg`,
+    '--tile-holo-speed': `${4200 + ((labelSeed * 13) % 1800)}ms`,
+  } as CSSProperties
+}
+
 function TileButton({ index, label, selected, foundQuartetTile, exhausted, onClick, buttonRef }: TileButtonProps) {
   const className = `tile${foundQuartetTile ? ' tile--quartet' : ''}${exhausted ? ' tile--exhausted' : ''}${selected ? ' tile--selected' : ''}`
 
@@ -261,9 +276,12 @@ function TileButton({ index, label, selected, foundQuartetTile, exhausted, onCli
       type="button"
       className={className}
       aria-pressed={selected}
+      disabled={exhausted}
+      style={tileHoloVariation(index, label)}
+      title={exhausted ? 'No remaining words use this tile' : undefined}
       onClick={() => onClick(index)}
     >
-      {label}
+      <span className="tile__label">{label}</span>
     </button>
   )
 }
@@ -580,6 +598,10 @@ function App() {
   const nextDailyDate = getAdjacentDailyDate(puzzle.id, 1)
 
   const toggleTile = (tileId: number) => {
+    if (exhaustedTileIds.has(tileId)) {
+      return
+    }
+
     setSelectedTileIds((current) =>
       current.includes(tileId) ? current.filter((selected) => selected !== tileId) : [...current, tileId],
     )

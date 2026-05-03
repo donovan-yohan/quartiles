@@ -128,9 +128,10 @@ describe('Lexi Tiles app', () => {
     await submitTiles(['ass'])
 
     expect(assTile).toHaveClass('tile--exhausted')
+    expect(assTile).toBeDisabled()
   })
 
-  it('lets exhausted styling override solved quartet styling while selection remains highest priority', async () => {
+  it('disables exhausted solved quartet tiles without letting them become selected', async () => {
     const puzzle = createDailyPuzzle(gameplayDailyDate)
     const eveTileId = puzzle.tiles.indexOf('eve')
     const wordsUsingEve = puzzle.words
@@ -154,11 +155,12 @@ describe('Lexi Tiles app', () => {
     await submitTiles(['eve', 'ry', 'whe', 're'])
 
     expect(eveTile).toHaveClass('tile--quartet', 'tile--exhausted')
+    expect(eveTile).toBeDisabled()
 
     await userEvent.click(eveTile)
 
-    expect(eveTile).toHaveAttribute('aria-pressed', 'true')
-    expect(eveTile).toHaveClass('tile--selected')
+    expect(eveTile).toHaveAttribute('aria-pressed', 'false')
+    expect(eveTile).not.toHaveClass('tile--selected')
 
     const quartetIndex = appCss.indexOf('.tile--quartet')
     const exhaustedIndex = appCss.indexOf('.tile--exhausted')
@@ -172,6 +174,7 @@ describe('Lexi Tiles app', () => {
     expect(appCss).toMatch(/\.tile--exhausted\s*{[^}]*color:\s*var\(--platinum-fg\)/)
     expect(appCss).toMatch(/\.tile--exhausted\s*{[^}]*background:\s*var\(--platinum-bg\)/)
     expect(appCss).toMatch(/\.tile--exhausted\s*{[^}]*border-color:\s*var\(--platinum-border\)/)
+    expect(appCss).toMatch(/\.tile--exhausted:disabled\s*{[^}]*opacity:\s*1/)
 
     const tileStateBlocks = [
       appCss.match(/\.tile\s*{[^}]*}/)?.[0] ?? '',
@@ -180,6 +183,79 @@ describe('Lexi Tiles app', () => {
       appCss.match(/\.tile--selected,\s*\.tile\[aria-pressed='true'\]\s*{[^}]*}/)?.[0] ?? '',
     ].join('\n')
     expect(tileStateBlocks).not.toMatch(/linear-gradient/)
+  })
+
+  it('adds distinct per-tile CSS variables for exhausted holographic variation', () => {
+    const allButWhere = [
+      'ass',
+      'associate',
+      'ate',
+      'aureate',
+      'authority',
+      'eve',
+      'every',
+      'everywhere',
+      'exec',
+      'executed',
+      'his',
+      'ocreate',
+      'reed',
+      'reeve',
+      'rete',
+      'rite',
+      'sop',
+      'sophistic',
+      'sophisticate',
+      'teed',
+      'tho',
+      'thorite',
+      'tic',
+    ]
+    writeProgressCookie(gameplayDailyDate, {
+      foundWords: allButWhere,
+      tileOrder: Array.from({ length: 20 }, (_, index) => index),
+      hintedWords: [],
+    })
+    renderDaily()
+
+    const eveTile = screen.getByRole('button', { name: /^eve$/i })
+    const exTile = screen.getByRole('button', { name: /^ex$/i })
+
+    expect(eveTile).toHaveClass('tile--exhausted')
+    expect(exTile).toHaveClass('tile--exhausted')
+    for (const property of [
+      '--tile-holo-angle',
+      '--tile-holo-delay',
+      '--tile-holo-x',
+      '--tile-holo-y',
+      '--tile-holo-hue',
+      '--tile-holo-speed',
+    ]) {
+      expect(eveTile.style.getPropertyValue(property)).not.toBe('')
+      expect(exTile.style.getPropertyValue(property)).not.toBe('')
+    }
+    expect(eveTile.style.getPropertyValue('--tile-holo-angle')).not.toBe(
+      exTile.style.getPropertyValue('--tile-holo-angle'),
+    )
+    expect(eveTile.style.getPropertyValue('--tile-holo-delay')).not.toBe(
+      exTile.style.getPropertyValue('--tile-holo-delay'),
+    )
+  })
+
+  it('uses transform-based reduced-motion-aware holographic CSS only on exhausted overlays', () => {
+    expect(appCss).toMatch(/\.tile--exhausted::before\s*{[^}]*radial-gradient/)
+    expect(appCss).toMatch(/\.tile--exhausted::before\s*{[^}]*linear-gradient/)
+    expect(appCss).toMatch(/\.tile--exhausted::before\s*{[^}]*animation:\s*tile-holo-drift/)
+    expect(appCss).toMatch(/@keyframes tile-holo-drift\s*{[\s\S]*transform:\s*translate3d/)
+    expect(appCss).toMatch(/@media \(prefers-reduced-motion:\s*reduce\)\s*{[\s\S]*\.tile--exhausted::before\s*{[^}]*animation:\s*none/)
+    expect(appCss).not.toMatch(/background-position/)
+
+    const nonExhaustedStateBlocks = [
+      appCss.match(/\.tile\s*{[^}]*}/)?.[0] ?? '',
+      appCss.match(/\.tile--quartet\s*{[^}]*}/)?.[0] ?? '',
+      appCss.match(/\.tile--selected,\s*\.tile\[aria-pressed='true'\]\s*{[^}]*}/)?.[0] ?? '',
+    ].join('\n')
+    expect(nonExhaustedStateBlocks).not.toMatch(/gradient/)
   })
 
   it('renders the root tutorial with a latest puzzle CTA and 7 recent puzzle entries', () => {
