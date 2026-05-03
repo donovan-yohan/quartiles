@@ -211,11 +211,13 @@ type TileButtonProps = {
 }
 
 function TileButton({ index, label, selected, foundQuartetTile, onClick, buttonRef }: TileButtonProps) {
+  const className = `tile${foundQuartetTile ? ' tile--quartet' : ''}${selected ? ' tile--selected' : ''}`
+
   return (
     <button
       ref={buttonRef}
       type="button"
-      className={`tile${foundQuartetTile ? ' tile--quartet' : ''}`}
+      className={className}
       aria-pressed={selected}
       onClick={() => onClick(index)}
     >

@@ -1,14 +1,16 @@
 :root {
-  --tile-bg: #303545;
+  --control-button-bg: rgba(255, 255, 255, 0.08);
   --tile-border: rgba(255, 255, 255, 0.13);
   --tile-shadow: 0 2px 2px rgba(0, 0, 0, 0.28), inset 0 1px rgba(255, 255, 255, 0.08);
   --tile-fg: #eef3ff;
   --tile-muted: rgba(238, 243, 255, 0.64);
   --tile-selected-bg: #5865f2;
-  --tile-selected-strong: #7c3aed;
   --tile-selected-fg: #ffffff;
   --tile-selected-border: rgba(198, 204, 255, 0.78);
   --tile-selected-shadow: 0 9px 20px rgba(88, 101, 242, 0.34);
+  --tile-found-bg: #16876f;
+  --tile-found-border: rgba(62, 225, 184, 0.56);
+  --tile-found-shadow: 0 8px 18px rgba(22, 135, 111, 0.3);
   --panel-bg: rgba(255, 255, 255, 0.08);
   --panel-border: rgba(255, 255, 255, 0.14);
   --panel-radius: 10px;
@@ -294,7 +296,7 @@
 
 .tile-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 6px;
 }
 
@@ -307,7 +309,7 @@
   font-weight: 800;
   font-size: 13px;
   color: var(--tile-fg);
-  background: var(--tile-bg);
+  background: var(--control-button-bg);
   border: 1px solid var(--tile-border);
   border-radius: 8px;
   cursor: pointer;
@@ -326,24 +328,30 @@
 
 .tile--quartet {
   color: #ffffff;
-  background: linear-gradient(180deg, var(--tile-selected-bg), var(--tile-selected-strong));
-  border-color: var(--tile-selected-border);
-  box-shadow: var(--tile-selected-shadow);
+  background: var(--tile-found-bg);
+  border-color: var(--tile-found-border);
+  box-shadow: var(--tile-found-shadow);
 }
 
 .tile--quartet:hover {
-  border-color: #d6dbff;
+  border-color: rgba(133, 255, 224, 0.78);
 }
 
 .tile:active {
   transform: scale(0.97);
 }
 
+.tile--selected,
 .tile[aria-pressed='true'] {
-  background: linear-gradient(180deg, var(--tile-selected-bg), var(--tile-selected-strong));
+  background: var(--tile-selected-bg);
   color: var(--tile-selected-fg);
   border-color: var(--tile-selected-border);
   box-shadow: var(--tile-selected-shadow);
+}
+
+.tile--selected:hover,
+.tile[aria-pressed='true']:hover {
+  border-color: var(--tile-selected-border);
 }
 
 .tile:focus-visible,
@@ -378,7 +386,7 @@
   font-weight: 700;
   font-size: 13px;
   color: var(--text-h);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--control-button-bg);
   border: 1px solid var(--panel-border);
   border-radius: 8px;
   cursor: pointer;
@@ -468,7 +476,7 @@
 .found-list li {
   padding: 8px 10px;
   color: var(--tile-fg);
-  background: var(--tile-bg);
+  background: var(--control-button-bg);
   border: 1px solid var(--tile-border);
   border-radius: 8px;
   font-family: var(--mono);

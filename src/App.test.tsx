@@ -1,9 +1,15 @@
+/// <reference types="node" />
+
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from './App'
 
 const latestDailyDate = '2026-05-02'
+const appCss = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), 'App.css'), 'utf8')
 
 const progressCookieName = (date: string) => `lexi_tiles_progress_${date}`
 
@@ -63,6 +69,33 @@ describe('Lexi Tiles app', () => {
     expect(screen.queryByText(/build words by tapping/i)).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /hint/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: latestDailyDate })).toBeInTheDocument()
+  })
+
+  it('keeps the puzzle tile grid at four columns for the 20 playable tiles', () => {
+    renderDaily()
+
+    expect(screen.getAllByRole('button').filter((button) => button.classList.contains('tile'))).toHaveLength(20)
+    expect(appCss).toMatch(/\.tile-grid\s*{[^}]*grid-template-columns:\s*repeat\(4,\s*minmax\(0,\s*1fr\)\)/)
+    expect(appCss).not.toMatch(/\.tile-grid\s*{[^}]*grid-template-columns:\s*repeat\(5,/)
+  })
+
+  it('uses solid shared tile and control colors with selected overriding found styling', async () => {
+    renderDaily()
+
+    await submitTiles(['eve', 'ry', 'whe', 're'])
+    const foundTile = screen.getByRole('button', { name: /^eve$/i })
+    expect(foundTile).toHaveClass('tile--quartet')
+    expect(foundTile).not.toHaveClass('tile--selected')
+
+    await userEvent.click(foundTile)
+
+    expect(foundTile).toHaveAttribute('aria-pressed', 'true')
+    expect(foundTile).toHaveClass('tile--quartet', 'tile--selected')
+    expect(appCss).toMatch(/\.tile\s*{[^}]*background:\s*var\(--control-button-bg\)/)
+    expect(appCss).toMatch(/\.control-button\s*{[^}]*background:\s*var\(--control-button-bg\)/)
+    expect(appCss).toMatch(/\.tile--quartet\s*{[^}]*background:\s*var\(--tile-found-bg\)/)
+    expect(appCss).toMatch(/\.tile--selected,\s*\.tile\[aria-pressed='true'\]\s*{[^}]*background:\s*var\(--tile-selected-bg\)/)
+    expect(appCss).not.toMatch(/\.tile(?:--quartet|--selected|\[aria-pressed='true'\])?[^{]*{[^}]*linear-gradient/)
   })
 
   it('renders the root tutorial with a latest puzzle CTA and 7 recent puzzle entries', () => {
