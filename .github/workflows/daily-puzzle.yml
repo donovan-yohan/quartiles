@@ -2,9 +2,11 @@ name: Daily puzzle generation
 
 on:
   schedule:
-    # GitHub cron is UTC. Run at both likely America/New_York midnight offsets;
-    # the generator is idempotent, so the second run exits cleanly if the date exists.
-    - cron: '0 4,5 * * *'
+    # GitHub cron is UTC. Run at both likely America/New_York midnight offsets.
+    # Avoid minute 0 because GitHub scheduled workflows can be delayed/dropped at
+    # the top of the hour; the generator is idempotent, so the second run exits
+    # cleanly if the date exists.
+    - cron: '13 4,5 * * *'
   workflow_dispatch:
 
 permissions:
@@ -14,10 +16,10 @@ jobs:
   generate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: npm
