@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Check, Lightbulb, Shuffle, Sparkles, X } from 'lucide-react'
 import {
   createCustomPuzzle,
@@ -120,16 +120,48 @@ const rotateUnlockedTiles = (order: number[], lockedTileIds: Set<number>) => {
   return [...lockedOrder, ...rotateOrder(unlockedOrder)]
 }
 
+const shouldReduceMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+
+const playFlipAnimations = (firstPositions: Map<number, DOMRect>, tileNodes: Map<number, HTMLButtonElement>) => {
+  if (shouldReduceMotion()) {
+    return
+  }
+
+  firstPositions.forEach((firstRect, tileId) => {
+    const tile = tileNodes.get(tileId)
+    if (!tile?.animate) {
+      return
+    }
+
+    const lastRect = tile.getBoundingClientRect()
+    const deltaX = firstRect.left - lastRect.left
+    const deltaY = firstRect.top - lastRect.top
+
+    if (deltaX === 0 && deltaY === 0) {
+      return
+    }
+
+    const animation = tile.animate(
+      [{ transform: `translate(${deltaX}px, ${deltaY}px)` }, { transform: 'translate(0, 0)' }],
+      { duration: 260, easing: 'cubic-bezier(0.2, 0, 0, 1)', fill: 'both' },
+    )
+    animation?.addEventListener?.('finish', () => animation.cancel(), { once: true })
+  })
+}
+
 type TileButtonProps = {
   index: number
   label: string
   selected: boolean
   onClick: (index: number) => void
+  buttonRef?: (node: HTMLButtonElement | null) => void
 }
 
-function TileButton({ index, label, selected, onClick }: TileButtonProps) {
+function TileButton({ index, label, selected, onClick, buttonRef }: TileButtonProps) {
   return (
     <button
+      ref={buttonRef}
       type="button"
       className="tile"
       aria-pressed={selected}
@@ -190,6 +222,17 @@ function App() {
   const [tileOrder, setTileOrder] = useState<number[]>(initialGame.tileOrder)
   const [customOpen, setCustomOpen] = useState(false)
   const [customSource, setCustomSource] = useState(customStarter)
+  const tileNodes = useRef(new Map<number, HTMLButtonElement>())
+  const pendingFlipPositions = useRef(new Map<number, DOMRect>())
+
+  const setTileNode = (tileId: number) => (node: HTMLButtonElement | null) => {
+    if (node) {
+      tileNodes.current.set(tileId, node)
+      return
+    }
+
+    tileNodes.current.delete(tileId)
+  }
 
   useEffect(() => {
     writeSavedProgress(puzzle, foundWords, tileOrder)
@@ -211,6 +254,33 @@ function App() {
   const selectedWord = selectedTileIds.map((tileId) => puzzle.tiles[tileId]).join('')
   const score = calculateScore(puzzle, foundWords)
   const remaining = puzzle.words.length - foundWords.length
+
+  useLayoutEffect(() => {
+    if (pendingFlipPositions.current.size === 0) {
+      return
+    }
+
+    playFlipAnimations(pendingFlipPositions.current, tileNodes.current)
+    pendingFlipPositions.current.clear()
+  }, [activeTileOrder])
+
+  const captureFlipPositions = () => {
+    pendingFlipPositions.current = new Map(
+      activeTileOrder.flatMap((tileId) => {
+        const tile = tileNodes.current.get(tileId)
+        return tile ? ([[tileId, tile.getBoundingClientRect()]] as const) : []
+      }),
+    )
+  }
+
+  const shuffleTiles = () => {
+    if (activeTileOrder.length < 2) {
+      return
+    }
+
+    captureFlipPositions()
+    setTileOrder((current) => rotateUnlockedTiles(current, lockedTileIds))
+  }
 
   const resetForPuzzle = (nextPuzzle: TilePuzzle, nextMessage: string, restoreProgress = false) => {
     const savedProgress = restoreProgress ? readSavedProgress(nextPuzzle) : null
@@ -407,6 +477,7 @@ function App() {
               label={puzzle.tiles[tileId]}
               selected={selectedTileIds.includes(tileId)}
               onClick={toggleTile}
+              buttonRef={setTileNode(tileId)}
             />
           ))}
         </div>
@@ -414,7 +485,7 @@ function App() {
         <Controls
           selectedCount={selectedTileIds.length}
           onClear={() => setSelectedTileIds([])}
-          onShuffle={() => setTileOrder((current) => rotateUnlockedTiles(current, lockedTileIds))}
+          onShuffle={shuffleTiles}
           onSubmit={submitWord}
           onHint={showHint}
         />

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from './App'
@@ -110,5 +110,55 @@ describe('Lexi Tiles app', () => {
 
     expect(screen.queryByRole('button', { name: /^eve$/i })).not.toBeInTheDocument()
     expect(screen.getByLabelText(/solved quartet: everywhere/i)).toBeInTheDocument()
+  })
+
+  it('animates shuffled tiles with FLIP transforms', async () => {
+    const animate = vi.fn()
+    const originalAnimate = HTMLElement.prototype.animate
+    const originalRect = HTMLElement.prototype.getBoundingClientRect
+
+    Object.defineProperty(HTMLElement.prototype, 'animate', {
+      configurable: true,
+      value: animate,
+    })
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      if (!this.classList.contains('tile') || !this.parentElement) {
+        return originalRect.call(this)
+      }
+
+      const index = Array.from(this.parentElement.children).indexOf(this)
+      return {
+        x: index * 100,
+        y: 0,
+        width: 90,
+        height: 52,
+        top: 0,
+        right: index * 100 + 90,
+        bottom: 52,
+        left: index * 100,
+        toJSON: () => ({}),
+      }
+    }
+
+    try {
+      render(<App />)
+
+      await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
+
+      expect(animate).toHaveBeenCalled()
+      expect(animate).toHaveBeenCalledWith(
+        expect.arrayContaining([
+          expect.objectContaining({ transform: expect.stringMatching(/^translate\(-?\d+px, -?\d+px\)$/) }),
+          expect.objectContaining({ transform: 'translate(0, 0)' }),
+        ]),
+        expect.objectContaining({ easing: expect.any(String), duration: expect.any(Number) }),
+      )
+    } finally {
+      Object.defineProperty(HTMLElement.prototype, 'animate', {
+        configurable: true,
+        value: originalAnimate,
+      })
+      HTMLElement.prototype.getBoundingClientRect = originalRect
+    }
   })
 })
