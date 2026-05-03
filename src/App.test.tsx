@@ -6,9 +6,16 @@ import App from './App'
 afterEach(() => {
   localStorage.clear()
   window.history.replaceState(null, '', '/')
+  vi.restoreAllMocks()
 })
 
 describe('Lexi Tiles app', () => {
+  const activeTileLabels = () =>
+    screen
+      .getAllByRole('button')
+      .filter((button) => button.classList.contains('tile'))
+      .map((button) => button.textContent)
+
   it('renders a mobile-first word tile game with hint and custom puzzle controls', async () => {
     render(<App />)
 
@@ -110,6 +117,19 @@ describe('Lexi Tiles app', () => {
 
     expect(screen.queryByRole('button', { name: /^eve$/i })).not.toBeInTheDocument()
     expect(screen.getByLabelText(/solved quartet: everywhere/i)).toBeInTheDocument()
+  })
+
+  it('uses a random tile permutation instead of a fixed rotation when shuffling', async () => {
+    const random = vi.spyOn(Math, 'random').mockReturnValue(0)
+    render(<App />)
+
+    const originalOrder = activeTileLabels()
+    await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
+    const shuffledOrder = activeTileLabels()
+
+    expect(random).toHaveBeenCalled()
+    expect(shuffledOrder).not.toEqual([...originalOrder.slice(3), ...originalOrder.slice(0, 3)])
+    expect([...shuffledOrder].sort()).toEqual([...originalOrder].sort())
   })
 
   it('animates shuffled tiles with FLIP transforms', async () => {

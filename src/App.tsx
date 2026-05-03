@@ -105,19 +105,29 @@ const nextHint = (words: PuzzleWord[], foundWords: Set<string>) =>
     .filter((word) => !foundWords.has(word.word))
     .sort((first, second) => second.tileIds.length - first.tileIds.length || first.word.localeCompare(second.word))[0]
 
-const rotateOrder = (order: number[]) => {
+const shuffleOrder = (order: number[], random = Math.random) => {
   if (order.length < 2) {
     return order
   }
 
-  return [...order.slice(3), ...order.slice(0, 3)]
+  const shuffled = [...order]
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(random() * (index + 1))
+    ;[shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]]
+  }
+
+  if (shuffled.every((tileId, index) => tileId === order[index])) {
+    return [...shuffled.slice(1), shuffled[0]]
+  }
+
+  return shuffled
 }
 
-const rotateUnlockedTiles = (order: number[], lockedTileIds: Set<number>) => {
+const shuffleUnlockedTiles = (order: number[], lockedTileIds: Set<number>) => {
   const lockedOrder = order.filter((tileId) => lockedTileIds.has(tileId))
   const unlockedOrder = order.filter((tileId) => !lockedTileIds.has(tileId))
 
-  return [...lockedOrder, ...rotateOrder(unlockedOrder)]
+  return [...lockedOrder, ...shuffleOrder(unlockedOrder)]
 }
 
 const shouldReduceMotion = () =>
@@ -279,7 +289,7 @@ function App() {
     }
 
     captureFlipPositions()
-    setTileOrder((current) => rotateUnlockedTiles(current, lockedTileIds))
+    setTileOrder((current) => shuffleUnlockedTiles(current, lockedTileIds))
   }
 
   const resetForPuzzle = (nextPuzzle: TilePuzzle, nextMessage: string, restoreProgress = false) => {
