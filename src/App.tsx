@@ -1,12 +1,20 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Check, Lightbulb, Shuffle, X } from 'lucide-react'
+import { Check, Info, Lightbulb, Medal, Shuffle, Sparkles, X } from 'lucide-react'
 import {
   AVAILABLE_DAILY_DATES,
   createDailyPuzzle,
   getAdjacentDailyDate,
   LATEST_DAILY_DATE,
 } from './lib/daily'
-import { calculateScore, scoreWord, validateGuess, type TilePuzzle, type PuzzleWord } from './lib/puzzle'
+import {
+  calculateScore,
+  getMedalAward,
+  scoreWord,
+  validateGuess,
+  type MedalTier,
+  type TilePuzzle,
+  type PuzzleWord,
+} from './lib/puzzle'
 import './App.css'
 
 const progressCookiePrefix = 'lexi_tiles_progress_'
@@ -18,9 +26,19 @@ type StatusKind = 'info' | 'success' | 'error'
 type StatusMessage = {
   text: string
   kind: StatusKind
+  celebration?: boolean
 }
 
-const createStatus = (text: string, kind: StatusKind = 'info'): StatusMessage => ({ text, kind })
+type MedalDetails = {
+  label: string
+  className: string
+}
+
+const createStatus = (text: string, kind: StatusKind = 'info', celebration = false): StatusMessage => ({
+  text,
+  kind,
+  celebration,
+})
 
 type SavedProgress = {
   foundWords: string[]
@@ -41,6 +59,12 @@ type AppRoute =
 const progressCookieNameForPuzzle = (puzzle: TilePuzzle) => `${progressCookiePrefix}${puzzle.id}`
 const dailyPathForDate = (date: string) => `/daily/${date}`
 const resolveAvailableDailyDate = (date: string) => (AVAILABLE_DAILY_DATES.includes(date) ? date : LATEST_DAILY_DATE)
+const medalDetailsByTier: Record<Exclude<MedalTier, 'none'>, MedalDetails> = {
+  bronze: { label: 'Bronze', className: 'medal-badge--bronze' },
+  silver: { label: 'Silver', className: 'medal-badge--silver' },
+  gold: { label: 'Gold', className: 'medal-badge--gold' },
+  platinum: { label: 'Platinum', className: 'medal-badge--platinum' },
+}
 
 const readAppRouteFromUrl = (): AppRoute => {
   if (typeof window === 'undefined') {
@@ -131,6 +155,23 @@ const writeSavedProgress = (puzzle: TilePuzzle, foundWords: string[], tileOrder:
 }
 
 const formatWord = (word: PuzzleWord) => `${word.word} (${scoreWord(word.tileIds)} pts)`
+
+const medalDetailsForTier = (tier: MedalTier) => (tier === 'none' ? null : medalDetailsByTier[tier])
+
+function MedalBadge({ tier, compact = false }: { tier: MedalTier; compact?: boolean }) {
+  const details = medalDetailsForTier(tier)
+
+  if (!details) {
+    return null
+  }
+
+  return (
+    <span className={`medal-badge ${details.className}${compact ? ' medal-badge--compact' : ''}`}>
+      <Medal aria-hidden="true" size={compact ? 13 : 15} />
+      {details.label}
+    </span>
+  )
+}
 
 const nextHint = (words: PuzzleWord[], foundWords: Set<string>) =>
   [...words]
@@ -284,6 +325,7 @@ const buildHistoryEntry = (date: string) => {
     foundWords,
     totalWords: puzzle.words.length,
     score: calculateScore(puzzle, foundWords),
+    medal: getMedalAward(puzzle, foundWords),
     foundQuartets,
     totalQuartets: quartetWords.length,
     completed,
@@ -341,7 +383,10 @@ function HomePage({ page }: { page: number }) {
               <a href={dailyPathForDate(entry.date)} data-testid={`history-entry-${entry.date}`}>
                 <strong>{entry.date}</strong>
                 <span>Progress {entry.foundWords.length}/{entry.totalWords}</span>
-                <span>Score {entry.score}</span>
+                <span className="history-score">
+                  Score {entry.score}
+                  <MedalBadge tier={entry.medal} compact />
+                </span>
                 <span>
                   Results {entry.foundQuartets}/{entry.totalQuartets} target quartets
                 </span>
@@ -375,6 +420,7 @@ function App() {
   const [hintedWords, setHintedWords] = useState<string[]>(initialGame.hintedWords)
   const [message, setMessage] = useState<StatusMessage>(() => createStatus('Ready.'))
   const [tileOrder, setTileOrder] = useState<number[]>(initialGame.tileOrder)
+  const [showRemainingLengths, setShowRemainingLengths] = useState(false)
   const tileNodes = useRef(new Map<number, HTMLButtonElement>())
   const pendingFlipPositions = useRef(new Map<number, DOMRect>())
 
@@ -396,6 +442,7 @@ function App() {
     setHintedWords(savedProgress?.hintedWords ?? [])
     setTileOrder(savedProgress?.tileOrder ?? defaultTileOrder(nextPuzzle))
     setMessage(createStatus(nextMessage))
+    setShowRemainingLengths(false)
   }, [])
 
   const loadDailyPuzzleByDate = useCallback(
@@ -455,6 +502,38 @@ function App() {
   const selectedWord = selectedTileIds.map((tileId) => puzzle.tiles[tileId]).join('')
   const score = calculateScore(puzzle, foundWords)
   const remaining = puzzle.words.length - foundWords.length
+  const medalTier = getMedalAward(puzzle, foundWords)
+  const allWordsFound = puzzle.words.length > 0 && puzzle.words.every((word) => foundWordSet.has(word.word))
+  const remainingLengthGroups = useMemo(() => {
+    const countsByLength = new Map<number, number>()
+
+    puzzle.words.forEach((word) => {
+      if (foundWordSet.has(word.word)) {
+        return
+      }
+
+      countsByLength.set(word.word.length, (countsByLength.get(word.word.length) ?? 0) + 1)
+    })
+
+    return [...countsByLength.entries()]
+      .sort(([left], [right]) => left - right)
+      .map(([length, count]) => ({ length, count }))
+  }, [foundWordSet, puzzle.words])
+
+  useEffect(() => {
+    if (!showRemainingLengths) {
+      return
+    }
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowRemainingLengths(false)
+      }
+    }
+
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [showRemainingLengths])
 
   useLayoutEffect(() => {
     if (pendingFlipPositions.current.size === 0) {
@@ -510,6 +589,12 @@ function App() {
     const oldScore = calculateScore(puzzle, foundWords)
     const nextScore = calculateScore(puzzle, nextFoundWords)
     const bonusPoints = nextScore - oldScore - result.points
+    const nextFoundWordSet = new Set(nextFoundWords)
+    const nextAllQuartetsFound =
+      quartetWords.length > 0 && quartetWords.every((word) => nextFoundWordSet.has(word.word))
+    const nextAllWordsFound = puzzle.words.length > 0 && puzzle.words.every((word) => nextFoundWordSet.has(word.word))
+    const nextMedal = getMedalAward(puzzle, nextFoundWords)
+    const nextMedalDetails = medalDetailsForTier(nextMedal)
 
     if (result.isQuartet) {
       const nextFoundQuartets = nextFoundWords.flatMap((word) => quartetWords.find((candidate) => candidate.word === word) ?? [])
@@ -520,6 +605,19 @@ function App() {
 
     setFoundWords(nextFoundWords)
     setSelectedTileIds([])
+
+    if (!allWordsFound && nextAllWordsFound) {
+      setMessage(createStatus('Platinum medal! Every word found.', 'success', true))
+      return
+    }
+
+    if (!allQuartetsFound && nextAllQuartetsFound) {
+      setMessage(
+        createStatus(`${nextMedalDetails?.label ?? 'Silver'} medal! All ${quartetWords.length} quartets found.`, 'success', true),
+      )
+      return
+    }
+
     setMessage(
       createStatus(
         bonusPoints > 0
@@ -575,8 +673,21 @@ function App() {
 
       <section className="score-strip" aria-label="Game progress">
         <div>
-          <span>Score: {score}</span>
-          <small>{remaining} words left</small>
+          <span className="score-line">
+            Score: {score}
+            <MedalBadge tier={medalTier} compact />
+          </span>
+          <small className="words-left-line">
+            {remaining} words left
+            <button
+              type="button"
+              className="words-left-info"
+              aria-label="Show remaining word lengths"
+              onClick={() => setShowRemainingLengths(true)}
+            >
+              <Info aria-hidden="true" size={12} />
+            </button>
+          </small>
         </div>
         <div>
           <span>{foundWords.length}</span>
@@ -594,7 +705,11 @@ function App() {
           <small>{selectedTileIds.length > 0 ? `${selectedTileIds.length} selected` : 'No tiles selected'}</small>
         </div>
 
-        <div className="tile-grid">
+        <div
+          className={`tile-grid${allWordsFound ? ' tile-grid--platinum' : ''}`}
+          data-platinum-shine={allWordsFound ? 'true' : undefined}
+          data-testid="tile-grid"
+        >
           {displayTileOrder.map((tileId) => (
             <TileButton
               key={tileId}
@@ -618,12 +733,48 @@ function App() {
       </section>
 
       <section
-        className={`status-panel status-panel--${message.kind}`}
+        className={`status-panel status-panel--${message.kind}${message.celebration ? ' status-panel--celebration' : ''}`}
         role={message.kind === 'error' ? 'alert' : 'status'}
         aria-live={message.kind === 'error' ? 'assertive' : 'polite'}
       >
+        {message.celebration ? <Sparkles aria-hidden="true" size={16} /> : null}
         {message.text}
       </section>
+
+      {showRemainingLengths ? (
+        <div
+          className="word-length-backdrop"
+          role="presentation"
+          onClick={() => setShowRemainingLengths(false)}
+        >
+          <div
+            className="word-length-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="word-length-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="word-length-dialog__header">
+              <h2 id="word-length-title">Remaining word lengths</h2>
+              <button type="button" className="word-length-dialog__close" onClick={() => setShowRemainingLengths(false)}>
+                <X aria-hidden="true" size={16} />
+                Close
+              </button>
+            </div>
+            {remainingLengthGroups.length > 0 ? (
+              <ul className="word-length-list">
+                {remainingLengthGroups.map(({ length, count }) => (
+                  <li key={length}>
+                    {length} letters × {count}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="empty-state">No words left.</p>
+            )}
+          </div>
+        </div>
+      ) : null}
 
       <section className="found-panel" aria-labelledby="found-title">
         <div className="section-title">

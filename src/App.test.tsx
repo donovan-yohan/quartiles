@@ -97,7 +97,12 @@ describe('Lexi Tiles app', () => {
     expect(appCss).toMatch(/\.control-button\s*{[^}]*background:\s*var\(--control-button-bg\)/)
     expect(appCss).toMatch(/\.tile--quartet\s*{[^}]*background:\s*var\(--tile-found-bg\)/)
     expect(appCss).toMatch(/\.tile--selected,\s*\.tile\[aria-pressed='true'\]\s*{[^}]*background:\s*var\(--tile-selected-bg\)/)
-    expect(appCss).not.toMatch(/\.tile(?:--quartet|--selected|\[aria-pressed='true'\])?[^{]*{[^}]*linear-gradient/)
+    const playableTileBlocks = [
+      appCss.match(/\.tile\s*{[^}]*}/)?.[0] ?? '',
+      appCss.match(/\.tile--quartet\s*{[^}]*}/)?.[0] ?? '',
+      appCss.match(/\.tile--selected,\s*\.tile\[aria-pressed='true'\]\s*{[^}]*}/)?.[0] ?? '',
+    ].join('\n')
+    expect(playableTileBlocks).not.toMatch(/linear-gradient/)
   })
 
   it('renders the root tutorial with a latest puzzle CTA and 7 recent puzzle entries', () => {
@@ -125,9 +130,20 @@ describe('Lexi Tiles app', () => {
     const gameplayEntry = screen.getByTestId(`history-entry-${gameplayDailyDate}`)
     expect(within(gameplayEntry).getByText('Progress 2/24')).toBeInTheDocument()
     expect(within(gameplayEntry).getByText('Score 10')).toBeInTheDocument()
+    expect(within(gameplayEntry).getByText('Bronze')).toBeInTheDocument()
     expect(within(gameplayEntry).getByText('Results 1/5 target quartets')).toBeInTheDocument()
     expect(within(gameplayEntry).getByText('Completed No')).toBeInTheDocument()
     expect(within(gameplayEntry).getByText('Hints 2')).toBeInTheDocument()
+  })
+
+  it('shows the earned medal next to the game score', async () => {
+    renderDaily()
+
+    await submitTiles(['whe', 're'])
+
+    const scoreStrip = screen.getByLabelText(/game progress/i)
+    expect(within(scoreStrip).getByText(/score: 2/i)).toBeInTheDocument()
+    expect(within(scoreStrip).getByText('Bronze')).toBeInTheDocument()
   })
 
   it('persists each hinted word only once in cookies', async () => {
@@ -276,6 +292,77 @@ describe('Lexi Tiles app', () => {
     expect(random).toHaveBeenCalled()
     expect(afterShuffle).not.toEqual(beforeShuffle)
     expect([...afterShuffle].sort()).toEqual([...beforeShuffle].sort())
+  })
+
+  it('celebrates exactly when the final quartet is found', async () => {
+    writeProgressCookie(gameplayDailyDate, {
+      foundWords: ['everywhere', 'executed', 'authority', 'associate'],
+      tileOrder: Array.from({ length: 20 }, (_, index) => index),
+      hintedWords: [],
+    })
+    renderDaily()
+
+    expect(screen.queryByText(/all 5 quartets/i)).not.toBeInTheDocument()
+
+    await submitTiles(['sop', 'his', 'tic', 'ate'])
+
+    expect(screen.getByRole('status')).toHaveTextContent(/silver medal/i)
+    expect(screen.getByRole('status')).toHaveTextContent(/all 5 quartets/i)
+  })
+
+  it('celebrates full completion and adds the platinum shine state to the tile grid', async () => {
+    const allButWhere = [
+      'ass',
+      'associate',
+      'ate',
+      'aureate',
+      'authority',
+      'eve',
+      'every',
+      'everywhere',
+      'exec',
+      'executed',
+      'his',
+      'ocreate',
+      'reed',
+      'reeve',
+      'rete',
+      'rite',
+      'sop',
+      'sophistic',
+      'sophisticate',
+      'teed',
+      'tho',
+      'thorite',
+      'tic',
+    ]
+    writeProgressCookie(gameplayDailyDate, {
+      foundWords: allButWhere,
+      tileOrder: Array.from({ length: 20 }, (_, index) => index),
+      hintedWords: [],
+    })
+    renderDaily()
+
+    await submitTiles(['whe', 're'])
+
+    expect(screen.getByRole('status')).toHaveTextContent(/platinum medal/i)
+    expect(screen.getByRole('status')).toHaveTextContent(/every word/i)
+    expect(screen.getByTestId('tile-grid')).toHaveClass('tile-grid--platinum')
+  })
+
+  it('opens a words-left overlay grouped by remaining total letter lengths', async () => {
+    renderDaily()
+
+    await userEvent.click(screen.getByRole('button', { name: /show remaining word lengths/i }))
+
+    const dialog = screen.getByRole('dialog', { name: /remaining word lengths/i })
+    expect(within(dialog).getByText('3 letters × 7')).toBeInTheDocument()
+    expect(within(dialog).getByText('4 letters × 5')).toBeInTheDocument()
+    expect(within(dialog).getByText('12 letters × 1')).toBeInTheDocument()
+
+    await userEvent.click(within(dialog).getByRole('button', { name: /close/i }))
+
+    expect(screen.queryByRole('dialog', { name: /remaining word lengths/i })).not.toBeInTheDocument()
   })
 
   it('uses a random tile permutation instead of a fixed rotation when shuffling', async () => {

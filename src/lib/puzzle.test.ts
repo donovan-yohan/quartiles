@@ -4,6 +4,8 @@ import {
   buildCandidateWords,
   buildPuzzleFromQuartets,
   calculateScore,
+  calculateMedalThresholds,
+  getMedalAward,
   scoreWord,
   validateExactQuartetPuzzle,
   validateGuess,
@@ -78,6 +80,53 @@ describe('scoring', () => {
     expect(calculateScore(puzzle, ['one', 'two', 'three', 'four'])).toBe(32)
     expect(calculateScore(puzzle, ['one', 'two', 'three', 'four', 'five'])).toBe(80)
     expect(calculateScore(puzzle, ['one', 'two', 'three', 'four', 'five', 'otherfour', 'short'])).toBe(90)
+  })
+
+  it('calculates medal thresholds from puzzle score rules and word requirements', () => {
+    const puzzle: TilePuzzle = {
+      id: 'medals',
+      title: 'Medal board',
+      tiles: [],
+      words: [
+        { word: 'one', tileIds: [0, 1, 2, 3], isQuartet: true },
+        { word: 'two', tileIds: [4, 5, 6, 7], isQuartet: true },
+        { word: 'three', tileIds: [8, 9, 10, 11], isQuartet: true },
+        { word: 'four', tileIds: [12, 13, 14, 15], isQuartet: true },
+        { word: 'five', tileIds: [16, 17, 18, 19], isQuartet: true },
+        { word: 'otherfour', tileIds: [0, 4, 8, 12] },
+        { word: 'short', tileIds: [0, 1] },
+      ],
+    }
+
+    expect(calculateMedalThresholds(puzzle)).toEqual({
+      bronze: 2,
+      silver: 80,
+      gold: 82,
+      platinum: 90,
+    })
+  })
+
+  it('awards medals by completion requirements instead of score alone', () => {
+    const puzzle: TilePuzzle = {
+      id: 'medal-awards',
+      title: 'Medal awards',
+      tiles: [],
+      words: [
+        { word: 'one', tileIds: [0, 1, 2, 3], isQuartet: true },
+        { word: 'two', tileIds: [4, 5, 6, 7], isQuartet: true },
+        { word: 'three', tileIds: [8, 9, 10, 11], isQuartet: true },
+        { word: 'four', tileIds: [12, 13, 14, 15], isQuartet: true },
+        { word: 'five', tileIds: [16, 17, 18, 19], isQuartet: true },
+        { word: 'otherfour', tileIds: [0, 4, 8, 12] },
+        { word: 'short', tileIds: [0, 1] },
+      ],
+    }
+
+    expect(getMedalAward(puzzle, [])).toBe('none')
+    expect(getMedalAward(puzzle, ['otherfour', 'short'])).toBe('bronze')
+    expect(getMedalAward(puzzle, ['one', 'two', 'three', 'four', 'five'])).toBe('silver')
+    expect(getMedalAward(puzzle, ['one', 'two', 'three', 'four', 'five', 'short'])).toBe('gold')
+    expect(getMedalAward(puzzle, ['one', 'two', 'three', 'four', 'five', 'otherfour', 'short'])).toBe('platinum')
   })
 })
 

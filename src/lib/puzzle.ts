@@ -174,6 +174,64 @@ export const calculateScore = (puzzle: TilePuzzle, foundWords: string[]) => {
   return foundScore + (earnedQuartetBonus ? QUARTILE_COMPLETION_BONUS : 0)
 }
 
+export type MedalTier = 'none' | 'bronze' | 'silver' | 'gold' | 'platinum'
+
+export type MedalThresholds = {
+  bronze: number
+  silver: number
+  gold: number | null
+  platinum: number
+}
+
+export const calculateMedalThresholds = (puzzle: TilePuzzle): MedalThresholds => {
+  const quartetWords = puzzle.words.filter((word) => word.isQuartet)
+  const nonQuartetWords = puzzle.words.filter((word) => !word.isQuartet)
+  const wordScores = puzzle.words.map((word) => scoreWord(word.tileIds))
+  const nonQuartetScores = nonQuartetWords.map((word) => scoreWord(word.tileIds))
+  const silver = calculateScore(
+    puzzle,
+    quartetWords.map((word) => word.word),
+  )
+
+  return {
+    bronze: wordScores.length > 0 ? Math.min(...wordScores) : 0,
+    silver,
+    gold: nonQuartetScores.length > 0 ? silver + Math.min(...nonQuartetScores) : null,
+    platinum: calculateScore(
+      puzzle,
+      puzzle.words.map((word) => word.word),
+    ),
+  }
+}
+
+export const getMedalAward = (puzzle: TilePuzzle, foundWords: string[]): MedalTier => {
+  const foundWordSet = new Set(foundWords)
+  const quartetWords = puzzle.words.filter((word) => word.isQuartet)
+  const nonQuartetWords = puzzle.words.filter((word) => !word.isQuartet)
+  const hasKnownWord = puzzle.words.some((word) => foundWordSet.has(word.word))
+  const allQuartetsFound = quartetWords.length > 0 && quartetWords.every((word) => foundWordSet.has(word.word))
+  const allWordsFound = puzzle.words.length > 0 && puzzle.words.every((word) => foundWordSet.has(word.word))
+  const hasNonQuartetWord = nonQuartetWords.some((word) => foundWordSet.has(word.word))
+
+  if (allWordsFound && allQuartetsFound) {
+    return 'platinum'
+  }
+
+  if (allQuartetsFound && hasNonQuartetWord) {
+    return 'gold'
+  }
+
+  if (allQuartetsFound) {
+    return 'silver'
+  }
+
+  if (hasKnownWord) {
+    return 'bronze'
+  }
+
+  return 'none'
+}
+
 export type ExactQuartetPuzzleValidation =
   | {
       ok: true
