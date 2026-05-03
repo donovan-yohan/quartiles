@@ -233,10 +233,29 @@ export const buildPuzzleFromQuartets = ({
   dictionary,
 }: QuartetPuzzleInput): TilePuzzle => {
   const sourceTiles = quartets.flat()
-  const tiles = shuffleWithSeed(sourceTiles, seed)
-  const targetQuartetWords = new Set(quartets.map((quartet) => normalize(quartet.join(''))))
+  const shuffledSourceTileIds = shuffleWithSeed(sourceTiles.map((_, index) => index), seed)
+  const tiles = shuffledSourceTileIds.map((sourceTileId) => sourceTiles[sourceTileId])
+  const shuffledTileIdBySourceTileId = new Map(
+    shuffledSourceTileIds.map((sourceTileId, shuffledTileId) => [sourceTileId, shuffledTileId]),
+  )
+  const targetQuartetWords = new Map(
+    quartets.map((quartet, quartetIndex) => {
+      const sourceStart = quartetIndex * MAX_TILES_PER_WORD
+      const tileIds = quartet.map((_, tileIndex) => {
+        const shuffledTileId = shuffledTileIdBySourceTileId.get(sourceStart + tileIndex)
+        if (shuffledTileId === undefined) {
+          throw new Error(`Could not locate shuffled tile for target quartet ${normalize(quartet.join(''))}.`)
+        }
+
+        return shuffledTileId
+      })
+
+      return [normalize(quartet.join('')), tileIds]
+    }),
+  )
   const words = buildCandidateWords(tiles, dictionary).map((word) => ({
     ...word,
+    tileIds: targetQuartetWords.get(word.word) ?? word.tileIds,
     isQuartet: targetQuartetWords.has(word.word),
   }))
 

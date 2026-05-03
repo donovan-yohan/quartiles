@@ -7,8 +7,10 @@ import { fileURLToPath } from 'node:url'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from './App'
+import { LATEST_DAILY_DATE } from './lib/daily'
 
-const latestDailyDate = '2026-05-02'
+const latestDailyDate = LATEST_DAILY_DATE
+const gameplayDailyDate = '2026-05-02'
 const appCss = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), 'App.css'), 'utf8')
 
 const progressCookieName = (date: string) => `lexi_tiles_progress_${date}`
@@ -35,7 +37,7 @@ const clearCookies = () => {
   })
 }
 
-const renderDaily = (date = latestDailyDate) => {
+const renderDaily = (date = gameplayDailyDate) => {
   window.history.pushState(null, '', `/daily/${date}`)
   return render(<App />)
 }
@@ -68,7 +70,7 @@ describe('Lexi Tiles app', () => {
     expect(screen.queryByText(/how to play/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/build words by tapping/i)).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /hint/i })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: latestDailyDate })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: gameplayDailyDate })).toBeInTheDocument()
   })
 
   it('keeps the puzzle tile grid at four columns for the 20 playable tiles', () => {
@@ -112,7 +114,7 @@ describe('Lexi Tiles app', () => {
   })
 
   it('shows cookie-backed progress, score, results, completion, and unique hint count in history', () => {
-    writeProgressCookie(latestDailyDate, {
+    writeProgressCookie(gameplayDailyDate, {
       foundWords: ['where', 'everywhere'],
       tileOrder: Array.from({ length: 20 }, (_, index) => index),
       hintedWords: ['everywhere', 'where'],
@@ -120,12 +122,12 @@ describe('Lexi Tiles app', () => {
 
     render(<App />)
 
-    const latestEntry = screen.getByTestId(`history-entry-${latestDailyDate}`)
-    expect(within(latestEntry).getByText('Progress 2/24')).toBeInTheDocument()
-    expect(within(latestEntry).getByText('Score 10')).toBeInTheDocument()
-    expect(within(latestEntry).getByText('Results 1/5 target quartets')).toBeInTheDocument()
-    expect(within(latestEntry).getByText('Completed No')).toBeInTheDocument()
-    expect(within(latestEntry).getByText('Hints 2')).toBeInTheDocument()
+    const gameplayEntry = screen.getByTestId(`history-entry-${gameplayDailyDate}`)
+    expect(within(gameplayEntry).getByText('Progress 2/24')).toBeInTheDocument()
+    expect(within(gameplayEntry).getByText('Score 10')).toBeInTheDocument()
+    expect(within(gameplayEntry).getByText('Results 1/5 target quartets')).toBeInTheDocument()
+    expect(within(gameplayEntry).getByText('Completed No')).toBeInTheDocument()
+    expect(within(gameplayEntry).getByText('Hints 2')).toBeInTheDocument()
   })
 
   it('persists each hinted word only once in cookies', async () => {
@@ -134,7 +136,7 @@ describe('Lexi Tiles app', () => {
     await userEvent.click(screen.getByRole('button', { name: /hint/i }))
     await userEvent.click(screen.getByRole('button', { name: /hint/i }))
 
-    const savedProgress = readProgressCookie(latestDailyDate)
+    const savedProgress = readProgressCookie(gameplayDailyDate)
     expect(savedProgress.hintedWords).toHaveLength(1)
     expect(savedProgress.hintedWords[0]).toEqual(expect.any(String))
 
@@ -142,8 +144,8 @@ describe('Lexi Tiles app', () => {
     window.history.replaceState(null, '', '/')
     render(<App />)
 
-    const latestEntry = screen.getByTestId(`history-entry-${latestDailyDate}`)
-    expect(within(latestEntry).getByText('Hints 1')).toBeInTheDocument()
+    const gameplayEntry = screen.getByTestId(`history-entry-${gameplayDailyDate}`)
+    expect(within(gameplayEntry).getByText('Hints 1')).toBeInTheDocument()
   })
 
   it('lets players select tiles and submit a valid word', async () => {
@@ -213,6 +215,14 @@ describe('Lexi Tiles app', () => {
     expect(screen.getByRole('link', { name: '2026-04-26' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /^re$/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /^qu$/i })).toBeInTheDocument()
+  })
+
+  it('falls back to the latest daily puzzle when the requested date is missing', () => {
+    window.history.pushState(null, '', '/daily/1999-01-01')
+    render(<App />)
+
+    expect(screen.getByRole('link', { name: latestDailyDate })).toBeInTheDocument()
+    expect(window.location.pathname).toBe(`/daily/${latestDailyDate}`)
   })
 
   it('pins found quartet tiles at the top while keeping them usable for other words', async () => {

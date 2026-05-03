@@ -38,4 +38,9 @@ export const DAILY_PUZZLES = [
     quartets: [["eve","ry","whe","re"],["ex","ec","ut","ed"],["au","tho","ri","ty"],["ass","oc","ia","te"],["sop","his","tic","ate"]],
     words: ['ass', 'associate', 'ate', 'aureate', 'authority', 'eve', 'every', 'everywhere', 'exec', 'executed', 'his', 'ocreate', 'reed', 'reeve', 'rete', 'rite', 'sop', 'sophistic', 'sophisticate', 'teed', 'tho', 'thorite', 'tic', 'where'],
   },
+  {
+    date: '2026-05-03',
+    quartets: [["emb","arr","as","sing"],["ex","per","imen","tal"],["misu","nder","sto","od"],["re","li","gi","on"],["adv","ert","is","es"]],
+    words: ['advert', 'advertises', 'advises', 'arras', 'arrases', 'arris', 'asper', 'aspersing', 'embarrassing', 'exert', 'exes', 'exon', 'experimental', 'lies', 'lion', 'lire', 'misunderstood', 'misusing', 'odes', 'ones', 'per', 'peris', 'reason', 'region', 'relies', 'religion', 'render', 'sing', 'singes', 'stogies', 'stood', 'store', 'talas', 'tales', 'tallies', 'talon'],
+  },
 ] as const

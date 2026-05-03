@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { AVAILABLE_DAILY_DATES, createDailyPuzzle, DAILY_QUARTETS } from './daily'
+import { AVAILABLE_DAILY_DATES, createDailyPuzzle, LATEST_DAILY_DATE, resolveDailyPuzzleData } from './daily'
 import {
   buildCandidateWords,
   buildPuzzleFromQuartets,
@@ -105,6 +105,17 @@ describe('candidate solving', () => {
 })
 
 describe('daily puzzle dictionary coverage', () => {
+  const expectedBackfillDates = [
+    '2026-04-26',
+    '2026-04-27',
+    '2026-04-28',
+    '2026-04-29',
+    '2026-04-30',
+    '2026-05-01',
+    '2026-05-02',
+    '2026-05-03',
+  ]
+
   const tileIdsForFragments = (puzzle: TilePuzzle, fragments: string[]) =>
     fragments.map((fragment) => {
       const tileId = puzzle.tiles.indexOf(fragment)
@@ -112,16 +123,18 @@ describe('daily puzzle dictionary coverage', () => {
       return tileId
     })
 
-  it('backfills one week of date-addressable daily puzzles', () => {
-    expect(AVAILABLE_DAILY_DATES).toEqual([
-      '2026-04-26',
-      '2026-04-27',
-      '2026-04-28',
-      '2026-04-29',
-      '2026-04-30',
-      '2026-05-01',
-      '2026-05-02',
-    ])
+  it('keeps generated daily dates sorted, unique, backfilled, and date-addressable', () => {
+    const sortedDates = [...AVAILABLE_DAILY_DATES].sort((left, right) => left.localeCompare(right))
+
+    expect(AVAILABLE_DAILY_DATES).toEqual(sortedDates)
+    expect(new Set(AVAILABLE_DAILY_DATES).size).toBe(AVAILABLE_DAILY_DATES.length)
+    expect(AVAILABLE_DAILY_DATES).toEqual(expect.arrayContaining(expectedBackfillDates))
+    expect(LATEST_DAILY_DATE).toBe(AVAILABLE_DAILY_DATES.at(-1))
+    expect(createDailyPuzzle('1999-01-01').id).toBe(LATEST_DAILY_DATE)
+
+    for (const date of AVAILABLE_DAILY_DATES) {
+      expect(createDailyPuzzle(date).id).toBe(date)
+    }
   })
 
   it('accepts valid shorter words constructible from the daily tiles', () => {
@@ -152,20 +165,26 @@ describe('daily puzzle dictionary coverage', () => {
   })
 
   it('keeps daily source tiles unique and at least two letters long', () => {
-    const sourceTiles = DAILY_QUARTETS.flat()
+    for (const date of AVAILABLE_DAILY_DATES) {
+      const sourceTiles = resolveDailyPuzzleData(date).quartets.flat()
 
-    expect(sourceTiles.every((tile) => tile.length >= 2)).toBe(true)
-    expect(new Set(sourceTiles).size).toBe(sourceTiles.length)
+      expect(sourceTiles.every((tile) => tile.length >= 2), `${date} has a short source tile`).toBe(true)
+      expect(new Set(sourceTiles).size, `${date} has duplicate source tiles`).toBe(sourceTiles.length)
+    }
   })
 
-  it('rejects generated daily boards unless exactly the five target quartets are valid four-tile words', () => {
-    const puzzle = createDailyPuzzle(new Date('2026-05-02T00:00:00.000Z'))
-    const targetQuartets = DAILY_QUARTETS.map((quartet) => quartet.join(''))
+  it('rejects generated daily boards unless each date has exactly its own five target quartets', () => {
+    for (const date of AVAILABLE_DAILY_DATES) {
+      const puzzle = createDailyPuzzle(date)
+      const targetQuartetWords = resolveDailyPuzzleData(date).quartets
+        .map((quartet) => quartet.join(''))
+        .sort((left, right) => left.localeCompare(right))
 
-    expect(validateExactQuartetPuzzle(puzzle, targetQuartets)).toEqual({
-      ok: true,
-      quartetWords: ['associate', 'authority', 'everywhere', 'executed', 'sophisticate'],
-    })
+      expect(validateExactQuartetPuzzle(puzzle, targetQuartetWords), `${date} failed exact quartet validation`).toEqual({
+        ok: true,
+        quartetWords: targetQuartetWords,
+      })
+    }
   })
 
   it('reports extra valid four-tile words when a candidate puzzle is not strict enough', () => {
