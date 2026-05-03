@@ -1,10 +1,41 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from './App'
 
+const latestDailyDate = '2026-05-02'
+
+const progressCookieName = (date: string) => `lexi_tiles_progress_${date}`
+
+const writeProgressCookie = (date: string, progress: unknown) => {
+  document.cookie = `${progressCookieName(date)}=${encodeURIComponent(JSON.stringify(progress))}; Path=/; SameSite=Lax`
+}
+
+const readProgressCookie = (date: string) => {
+  const cookie = document.cookie
+    .split('; ')
+    .find((entry) => entry.startsWith(`${progressCookieName(date)}=`))
+    ?.split('=')[1]
+
+  return cookie ? JSON.parse(decodeURIComponent(cookie)) : null
+}
+
+const clearCookies = () => {
+  document.cookie.split(';').forEach((cookie) => {
+    const name = cookie.split('=')[0]?.trim()
+    if (name) {
+      document.cookie = `${name}=; Max-Age=0; Path=/`
+    }
+  })
+}
+
+const renderDaily = (date = latestDailyDate) => {
+  window.history.pushState(null, '', `/daily/${date}`)
+  return render(<App />)
+}
+
 afterEach(() => {
-  localStorage.clear()
+  clearCookies()
   window.history.replaceState(null, '', '/')
   vi.restoreAllMocks()
 })
@@ -23,20 +54,67 @@ describe('Lexi Tiles app', () => {
     await userEvent.click(screen.getByRole('button', { name: /submit word/i }))
   }
 
-  it('renders a mobile-first word tile game with hint and custom puzzle controls', async () => {
+  it('renders a compact daily puzzle without the app header, custom controls, or instructional copy', () => {
+    renderDaily()
+
+    expect(screen.queryByRole('heading', { name: /lexi tiles/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /custom/i })).not.toBeInTheDocument()
+    expect(screen.queryByText(/how to play/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/build words by tapping/i)).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /hint/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: latestDailyDate })).toBeInTheDocument()
+  })
+
+  it('renders the root tutorial with a latest puzzle CTA and 7 recent puzzle entries', () => {
     render(<App />)
 
     expect(screen.getByRole('heading', { name: /lexi tiles/i })).toBeInTheDocument()
-    expect(screen.getByText(/daily puzzle/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /hint/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /custom/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /how to play/i })).toBeInTheDocument()
+    expect(screen.getByText(/find the five target quartets/i)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /play today's puzzle/i })).toHaveAttribute(
+      'href',
+      `/daily/${latestDailyDate}`,
+    )
+    expect(screen.getAllByTestId('history-entry')).toHaveLength(7)
+  })
+
+  it('shows cookie-backed progress, score, results, completion, and unique hint count in history', () => {
+    writeProgressCookie(latestDailyDate, {
+      foundWords: ['where', 'everywhere'],
+      tileOrder: Array.from({ length: 20 }, (_, index) => index),
+      hintedWords: ['everywhere', 'where'],
+    })
+
+    render(<App />)
+
+    const latestEntry = screen.getByTestId(`history-entry-${latestDailyDate}`)
+    expect(within(latestEntry).getByText('Progress 2/24')).toBeInTheDocument()
+    expect(within(latestEntry).getByText('Score 10')).toBeInTheDocument()
+    expect(within(latestEntry).getByText('Results 1/5 target quartets')).toBeInTheDocument()
+    expect(within(latestEntry).getByText('Completed No')).toBeInTheDocument()
+    expect(within(latestEntry).getByText('Hints 2')).toBeInTheDocument()
+  })
+
+  it('persists each hinted word only once in cookies', async () => {
+    const dailySession = renderDaily()
 
     await userEvent.click(screen.getByRole('button', { name: /hint/i }))
-    expect(screen.getByText(/try a/i)).toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: /hint/i }))
+
+    const savedProgress = readProgressCookie(latestDailyDate)
+    expect(savedProgress.hintedWords).toHaveLength(1)
+    expect(savedProgress.hintedWords[0]).toEqual(expect.any(String))
+
+    dailySession.unmount()
+    window.history.replaceState(null, '', '/')
+    render(<App />)
+
+    const latestEntry = screen.getByTestId(`history-entry-${latestDailyDate}`)
+    expect(within(latestEntry).getByText('Hints 1')).toBeInTheDocument()
   })
 
   it('lets players select tiles and submit a valid word', async () => {
-    render(<App />)
+    renderDaily()
 
     await userEvent.click(screen.getByRole('button', { name: /^eve$/i }))
     await userEvent.click(screen.getByRole('button', { name: /^ry$/i }))
@@ -49,7 +127,7 @@ describe('Lexi Tiles app', () => {
   })
 
   it('shows an error state for wrong words without adding them to found words', async () => {
-    render(<App />)
+    renderDaily()
 
     await userEvent.click(screen.getByRole('button', { name: /^eve$/i }))
     await userEvent.click(screen.getByRole('button', { name: /^tic$/i }))
@@ -61,7 +139,7 @@ describe('Lexi Tiles app', () => {
   })
 
   it('tracks already-entered words and does not double score duplicates', async () => {
-    render(<App />)
+    renderDaily()
 
     const submitWhere = async () => {
       await userEvent.click(screen.getByRole('button', { name: /^whe$/i }))
@@ -79,7 +157,7 @@ describe('Lexi Tiles app', () => {
   })
 
   it('restores daily progress after navigating away and coming back', async () => {
-    const firstSession = render(<App />)
+    const firstSession = renderDaily()
 
     await userEvent.click(screen.getByRole('button', { name: /^whe$/i }))
     await userEvent.click(screen.getByRole('button', { name: /^re$/i }))
@@ -89,7 +167,7 @@ describe('Lexi Tiles app', () => {
     expect(screen.getByText(/score: 2/i)).toBeInTheDocument()
 
     firstSession.unmount()
-    render(<App />)
+    renderDaily()
 
     expect(screen.getByRole('listitem')).toHaveTextContent(/where/i)
     expect(screen.getByText(/score: 2/i)).toBeInTheDocument()
@@ -105,7 +183,7 @@ describe('Lexi Tiles app', () => {
   })
 
   it('pins found quartet tiles at the top while keeping them usable for other words', async () => {
-    render(<App />)
+    renderDaily()
 
     await submitTiles(['eve', 'ry', 'whe', 're'])
 
@@ -122,7 +200,7 @@ describe('Lexi Tiles app', () => {
 
   it('excludes pinned quartet tiles from shuffle until every quartet is found', async () => {
     const random = vi.spyOn(Math, 'random').mockReturnValue(0)
-    render(<App />)
+    renderDaily()
 
     await submitTiles(['eve', 'ry', 'whe', 're'])
     const beforeShuffle = activeTileLabels()
@@ -138,7 +216,7 @@ describe('Lexi Tiles app', () => {
 
   it('lets shuffle move every tile again after all quartets are found', async () => {
     const random = vi.spyOn(Math, 'random').mockReturnValue(0)
-    render(<App />)
+    renderDaily()
 
     await submitTiles(['eve', 'ry', 'whe', 're'])
     await submitTiles(['ex', 'ec', 'ut', 'ed'])
@@ -159,7 +237,7 @@ describe('Lexi Tiles app', () => {
 
   it('uses a random tile permutation instead of a fixed rotation when shuffling', async () => {
     const random = vi.spyOn(Math, 'random').mockReturnValue(0)
-    render(<App />)
+    renderDaily()
 
     const originalOrder = activeTileLabels()
     await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
@@ -199,7 +277,7 @@ describe('Lexi Tiles app', () => {
     }
 
     try {
-      render(<App />)
+      renderDaily()
 
       await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
 

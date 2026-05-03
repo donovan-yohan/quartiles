@@ -1,23 +1,17 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Check, Lightbulb, Shuffle, Sparkles, X } from 'lucide-react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Check, Lightbulb, Shuffle, X } from 'lucide-react'
 import {
-  createCustomPuzzle,
+  AVAILABLE_DAILY_DATES,
   createDailyPuzzle,
   getAdjacentDailyDate,
-  resolveDailyPuzzleData,
-  todaySeed,
+  LATEST_DAILY_DATE,
 } from './lib/daily'
 import { calculateScore, scoreWord, validateGuess, type TilePuzzle, type PuzzleWord } from './lib/puzzle'
 import './App.css'
 
-const customStarter = `eve ry whe re
-ex ec ut ed
-au tho ri ty
-ass oc ia te
-sop his tic ate`
-
-const progressStoragePrefix = 'lexi-tiles-progress'
+const progressCookiePrefix = 'lexi_tiles_progress_'
 const dailyPathPattern = /^\/daily\/(\d{4}-\d{2}-\d{2})\/?$/
+const historyPageSize = 7
 
 type StatusKind = 'info' | 'success' | 'error'
 
@@ -31,17 +25,35 @@ const createStatus = (text: string, kind: StatusKind = 'info'): StatusMessage =>
 type SavedProgress = {
   foundWords: string[]
   tileOrder: number[]
+  hintedWords: string[]
 }
 
-const storageKeyForPuzzle = (puzzle: TilePuzzle) => `${progressStoragePrefix}:${puzzle.id}`
-const dailyPathForDate = (date: string) => `/daily/${date}`
+type AppRoute =
+  | {
+      kind: 'home'
+      page: number
+    }
+  | {
+      kind: 'daily'
+      date: string
+    }
 
-const readDailyDateFromUrl = () => {
+const progressCookieNameForPuzzle = (puzzle: TilePuzzle) => `${progressCookiePrefix}${puzzle.id}`
+const dailyPathForDate = (date: string) => `/daily/${date}`
+const resolveAvailableDailyDate = (date: string) => (AVAILABLE_DAILY_DATES.includes(date) ? date : LATEST_DAILY_DATE)
+
+const readAppRouteFromUrl = (): AppRoute => {
   if (typeof window === 'undefined') {
-    return null
+    return { kind: 'home', page: 1 }
   }
 
-  return window.location.pathname.match(dailyPathPattern)?.[1] ?? null
+  const dailyDate = window.location.pathname.match(dailyPathPattern)?.[1]
+  if (dailyDate) {
+    return { kind: 'daily', date: resolveAvailableDailyDate(dailyDate) }
+  }
+
+  const requestedPage = Number(new URLSearchParams(window.location.search).get('page') ?? '1')
+  return { kind: 'home', page: Number.isInteger(requestedPage) && requestedPage > 0 ? requestedPage : 1 }
 }
 
 const updateDailyUrl = (date: string, replace = false) => {
@@ -66,36 +78,56 @@ const isValidTileOrder = (tileOrder: unknown, puzzle: TilePuzzle): tileOrder is 
   new Set(tileOrder).size === puzzle.tiles.length &&
   tileOrder.every((tileId) => Number.isInteger(tileId) && tileId >= 0 && tileId < puzzle.tiles.length)
 
+const uniqueKnownWords = (words: unknown, puzzle: TilePuzzle) => {
+  const knownWords = new Set(puzzle.words.map((word) => word.word))
+  return Array.isArray(words)
+    ? [...new Set(words.filter((word): word is string => typeof word === 'string' && knownWords.has(word)))]
+    : []
+}
+
+const readCookieValue = (name: string) => {
+  if (typeof document === 'undefined') {
+    return null
+  }
+
+  const prefix = `${name}=`
+  return (
+    document.cookie
+      .split('; ')
+      .find((cookie) => cookie.startsWith(prefix))
+      ?.slice(prefix.length) ?? null
+  )
+}
+
 const readSavedProgress = (puzzle: TilePuzzle): SavedProgress | null => {
-  if (typeof window === 'undefined') {
+  if (typeof document === 'undefined') {
     return null
   }
 
   try {
-    const rawProgress = window.localStorage.getItem(storageKeyForPuzzle(puzzle))
+    const rawProgress = readCookieValue(progressCookieNameForPuzzle(puzzle))
     if (!rawProgress) {
       return null
     }
 
-    const parsed = JSON.parse(rawProgress) as Partial<SavedProgress>
-    const knownWords = new Set(puzzle.words.map((word) => word.word))
-    const foundWords = Array.isArray(parsed.foundWords)
-      ? [...new Set(parsed.foundWords.filter((word): word is string => typeof word === 'string' && knownWords.has(word)))]
-      : []
+    const parsed = JSON.parse(decodeURIComponent(rawProgress)) as Partial<SavedProgress>
+    const foundWords = uniqueKnownWords(parsed.foundWords, puzzle)
     const tileOrder = isValidTileOrder(parsed.tileOrder, puzzle) ? parsed.tileOrder : defaultTileOrder(puzzle)
+    const hintedWords = uniqueKnownWords(parsed.hintedWords, puzzle)
 
-    return { foundWords, tileOrder }
+    return { foundWords, tileOrder, hintedWords }
   } catch {
     return null
   }
 }
 
-const writeSavedProgress = (puzzle: TilePuzzle, foundWords: string[], tileOrder: number[]) => {
-  if (typeof window === 'undefined') {
+const writeSavedProgress = (puzzle: TilePuzzle, foundWords: string[], tileOrder: number[], hintedWords: string[]) => {
+  if (typeof document === 'undefined') {
     return
   }
 
-  window.localStorage.setItem(storageKeyForPuzzle(puzzle), JSON.stringify({ foundWords, tileOrder }))
+  const progress = encodeURIComponent(JSON.stringify({ foundWords, tileOrder, hintedWords }))
+  document.cookie = `${progressCookieNameForPuzzle(puzzle)}=${progress}; Max-Age=31536000; Path=/; SameSite=Lax`
 }
 
 const formatWord = (word: PuzzleWord) => `${word.word} (${scoreWord(word.tileIds)} pts)`
@@ -223,25 +255,124 @@ function Controls({ selectedCount, onClear, onShuffle, onSubmit, onHint }: Contr
   )
 }
 
+const createGameForDate = (date: string) => {
+  const puzzle = createDailyPuzzle(date)
+  const savedProgress = readSavedProgress(puzzle)
+
+  return {
+    puzzle,
+    foundWords: savedProgress?.foundWords ?? [],
+    hintedWords: savedProgress?.hintedWords ?? [],
+    tileOrder: savedProgress?.tileOrder ?? defaultTileOrder(puzzle),
+  }
+}
+
+const buildHistoryEntry = (date: string) => {
+  const puzzle = createDailyPuzzle(date)
+  const progress = readSavedProgress(puzzle)
+  const foundWords = progress?.foundWords ?? []
+  const hintedWords = progress?.hintedWords ?? []
+  const foundWordSet = new Set(foundWords)
+  const quartetWords = puzzle.words.filter((word) => word.isQuartet)
+  const foundQuartets = quartetWords.filter((word) => foundWordSet.has(word.word)).length
+  const completed = quartetWords.length > 0 && foundQuartets === quartetWords.length
+
+  return {
+    date: puzzle.id,
+    foundWords,
+    totalWords: puzzle.words.length,
+    score: calculateScore(puzzle, foundWords),
+    foundQuartets,
+    totalQuartets: quartetWords.length,
+    completed,
+    hintCount: hintedWords.length,
+  }
+}
+
+function HomePage({ page }: { page: number }) {
+  const allDates = useMemo(() => [...AVAILABLE_DAILY_DATES].reverse(), [])
+  const pageCount = Math.max(1, Math.ceil(allDates.length / historyPageSize))
+  const currentPage = Math.min(page, pageCount)
+  const pageDates = allDates.slice((currentPage - 1) * historyPageSize, currentPage * historyPageSize)
+  const entries = pageDates.map(buildHistoryEntry)
+  const previousPageHref = currentPage <= 2 ? '/' : `/?page=${currentPage - 1}`
+  const nextPageHref = `/?page=${currentPage + 1}`
+
+  return (
+    <main className="app-shell home-shell">
+      <section className="home-hero">
+        <p className="mode-label">Daily word puzzle</p>
+        <h1>Lexi Tiles</h1>
+        <p>
+          Find the five target quartets by combining tile fragments into complete words. Shorter words also score, but
+          the board is complete when every target quartet has been found.
+        </p>
+        <a className="home-cta" href={dailyPathForDate(LATEST_DAILY_DATE)}>
+          Play today's puzzle
+        </a>
+      </section>
+
+      <section className="tutorial-panel" aria-labelledby="tutorial-title">
+        <h2 id="tutorial-title">How to play</h2>
+        <ol>
+          <li>Tap fragments in order to spell a word, then submit it.</li>
+          <li>Four-fragment target words turn their tiles blue and keep them pinned near the top.</li>
+          <li>Use hints when stuck. Each unique hinted word is counted in your puzzle history.</li>
+        </ol>
+      </section>
+
+      <section className="history-panel" aria-labelledby="history-title">
+        <div className="section-title">
+          <h2 id="history-title">Recent puzzles</h2>
+          <span>
+            Page {currentPage}/{pageCount}
+          </span>
+        </div>
+        <div className="history-list">
+          {entries.map((entry) => (
+            <article
+              key={entry.date}
+              className="history-entry"
+              data-testid="history-entry"
+              data-date={entry.date}
+            >
+              <a href={dailyPathForDate(entry.date)} data-testid={`history-entry-${entry.date}`}>
+                <strong>{entry.date}</strong>
+                <span>Progress {entry.foundWords.length}/{entry.totalWords}</span>
+                <span>Score {entry.score}</span>
+                <span>
+                  Results {entry.foundQuartets}/{entry.totalQuartets} target quartets
+                </span>
+                <span>Completed {entry.completed ? 'Yes' : 'No'}</span>
+                <span>Hints {entry.hintCount}</span>
+              </a>
+            </article>
+          ))}
+        </div>
+        {pageCount > 1 ? (
+          <nav className="history-pagination" aria-label="Puzzle history pages">
+            {currentPage > 1 ? <a href={previousPageHref}>Previous page</a> : <span>Previous page</span>}
+            {currentPage < pageCount ? <a href={nextPageHref}>Next page</a> : <span>Next page</span>}
+          </nav>
+        ) : null}
+      </section>
+    </main>
+  )
+}
+
 function App() {
+  const [initialRoute] = useState<AppRoute>(() => readAppRouteFromUrl())
   const [initialGame] = useState(() => {
-    const requestedDate = readDailyDateFromUrl() ?? todaySeed()
-    const puzzle = createDailyPuzzle(requestedDate)
-    updateDailyUrl(puzzle.id, true)
-    const savedProgress = readSavedProgress(puzzle)
-    return {
-      puzzle,
-      foundWords: savedProgress?.foundWords ?? [],
-      tileOrder: savedProgress?.tileOrder ?? defaultTileOrder(puzzle),
-    }
+    const initialDate = initialRoute.kind === 'daily' ? initialRoute.date : LATEST_DAILY_DATE
+    return createGameForDate(initialDate)
   })
+  const [route, setRoute] = useState<AppRoute>(initialRoute)
   const [puzzle, setPuzzle] = useState<TilePuzzle>(initialGame.puzzle)
   const [selectedTileIds, setSelectedTileIds] = useState<number[]>([])
   const [foundWords, setFoundWords] = useState<string[]>(initialGame.foundWords)
-  const [message, setMessage] = useState<StatusMessage>(() => createStatus('Build words by tapping tiles in order.'))
+  const [hintedWords, setHintedWords] = useState<string[]>(initialGame.hintedWords)
+  const [message, setMessage] = useState<StatusMessage>(() => createStatus('Ready.'))
   const [tileOrder, setTileOrder] = useState<number[]>(initialGame.tileOrder)
-  const [customOpen, setCustomOpen] = useState(false)
-  const [customSource, setCustomSource] = useState(customStarter)
   const tileNodes = useRef(new Map<number, HTMLButtonElement>())
   const pendingFlipPositions = useRef(new Map<number, DOMRect>())
 
@@ -254,9 +385,56 @@ function App() {
     tileNodes.current.delete(tileId)
   }
 
+  const resetForPuzzle = useCallback((nextPuzzle: TilePuzzle, nextMessage: string, restoreProgress = false) => {
+    const savedProgress = restoreProgress ? readSavedProgress(nextPuzzle) : null
+
+    setPuzzle(nextPuzzle)
+    setSelectedTileIds([])
+    setFoundWords(savedProgress?.foundWords ?? [])
+    setHintedWords(savedProgress?.hintedWords ?? [])
+    setTileOrder(savedProgress?.tileOrder ?? defaultTileOrder(nextPuzzle))
+    setMessage(createStatus(nextMessage))
+  }, [])
+
+  const loadDailyPuzzleByDate = useCallback(
+    (date: string, replaceUrl = false) => {
+      const nextPuzzle = createDailyPuzzle(date)
+      updateDailyUrl(nextPuzzle.id, replaceUrl)
+      resetForPuzzle(nextPuzzle, `Daily puzzle loaded for ${nextPuzzle.id}.`, true)
+      setRoute({ kind: 'daily', date: nextPuzzle.id })
+    },
+    [resetForPuzzle],
+  )
+
   useEffect(() => {
-    writeSavedProgress(puzzle, foundWords, tileOrder)
-  }, [foundWords, puzzle, tileOrder])
+    if (route.kind !== 'daily') {
+      return
+    }
+
+    writeSavedProgress(puzzle, foundWords, tileOrder, hintedWords)
+  }, [foundWords, hintedWords, puzzle, route.kind, tileOrder])
+
+  useEffect(() => {
+    if (route.kind === 'daily' && window.location.pathname !== dailyPathForDate(route.date)) {
+      updateDailyUrl(route.date, true)
+    }
+  }, [route])
+
+  useEffect(() => {
+    const syncRoute = () => {
+      const nextRoute = readAppRouteFromUrl()
+      setRoute(nextRoute)
+
+      if (nextRoute.kind === 'daily') {
+        const nextPuzzle = createDailyPuzzle(nextRoute.date)
+        resetForPuzzle(nextPuzzle, `Daily puzzle loaded for ${nextPuzzle.id}.`, true)
+        updateDailyUrl(nextRoute.date, true)
+      }
+    }
+
+    window.addEventListener('popstate', syncRoute)
+    return () => window.removeEventListener('popstate', syncRoute)
+  }, [resetForPuzzle])
 
   const foundWordSet = useMemo(() => new Set(foundWords), [foundWords])
   const quartetWords = useMemo(() => puzzle.words.filter((word) => word.isQuartet), [puzzle.words])
@@ -301,23 +479,6 @@ function App() {
 
     captureFlipPositions()
     setTileOrder((current) => shuffleUnpinnedTiles(moveTilesToTop(current, pinnedTileOrder), pinnedTileOrder))
-  }
-
-  const resetForPuzzle = (nextPuzzle: TilePuzzle, nextMessage: string, restoreProgress = false) => {
-    const savedProgress = restoreProgress ? readSavedProgress(nextPuzzle) : null
-
-    setPuzzle(nextPuzzle)
-    setSelectedTileIds([])
-    setFoundWords(savedProgress?.foundWords ?? [])
-    setTileOrder(savedProgress?.tileOrder ?? defaultTileOrder(nextPuzzle))
-    setMessage(createStatus(nextMessage))
-  }
-
-  const loadDailyPuzzleByDate = (date: string, replaceUrl = false) => {
-    const nextPuzzle = createDailyPuzzle(date)
-    updateDailyUrl(nextPuzzle.id, replaceUrl)
-    resetForPuzzle(nextPuzzle, `Daily puzzle loaded for ${nextPuzzle.id}.`, true)
-    setCustomOpen(false)
   }
 
   const previousDailyDate = getAdjacentDailyDate(puzzle.id, -1)
@@ -375,41 +536,20 @@ function App() {
       return
     }
 
+    setHintedWords((current) => (current.includes(hint.word) ? current : [...current, hint.word]))
     setMessage(createStatus(`Try a ${hint.tileIds.length}-tile word worth ${scoreWord(hint.tileIds)} points: starts with ${hint.word.slice(0, 2)}.`))
   }
 
-  const loadCustomPuzzle = () => {
-    const customPuzzle = createCustomPuzzle(customSource)
-
-    if (!customPuzzle) {
-      setMessage(createStatus('Custom puzzles need at least one line with four tile parts.', 'error'))
-      return
-    }
-
-    resetForPuzzle(customPuzzle, 'Custom puzzle loaded.')
-    setCustomOpen(false)
+  if (route.kind === 'home') {
+    return <HomePage page={route.page} />
   }
 
   return (
-    <main className="app-shell">
-      <section className="game-header" aria-labelledby="game-title">
-        <div>
-          <p className="mode-label">{puzzle.title}</p>
-          <h1 id="game-title">Lexi Tiles</h1>
-          <p className="intro">Tap word fragments, submit complete words, and chase every quartet on the board.</p>
-        </div>
-        <button
-          type="button"
-          className="custom-toggle"
-          aria-expanded={customOpen}
-          onClick={() => setCustomOpen((open) => !open)}
-        >
-          <Sparkles aria-hidden="true" size={18} />
-          Custom
-        </button>
-      </section>
-
+    <main className="app-shell app-shell--daily">
       <section className="date-nav" aria-label="Daily puzzle date">
+        <a className="date-nav__home" href="/" aria-label="Home">
+          Home
+        </a>
         <button
           type="button"
           className="date-nav__button"
@@ -430,33 +570,6 @@ function App() {
           Next
         </button>
       </section>
-
-      {customOpen ? (
-        <section className="custom-panel" aria-labelledby="custom-title">
-          <div>
-            <h2 id="custom-title">Custom puzzle</h2>
-            <p>Enter up to five lines. Each line needs four tile parts separated by spaces, commas, or plus signs.</p>
-          </div>
-          <textarea
-            value={customSource}
-            onChange={(event) => setCustomSource(event.target.value)}
-            aria-label="Custom puzzle tile parts"
-            rows={5}
-          />
-          <div className="custom-actions">
-            <button type="button" className="control-button primary" onClick={loadCustomPuzzle}>
-              Load custom
-            </button>
-            <button
-              type="button"
-              className="control-button"
-              onClick={() => loadDailyPuzzleByDate(resolveDailyPuzzleData(todaySeed()).date, true)}
-            >
-              Daily puzzle
-            </button>
-          </div>
-        </section>
-      ) : null}
 
       <section className="score-strip" aria-label="Game progress">
         <div>

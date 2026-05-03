@@ -44,27 +44,3 @@ export const createDailyPuzzle = (date: Date | string = new Date()): TilePuzzle 
 export const DAILY_QUARTETS = resolveDailyPuzzleData(LATEST_DAILY_DATE).quartets.map((quartet) => [
   ...quartet,
 ]) as QuartetPuzzleInput['quartets']
-
-export const createCustomPuzzle = (source: string): TilePuzzle | null => {
-  const quartets = source
-    .split('\n')
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .map((line) => line.split(/[\s,+/]+/).filter(Boolean))
-    .filter((parts): parts is [string, string, string, string] => parts.length === 4)
-    .slice(0, 5)
-
-  if (quartets.length === 0) {
-    return null
-  }
-
-  const customWords = quartets.map((quartet) => quartet.join('').toLowerCase())
-  const builtInDictionary = [...new Set(DAILY_PUZZLES.flatMap((puzzle) => puzzle.words))]
-
-  return buildPuzzleFromQuartets({
-    seed: `custom-${customWords.join('-')}`,
-    title: 'Custom puzzle',
-    quartets,
-    dictionary: [...builtInDictionary, ...customWords],
-  })
-}
