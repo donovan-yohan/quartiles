@@ -123,11 +123,20 @@ const shuffleOrder = (order: number[], random = Math.random) => {
   return shuffled
 }
 
-const shuffleUnlockedTiles = (order: number[], lockedTileIds: Set<number>) => {
-  const lockedOrder = order.filter((tileId) => lockedTileIds.has(tileId))
-  const unlockedOrder = order.filter((tileId) => !lockedTileIds.has(tileId))
+const moveTilesToTop = (order: number[], topTileIds: number[]) => {
+  if (topTileIds.length === 0) {
+    return order
+  }
 
-  return [...lockedOrder, ...shuffleOrder(unlockedOrder)]
+  const topTileSet = new Set(topTileIds)
+  return [...topTileIds, ...order.filter((tileId) => !topTileSet.has(tileId))]
+}
+
+const shuffleUnpinnedTiles = (order: number[], pinnedTileOrder: number[]) => {
+  const pinnedTileSet = new Set(pinnedTileOrder)
+  const unpinnedOrder = order.filter((tileId) => !pinnedTileSet.has(tileId))
+
+  return [...pinnedTileOrder, ...shuffleOrder(unpinnedOrder)]
 }
 
 const shouldReduceMotion = () =>
@@ -164,16 +173,17 @@ type TileButtonProps = {
   index: number
   label: string
   selected: boolean
+  foundQuartetTile: boolean
   onClick: (index: number) => void
   buttonRef?: (node: HTMLButtonElement | null) => void
 }
 
-function TileButton({ index, label, selected, onClick, buttonRef }: TileButtonProps) {
+function TileButton({ index, label, selected, foundQuartetTile, onClick, buttonRef }: TileButtonProps) {
   return (
     <button
       ref={buttonRef}
       type="button"
-      className="tile"
+      className={`tile${foundQuartetTile ? ' tile--quartet' : ''}`}
       aria-pressed={selected}
       onClick={() => onClick(index)}
     >
@@ -249,18 +259,19 @@ function App() {
   }, [foundWords, puzzle, tileOrder])
 
   const foundWordSet = useMemo(() => new Set(foundWords), [foundWords])
+  const quartetWords = useMemo(() => puzzle.words.filter((word) => word.isQuartet), [puzzle.words])
   const foundQuartets = useMemo(
-    () => foundWords.flatMap((word) => puzzle.words.find((candidate) => candidate.word === word && candidate.isQuartet) ?? []),
-    [foundWords, puzzle.words],
+    () => foundWords.flatMap((word) => quartetWords.find((candidate) => candidate.word === word) ?? []),
+    [foundWords, quartetWords],
   )
-  const lockedTileIds = useMemo(
-    () => new Set(foundQuartets.flatMap((quartet) => quartet.tileIds)),
-    [foundQuartets],
+  const allQuartetsFound = quartetWords.length > 0 && quartetWords.every((word) => foundWordSet.has(word.word))
+  const foundQuartetTileOrder = useMemo(() => foundQuartets.flatMap((quartet) => quartet.tileIds), [foundQuartets])
+  const foundQuartetTileIds = useMemo(() => new Set(foundQuartetTileOrder), [foundQuartetTileOrder])
+  const pinnedTileOrder = useMemo(
+    () => (allQuartetsFound ? [] : foundQuartetTileOrder),
+    [allQuartetsFound, foundQuartetTileOrder],
   )
-  const activeTileOrder = useMemo(
-    () => tileOrder.filter((tileId) => !lockedTileIds.has(tileId)),
-    [lockedTileIds, tileOrder],
-  )
+  const displayTileOrder = useMemo(() => moveTilesToTop(tileOrder, pinnedTileOrder), [pinnedTileOrder, tileOrder])
   const selectedWord = selectedTileIds.map((tileId) => puzzle.tiles[tileId]).join('')
   const score = calculateScore(puzzle, foundWords)
   const remaining = puzzle.words.length - foundWords.length
@@ -272,11 +283,11 @@ function App() {
 
     playFlipAnimations(pendingFlipPositions.current, tileNodes.current)
     pendingFlipPositions.current.clear()
-  }, [activeTileOrder])
+  }, [displayTileOrder])
 
   const captureFlipPositions = () => {
     pendingFlipPositions.current = new Map(
-      activeTileOrder.flatMap((tileId) => {
+      displayTileOrder.flatMap((tileId) => {
         const tile = tileNodes.current.get(tileId)
         return tile ? ([[tileId, tile.getBoundingClientRect()]] as const) : []
       }),
@@ -284,12 +295,12 @@ function App() {
   }
 
   const shuffleTiles = () => {
-    if (activeTileOrder.length < 2) {
+    if (displayTileOrder.length < 2) {
       return
     }
 
     captureFlipPositions()
-    setTileOrder((current) => shuffleUnlockedTiles(current, lockedTileIds))
+    setTileOrder((current) => shuffleUnpinnedTiles(moveTilesToTop(current, pinnedTileOrder), pinnedTileOrder))
   }
 
   const resetForPuzzle = (nextPuzzle: TilePuzzle, nextMessage: string, restoreProgress = false) => {
@@ -313,10 +324,6 @@ function App() {
   const nextDailyDate = getAdjacentDailyDate(puzzle.id, 1)
 
   const toggleTile = (tileId: number) => {
-    if (lockedTileIds.has(tileId)) {
-      return
-    }
-
     setSelectedTileIds((current) =>
       current.includes(tileId) ? current.filter((selected) => selected !== tileId) : [...current, tileId],
     )
@@ -340,6 +347,13 @@ function App() {
     const oldScore = calculateScore(puzzle, foundWords)
     const nextScore = calculateScore(puzzle, nextFoundWords)
     const bonusPoints = nextScore - oldScore - result.points
+
+    if (result.isQuartet) {
+      const nextFoundQuartets = nextFoundWords.flatMap((word) => quartetWords.find((candidate) => candidate.word === word) ?? [])
+      const nextFoundQuartetTileOrder = nextFoundQuartets.flatMap((quartet) => quartet.tileIds)
+      captureFlipPositions()
+      setTileOrder((current) => moveTilesToTop(current, nextFoundQuartetTileOrder))
+    }
 
     setFoundWords(nextFoundWords)
     setSelectedTileIds([])
@@ -465,27 +479,14 @@ function App() {
           <small>{selectedTileIds.length > 0 ? `${selectedTileIds.length} selected` : 'No tiles selected'}</small>
         </div>
 
-        {foundQuartets.length > 0 ? (
-          <div className="quartet-rows" aria-label="Solved quartets">
-            {foundQuartets.map((quartet) => (
-              <div className="quartet-row" key={quartet.word} aria-label={`Solved quartet: ${quartet.word}`}>
-                {quartet.tileIds.map((tileId) => (
-                  <span className="quartet-tile" key={tileId}>
-                    {puzzle.tiles[tileId]}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        ) : null}
-
         <div className="tile-grid">
-          {activeTileOrder.map((tileId) => (
+          {displayTileOrder.map((tileId) => (
             <TileButton
               key={tileId}
               index={tileId}
               label={puzzle.tiles[tileId]}
               selected={selectedTileIds.includes(tileId)}
+              foundQuartetTile={foundQuartetTileIds.has(tileId)}
               onClick={toggleTile}
               buttonRef={setTileNode(tileId)}
             />

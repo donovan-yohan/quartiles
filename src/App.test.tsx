@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { render, screen, within } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from './App'
 
@@ -15,6 +15,13 @@ describe('Lexi Tiles app', () => {
       .getAllByRole('button')
       .filter((button) => button.classList.contains('tile'))
       .map((button) => button.textContent)
+
+  const submitTiles = async (labels: string[]) => {
+    for (const label of labels) {
+      await userEvent.click(screen.getByRole('button', { name: new RegExp(`^${label}$`, 'i') }))
+    }
+    await userEvent.click(screen.getByRole('button', { name: /submit word/i }))
+  }
 
   it('renders a mobile-first word tile game with hint and custom puzzle controls', async () => {
     render(<App />)
@@ -97,26 +104,57 @@ describe('Lexi Tiles app', () => {
     expect(screen.getByRole('button', { name: /^qu$/i })).toBeInTheDocument()
   })
 
-  it('locks solved quartet tiles into rows and keeps them out of shuffle', async () => {
+  it('pins found quartet tiles at the top while keeping them usable for other words', async () => {
     render(<App />)
 
-    await userEvent.click(screen.getByRole('button', { name: /^eve$/i }))
-    await userEvent.click(screen.getByRole('button', { name: /^ry$/i }))
-    await userEvent.click(screen.getByRole('button', { name: /^whe$/i }))
-    await userEvent.click(screen.getByRole('button', { name: /^re$/i }))
-    await userEvent.click(screen.getByRole('button', { name: /submit word/i }))
+    await submitTiles(['eve', 'ry', 'whe', 're'])
 
-    const solvedQuartet = screen.getByLabelText(/solved quartet: everywhere/i)
-    expect(within(solvedQuartet).getByText('eve')).toBeInTheDocument()
-    expect(within(solvedQuartet).getByText('ry')).toBeInTheDocument()
-    expect(within(solvedQuartet).getByText('whe')).toBeInTheDocument()
-    expect(within(solvedQuartet).getByText('re')).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /^eve$/i })).not.toBeInTheDocument()
+    expect(activeTileLabels().slice(0, 4)).toEqual(['eve', 'ry', 'whe', 're'])
+    for (const label of ['eve', 'ry', 'whe', 're']) {
+      expect(screen.getByRole('button', { name: new RegExp(`^${label}$`, 'i') })).toHaveClass('tile--quartet')
+    }
+
+    await submitTiles(['whe', 're'])
+
+    expect(screen.getByText(/where \(2 pts\)/i)).toBeInTheDocument()
+    expect(screen.getByText(/score: 10/i)).toBeInTheDocument()
+  })
+
+  it('excludes pinned quartet tiles from shuffle until every quartet is found', async () => {
+    const random = vi.spyOn(Math, 'random').mockReturnValue(0)
+    render(<App />)
+
+    await submitTiles(['eve', 'ry', 'whe', 're'])
+    const beforeShuffle = activeTileLabels()
 
     await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
 
-    expect(screen.queryByRole('button', { name: /^eve$/i })).not.toBeInTheDocument()
-    expect(screen.getByLabelText(/solved quartet: everywhere/i)).toBeInTheDocument()
+    const afterShuffle = activeTileLabels()
+    expect(random).toHaveBeenCalled()
+    expect(afterShuffle.slice(0, 4)).toEqual(['eve', 'ry', 'whe', 're'])
+    expect(afterShuffle.slice(4)).not.toEqual(beforeShuffle.slice(4))
+    expect([...afterShuffle].sort()).toEqual([...beforeShuffle].sort())
+  })
+
+  it('lets shuffle move every tile again after all quartets are found', async () => {
+    const random = vi.spyOn(Math, 'random').mockReturnValue(0)
+    render(<App />)
+
+    await submitTiles(['eve', 'ry', 'whe', 're'])
+    await submitTiles(['ex', 'ec', 'ut', 'ed'])
+    await submitTiles(['au', 'tho', 'ri', 'ty'])
+    await submitTiles(['ass', 'oc', 'ia', 'te'])
+    await submitTiles(['sop', 'his', 'tic', 'ate'])
+
+    expect(screen.getAllByRole('button').filter((button) => button.classList.contains('tile--quartet'))).toHaveLength(20)
+    const beforeShuffle = activeTileLabels()
+
+    await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
+
+    const afterShuffle = activeTileLabels()
+    expect(random).toHaveBeenCalled()
+    expect(afterShuffle).not.toEqual(beforeShuffle)
+    expect([...afterShuffle].sort()).toEqual([...beforeShuffle].sort())
   })
 
   it('uses a random tile permutation instead of a fixed rotation when shuffling', async () => {
