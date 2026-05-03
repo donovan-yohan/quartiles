@@ -258,12 +258,9 @@ const tileHoloVariation = (tileId: number, label: string): CSSProperties => {
   }, tileId * 97)
 
   return {
-    '--tile-holo-angle': `${28 + (labelSeed % 116)}deg`,
-    '--tile-holo-delay': `${-(labelSeed % 2100)}ms`,
     '--tile-holo-x': `${-18 + (labelSeed % 37)}%`,
     '--tile-holo-y': `${-16 + ((labelSeed * 7) % 33)}%`,
     '--tile-holo-hue': `${(labelSeed * 11) % 360}deg`,
-    '--tile-holo-speed': `${4200 + ((labelSeed * 13) % 1800)}ms`,
   } as CSSProperties
 }
 

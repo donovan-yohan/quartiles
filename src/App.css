@@ -468,8 +468,6 @@
   mix-blend-mode: screen;
   opacity: 0.58;
   transform: translate3d(var(--tile-holo-x), var(--tile-holo-y), 0) scale(1.04);
-  animation: tile-holo-drift var(--tile-holo-speed) ease-in-out var(--tile-holo-delay) infinite alternate;
-  will-change: transform, opacity;
 }
 
 .tile--exhausted::after {
@@ -738,32 +736,8 @@
   }
 }
 
-@keyframes tile-holo-drift {
-  0%,
-  14% {
-    transform: translate3d(var(--tile-holo-x), var(--tile-holo-y), 0) scale(1.04);
-    opacity: 0.48;
-  }
-
-  52% {
-    transform: translate3d(calc(var(--tile-holo-x) + 6%), calc(var(--tile-holo-y) - 5%), 0) scale(1.07);
-    opacity: 0.62;
-  }
-
-  100% {
-    transform: translate3d(calc(var(--tile-holo-x) - 5%), calc(var(--tile-holo-y) + 6%), 0) scale(1.05);
-    opacity: 0.54;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .status-panel--celebration,
-  .tile--exhausted::before {
+  .status-panel--celebration {
     animation: none;
-  }
-
-  .tile--exhausted::before {
-    opacity: 0.5;
-    transform: translate3d(var(--tile-holo-x), var(--tile-holo-y), 0) scale(1.04);
   }
 }

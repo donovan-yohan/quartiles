@@ -223,32 +223,40 @@ describe('Lexi Tiles app', () => {
 
     expect(eveTile).toHaveClass('tile--exhausted')
     expect(exTile).toHaveClass('tile--exhausted')
-    for (const property of [
-      '--tile-holo-angle',
-      '--tile-holo-delay',
-      '--tile-holo-x',
-      '--tile-holo-y',
-      '--tile-holo-hue',
-      '--tile-holo-speed',
-    ]) {
+    for (const property of ['--tile-holo-x', '--tile-holo-y', '--tile-holo-hue']) {
       expect(eveTile.style.getPropertyValue(property)).not.toBe('')
       expect(exTile.style.getPropertyValue(property)).not.toBe('')
     }
-    expect(eveTile.style.getPropertyValue('--tile-holo-angle')).not.toBe(
-      exTile.style.getPropertyValue('--tile-holo-angle'),
-    )
-    expect(eveTile.style.getPropertyValue('--tile-holo-delay')).not.toBe(
-      exTile.style.getPropertyValue('--tile-holo-delay'),
-    )
+    for (const removedAnimationProperty of [
+      '--tile-holo-angle',
+      '--tile-holo-delay',
+      '--tile-holo-speed',
+    ]) {
+      expect(eveTile.style.getPropertyValue(removedAnimationProperty)).toBe('')
+      expect(exTile.style.getPropertyValue(removedAnimationProperty)).toBe('')
+    }
+    expect([
+      eveTile.style.getPropertyValue('--tile-holo-x'),
+      eveTile.style.getPropertyValue('--tile-holo-y'),
+      eveTile.style.getPropertyValue('--tile-holo-hue'),
+    ]).not.toEqual([
+      exTile.style.getPropertyValue('--tile-holo-x'),
+      exTile.style.getPropertyValue('--tile-holo-y'),
+      exTile.style.getPropertyValue('--tile-holo-hue'),
+    ])
   })
 
-  it('keeps exhausted tile holographic highlights without the dark diagonal split', () => {
+  it('keeps exhausted tile holographic highlights static without the dark diagonal split', () => {
+    const exhaustedBeforeBlock = appCss.match(/\.tile--exhausted::before\s*{[\s\S]*?\n}/)?.[0] ?? ''
+
     expect(appCss).toMatch(/\.tile--exhausted::before,\s*\.tile--exhausted::after\s*{[^}]*position:\s*absolute/)
-    expect(appCss).toMatch(/\.tile--exhausted::before\s*{[^}]*radial-gradient/)
-    expect(appCss).toMatch(/\.tile--exhausted::before\s*{[^}]*mix-blend-mode:\s*screen/)
+    expect(exhaustedBeforeBlock).toMatch(/radial-gradient/)
+    expect(exhaustedBeforeBlock).toMatch(/mix-blend-mode:\s*screen/)
+    expect(exhaustedBeforeBlock).toMatch(/transform:\s*translate3d\(var\(--tile-holo-x\), var\(--tile-holo-y\), 0\) scale\(1\.04\)/)
     expect(appCss).toMatch(/\.tile--exhausted::after\s*{[^}]*display:\s*none/)
+    expect(appCss).not.toMatch(/@keyframes\s+tile-holo-drift/)
     expect(appCss).not.toMatch(/background-position/)
-    expect(appCss.match(/\.tile--exhausted::before\s*{[\s\S]*?}/)?.[0] ?? '').not.toMatch(/linear-gradient|rotate/)
+    expect(exhaustedBeforeBlock).not.toMatch(/\banimation\b|will-change|linear-gradient|rotate/)
 
     const nonExhaustedStateBlocks = [
       appCss.match(/\.tile\s*{[^}]*}/)?.[0] ?? '',
