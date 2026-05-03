@@ -443,33 +443,37 @@
 }
 
 .tile--exhausted::before {
-  inset: -58%;
+  inset: -18%;
   z-index: 0;
   background:
-    radial-gradient(circle at 30% 24%, hsla(calc(var(--tile-holo-hue) + 18deg), 90%, 86%, 0.45), transparent 28%),
-    radial-gradient(circle at 74% 64%, hsla(calc(var(--tile-holo-hue) + 142deg), 88%, 82%, 0.38), transparent 30%),
-    linear-gradient(
-      var(--tile-holo-angle),
-      hsla(calc(var(--tile-holo-hue) + 208deg), 92%, 88%, 0),
-      hsla(calc(var(--tile-holo-hue) + 208deg), 92%, 88%, 0.34) 42%,
-      hsla(calc(var(--tile-holo-hue) + 302deg), 92%, 86%, 0.3) 58%,
-      hsla(calc(var(--tile-holo-hue) + 302deg), 92%, 86%, 0)
+    radial-gradient(
+      ellipse at 24% 20%,
+      hsla(calc(var(--tile-holo-hue) + 18deg), 96%, 91%, 0.62) 0 16%,
+      hsla(calc(var(--tile-holo-hue) + 18deg), 96%, 91%, 0.28) 34%,
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse at 76% 30%,
+      hsla(calc(var(--tile-holo-hue) + 142deg), 92%, 86%, 0.5) 0 15%,
+      hsla(calc(var(--tile-holo-hue) + 142deg), 92%, 86%, 0.22) 33%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse at 56% 80%,
+      hsla(calc(var(--tile-holo-hue) + 302deg), 94%, 88%, 0.44) 0 17%,
+      hsla(calc(var(--tile-holo-hue) + 302deg), 94%, 88%, 0.18) 36%,
+      transparent 64%
     );
+  filter: blur(1.2px) saturate(1.16);
   mix-blend-mode: screen;
-  opacity: 0.68;
-  transform: translate3d(var(--tile-holo-x), var(--tile-holo-y), 0) rotate(var(--tile-holo-angle)) scale(1.06);
+  opacity: 0.58;
+  transform: translate3d(var(--tile-holo-x), var(--tile-holo-y), 0) scale(1.04);
   animation: tile-holo-drift var(--tile-holo-speed) ease-in-out var(--tile-holo-delay) infinite alternate;
   will-change: transform, opacity;
 }
 
 .tile--exhausted::after {
-  inset: 0;
-  z-index: 1;
-  background:
-    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.3), transparent 28%),
-    radial-gradient(circle at 86% 86%, rgba(206, 255, 247, 0.2), transparent 34%);
-  mix-blend-mode: soft-light;
-  opacity: 0.55;
+  display: none;
 }
 
 .tile--exhausted:hover,
@@ -479,7 +483,6 @@
 
 .tile--exhausted:disabled {
   color: var(--platinum-fg);
-  background: var(--platinum-bg);
   opacity: 1;
 }
 
@@ -738,20 +741,18 @@
 @keyframes tile-holo-drift {
   0%,
   14% {
-    transform: translate3d(var(--tile-holo-x), var(--tile-holo-y), 0) rotate(var(--tile-holo-angle)) scale(1.06);
-    opacity: 0.5;
+    transform: translate3d(var(--tile-holo-x), var(--tile-holo-y), 0) scale(1.04);
+    opacity: 0.48;
   }
 
   52% {
-    transform: translate3d(calc(var(--tile-holo-x) + 9%), calc(var(--tile-holo-y) - 7%), 0)
-      rotate(calc(var(--tile-holo-angle) + 18deg)) scale(1.1);
-    opacity: 0.74;
+    transform: translate3d(calc(var(--tile-holo-x) + 6%), calc(var(--tile-holo-y) - 5%), 0) scale(1.07);
+    opacity: 0.62;
   }
 
   100% {
-    transform: translate3d(calc(var(--tile-holo-x) - 7%), calc(var(--tile-holo-y) + 8%), 0)
-      rotate(calc(var(--tile-holo-angle) - 10deg)) scale(1.08);
-    opacity: 0.58;
+    transform: translate3d(calc(var(--tile-holo-x) - 5%), calc(var(--tile-holo-y) + 6%), 0) scale(1.05);
+    opacity: 0.54;
   }
 }
 
@@ -763,6 +764,6 @@
 
   .tile--exhausted::before {
     opacity: 0.5;
-    transform: translate3d(var(--tile-holo-x), var(--tile-holo-y), 0) rotate(var(--tile-holo-angle)) scale(1.06);
+    transform: translate3d(var(--tile-holo-x), var(--tile-holo-y), 0) scale(1.04);
   }
 }

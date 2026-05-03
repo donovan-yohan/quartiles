@@ -242,13 +242,13 @@ describe('Lexi Tiles app', () => {
     )
   })
 
-  it('uses transform-based reduced-motion-aware holographic CSS only on exhausted overlays', () => {
+  it('keeps exhausted tile holographic highlights without the dark diagonal split', () => {
+    expect(appCss).toMatch(/\.tile--exhausted::before,\s*\.tile--exhausted::after\s*{[^}]*position:\s*absolute/)
     expect(appCss).toMatch(/\.tile--exhausted::before\s*{[^}]*radial-gradient/)
-    expect(appCss).toMatch(/\.tile--exhausted::before\s*{[^}]*linear-gradient/)
-    expect(appCss).toMatch(/\.tile--exhausted::before\s*{[^}]*animation:\s*tile-holo-drift/)
-    expect(appCss).toMatch(/@keyframes tile-holo-drift\s*{[\s\S]*transform:\s*translate3d/)
-    expect(appCss).toMatch(/@media \(prefers-reduced-motion:\s*reduce\)\s*{[\s\S]*\.tile--exhausted::before\s*{[^}]*animation:\s*none/)
+    expect(appCss).toMatch(/\.tile--exhausted::before\s*{[^}]*mix-blend-mode:\s*screen/)
+    expect(appCss).toMatch(/\.tile--exhausted::after\s*{[^}]*display:\s*none/)
     expect(appCss).not.toMatch(/background-position/)
+    expect(appCss.match(/\.tile--exhausted::before\s*{[\s\S]*?}/)?.[0] ?? '').not.toMatch(/linear-gradient|rotate/)
 
     const nonExhaustedStateBlocks = [
       appCss.match(/\.tile\s*{[^}]*}/)?.[0] ?? '',
