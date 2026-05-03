@@ -130,19 +130,32 @@ describe('Lexi Tiles app', () => {
     const gameplayEntry = screen.getByTestId(`history-entry-${gameplayDailyDate}`)
     expect(within(gameplayEntry).getByText('Progress 2/24')).toBeInTheDocument()
     expect(within(gameplayEntry).getByText('Score 10')).toBeInTheDocument()
-    expect(within(gameplayEntry).getByText('Bronze')).toBeInTheDocument()
+    expect(within(gameplayEntry).queryByText('Bronze')).not.toBeInTheDocument()
     expect(within(gameplayEntry).getByText('Results 1/5 target quartets')).toBeInTheDocument()
     expect(within(gameplayEntry).getByText('Completed No')).toBeInTheDocument()
     expect(within(gameplayEntry).getByText('Hints 2')).toBeInTheDocument()
   })
 
-  it('shows the earned medal next to the game score', async () => {
+  it('does not show a medal next to the game score after only finding where', async () => {
     renderDaily()
 
     await submitTiles(['whe', 're'])
 
     const scoreStrip = screen.getByLabelText(/game progress/i)
     expect(within(scoreStrip).getByText(/score: 2/i)).toBeInTheDocument()
+    expect(within(scoreStrip).queryByText('Bronze')).not.toBeInTheDocument()
+  })
+
+  it('shows the earned bronze medal next to the game score at 15 or more points', () => {
+    writeProgressCookie(gameplayDailyDate, {
+      foundWords: ['where', 'everywhere', 'executed'],
+      tileOrder: Array.from({ length: 20 }, (_, index) => index),
+      hintedWords: [],
+    })
+    renderDaily()
+
+    const scoreStrip = screen.getByLabelText(/game progress/i)
+    expect(within(scoreStrip).getByText(/score: 18/i)).toBeInTheDocument()
     expect(within(scoreStrip).getByText('Bronze')).toBeInTheDocument()
   })
 

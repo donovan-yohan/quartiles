@@ -183,20 +183,22 @@ export type MedalThresholds = {
   platinum: number
 }
 
+const BRONZE_MEDAL_MINIMUM_SCORE = 15
+
 export const calculateMedalThresholds = (puzzle: TilePuzzle): MedalThresholds => {
   const quartetWords = puzzle.words.filter((word) => word.isQuartet)
   const nonQuartetWords = puzzle.words.filter((word) => !word.isQuartet)
-  const wordScores = puzzle.words.map((word) => scoreWord(word.tileIds))
   const nonQuartetScores = nonQuartetWords.map((word) => scoreWord(word.tileIds))
+  const remainingScore = nonQuartetScores.reduce((total, score) => total + score, 0)
   const silver = calculateScore(
     puzzle,
     quartetWords.map((word) => word.word),
   )
 
   return {
-    bronze: wordScores.length > 0 ? Math.min(...wordScores) : 0,
+    bronze: BRONZE_MEDAL_MINIMUM_SCORE,
     silver,
-    gold: nonQuartetScores.length > 0 ? silver + Math.min(...nonQuartetScores) : null,
+    gold: nonQuartetScores.length > 0 ? silver + Math.ceil(remainingScore / 2) : null,
     platinum: calculateScore(
       puzzle,
       puzzle.words.map((word) => word.word),
@@ -207,17 +209,16 @@ export const calculateMedalThresholds = (puzzle: TilePuzzle): MedalThresholds =>
 export const getMedalAward = (puzzle: TilePuzzle, foundWords: string[]): MedalTier => {
   const foundWordSet = new Set(foundWords)
   const quartetWords = puzzle.words.filter((word) => word.isQuartet)
-  const nonQuartetWords = puzzle.words.filter((word) => !word.isQuartet)
-  const hasKnownWord = puzzle.words.some((word) => foundWordSet.has(word.word))
   const allQuartetsFound = quartetWords.length > 0 && quartetWords.every((word) => foundWordSet.has(word.word))
   const allWordsFound = puzzle.words.length > 0 && puzzle.words.every((word) => foundWordSet.has(word.word))
-  const hasNonQuartetWord = nonQuartetWords.some((word) => foundWordSet.has(word.word))
+  const thresholds = calculateMedalThresholds(puzzle)
+  const score = calculateScore(puzzle, foundWords)
 
-  if (allWordsFound && allQuartetsFound) {
+  if (allWordsFound) {
     return 'platinum'
   }
 
-  if (allQuartetsFound && hasNonQuartetWord) {
+  if (allQuartetsFound && thresholds.gold !== null && score >= thresholds.gold) {
     return 'gold'
   }
 
@@ -225,7 +226,7 @@ export const getMedalAward = (puzzle: TilePuzzle, foundWords: string[]): MedalTi
     return 'silver'
   }
 
-  if (hasKnownWord) {
+  if (score >= thresholds.bronze) {
     return 'bronze'
   }
 

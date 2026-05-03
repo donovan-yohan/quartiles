@@ -99,14 +99,36 @@ describe('scoring', () => {
     }
 
     expect(calculateMedalThresholds(puzzle)).toEqual({
-      bronze: 2,
+      bronze: 15,
       silver: 80,
-      gold: 82,
+      gold: 85,
       platinum: 90,
     })
   })
 
-  it('awards medals by completion requirements instead of score alone', () => {
+  it('calculates no gold threshold when there are no non-quartet words', () => {
+    const puzzle: TilePuzzle = {
+      id: 'quartets-only-medals',
+      title: 'Quartets only medals',
+      tiles: [],
+      words: [
+        { word: 'one', tileIds: [0, 1, 2, 3], isQuartet: true },
+        { word: 'two', tileIds: [4, 5, 6, 7], isQuartet: true },
+        { word: 'three', tileIds: [8, 9, 10, 11], isQuartet: true },
+        { word: 'four', tileIds: [12, 13, 14, 15], isQuartet: true },
+        { word: 'five', tileIds: [16, 17, 18, 19], isQuartet: true },
+      ],
+    }
+
+    expect(calculateMedalThresholds(puzzle)).toEqual({
+      bronze: 15,
+      silver: 80,
+      gold: null,
+      platinum: 80,
+    })
+  })
+
+  it('awards medals by score thresholds and completion requirements', () => {
     const puzzle: TilePuzzle = {
       id: 'medal-awards',
       title: 'Medal awards',
@@ -123,9 +145,11 @@ describe('scoring', () => {
     }
 
     expect(getMedalAward(puzzle, [])).toBe('none')
-    expect(getMedalAward(puzzle, ['otherfour', 'short'])).toBe('bronze')
+    expect(getMedalAward(puzzle, ['otherfour', 'short'])).toBe('none')
+    expect(getMedalAward(puzzle, ['one', 'otherfour'])).toBe('bronze')
     expect(getMedalAward(puzzle, ['one', 'two', 'three', 'four', 'five'])).toBe('silver')
-    expect(getMedalAward(puzzle, ['one', 'two', 'three', 'four', 'five', 'short'])).toBe('gold')
+    expect(getMedalAward(puzzle, ['one', 'two', 'three', 'four', 'five', 'short'])).toBe('silver')
+    expect(getMedalAward(puzzle, ['one', 'two', 'three', 'four', 'five', 'otherfour'])).toBe('gold')
     expect(getMedalAward(puzzle, ['one', 'two', 'three', 'four', 'five', 'otherfour', 'short'])).toBe('platinum')
   })
 })
@@ -198,6 +222,14 @@ describe('daily puzzle dictionary coverage', () => {
       word: 'where',
     })
     expect(puzzle.words.filter((word) => word.isQuartet)).toHaveLength(5)
+  })
+
+  it('does not award bronze on the May 2 board after only finding where', () => {
+    const puzzle = createDailyPuzzle(new Date('2026-05-02T00:00:00.000Z'))
+
+    expect(calculateScore(puzzle, ['where'])).toBe(2)
+    expect(getMedalAward(puzzle, ['where'])).toBe('none')
+    expect(getMedalAward(puzzle, ['where', 'everywhere', 'executed'])).toBe('bronze')
   })
 
   it('does not accept Scrabble-only dictionary cruft as daily puzzle words', () => {
