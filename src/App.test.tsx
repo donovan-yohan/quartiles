@@ -46,6 +46,7 @@ afterEach(() => {
   clearCookies()
   window.history.replaceState(null, '', '/')
   vi.restoreAllMocks()
+  vi.unstubAllGlobals()
 })
 
 describe('Lexi Tiles app', () => {
@@ -246,14 +247,21 @@ describe('Lexi Tiles app', () => {
     ])
   })
 
+  const mobilePlatinumMediaPattern =
+    '@media \\(hover: none\\), \\(pointer: coarse\\), \\(max-width: 640px\\), \\(prefers-reduced-motion: reduce\\) \\{[\\s\\S]*?\\.tile--exhausted::before\\s*{[\\s\\S]*?\\n {2}}\\n}'
+
   it('keeps exhausted tile holographic highlights static without the dark diagonal split', () => {
     const exhaustedBeforeBlock = appCss.match(/\.tile--exhausted::before\s*{[\s\S]*?\n}/)?.[0] ?? ''
+    const mobilePlatinumBlock = appCss.match(new RegExp(mobilePlatinumMediaPattern))?.[0] ?? ''
 
     expect(appCss).toMatch(/\.tile--exhausted::before,\s*\.tile--exhausted::after\s*{[^}]*position:\s*absolute/)
     expect(exhaustedBeforeBlock).toMatch(/radial-gradient/)
     expect(exhaustedBeforeBlock).toMatch(/mix-blend-mode:\s*screen/)
     expect(exhaustedBeforeBlock).toMatch(/transform:\s*translate3d\(var\(--tile-holo-x\), var\(--tile-holo-y\), 0\) scale\(1\.04\)/)
     expect(appCss).toMatch(/\.tile--exhausted::after\s*{[^}]*display:\s*none/)
+    expect(mobilePlatinumBlock).toMatch(/\.tile--exhausted\s*{[^}]*radial-gradient/)
+    expect(mobilePlatinumBlock).toMatch(/\.tile--exhausted::before\s*{[^}]*display:\s*none/)
+    expect(mobilePlatinumBlock).not.toMatch(/mix-blend-mode|filter:\s*blur|translate3d/)
     expect(appCss).not.toMatch(/@keyframes\s+tile-holo-drift/)
     expect(appCss).not.toMatch(/background-position/)
     expect(exhaustedBeforeBlock).not.toMatch(/\banimation\b|will-change|linear-gradient|rotate/)
@@ -593,6 +601,56 @@ describe('Lexi Tiles app', () => {
         ]),
         expect.objectContaining({ easing: expect.any(String), duration: expect.any(Number) }),
       )
+    } finally {
+      Object.defineProperty(HTMLElement.prototype, 'animate', {
+        configurable: true,
+        value: originalAnimate,
+      })
+      HTMLElement.prototype.getBoundingClientRect = originalRect
+    }
+  })
+
+  it('skips FLIP layout reads and animations on touch-sized devices', async () => {
+    const matchMedia = vi.fn((query: string) => ({
+      matches: query === '(pointer: coarse)' || query === '(hover: none)' || query === '(max-width: 640px)',
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }))
+    const animate = vi.fn()
+    const getBoundingClientRect = vi.fn(() => ({
+      x: 0,
+      y: 0,
+      width: 90,
+      height: 52,
+      top: 0,
+      right: 90,
+      bottom: 52,
+      left: 0,
+      toJSON: () => ({}),
+    }))
+    const originalAnimate = HTMLElement.prototype.animate
+    const originalRect = HTMLElement.prototype.getBoundingClientRect
+
+    vi.stubGlobal('matchMedia', matchMedia)
+    Object.defineProperty(HTMLElement.prototype, 'animate', {
+      configurable: true,
+      value: animate,
+    })
+    HTMLElement.prototype.getBoundingClientRect = getBoundingClientRect
+
+    try {
+      renderDaily()
+
+      await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
+
+      expect(matchMedia).toHaveBeenCalledWith('(hover: none)')
+      expect(getBoundingClientRect).not.toHaveBeenCalled()
+      expect(animate).not.toHaveBeenCalled()
     } finally {
       Object.defineProperty(HTMLElement.prototype, 'animate', {
         configurable: true,

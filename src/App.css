@@ -474,6 +474,36 @@
   display: none;
 }
 
+@media (hover: none), (pointer: coarse), (max-width: 640px), (prefers-reduced-motion: reduce) {
+  .tile {
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .tile--exhausted {
+    background:
+      radial-gradient(
+        ellipse at calc(50% + var(--tile-holo-x)) calc(48% + var(--tile-holo-y)),
+        hsla(calc(var(--tile-holo-hue) + 18deg), 96%, 91%, 0.28) 0 18%,
+        transparent 58%
+      ),
+      radial-gradient(
+        ellipse at calc(76% + var(--tile-holo-y)) 30%,
+        hsla(calc(var(--tile-holo-hue) + 142deg), 92%, 86%, 0.18) 0 16%,
+        transparent 55%
+      ),
+      var(--platinum-bg);
+  }
+
+  .tile--exhausted::before {
+    display: none;
+  }
+
+  .tile:active:not(:disabled),
+  .control-button:active:not(:disabled) {
+    transform: none;
+  }
+}
+
 .tile--exhausted:hover,
 .tile--exhausted:disabled {
   border-color: var(--platinum-border);
