@@ -15,7 +15,7 @@ The expensive path is the exhausted/platinum tile styling after all words are fo
 - Each exhausted tile created an oversized `::before` pseudo-element.
 - That pseudo-element used multiple radial gradients, `filter: blur(...) saturate(...)`, `mix-blend-mode: screen`, and a `translate3d(...) scale(...)` transform.
 - On mobile/touch, scrolling or tile movement makes the browser repaint/composite 20 blended and filtered surfaces in a dense grid.
-- Shuffle/quartet pinning also captured tile positions with `getBoundingClientRect()` and played FLIP transforms, adding layout reads and transform work on low-end devices.
+- Shuffle/quartet pinning captures tile positions with `getBoundingClientRect()` and plays FLIP transforms. Those reads are deliberate UX work and should only be suppressed for `prefers-reduced-motion`.
 
 ## Changes
 
@@ -23,7 +23,8 @@ The expensive path is the exhausted/platinum tile styling after all words are fo
 - Added a mobile/touch/small-screen/reduced-motion platinum style that preserves the static glow with direct background gradients.
 - Disabled the expensive exhausted tile pseudo-element in that low-end bucket, removing the filter, blend mode, and translated pseudo layer.
 - Disabled tile/control press transforms in that bucket.
-- Skipped FLIP position reads and animations for reduced-motion, touch, coarse pointer, and small-screen contexts.
+- Kept shuffle FLIP layout reads and tile animations on mobile/touch because they are core interaction feedback.
+- Skipped FLIP position reads and animations only when the user requests reduced motion.
 - Memoized tile buttons and only emits holographic CSS variables for exhausted tiles.
 
 ## Benchmark
@@ -32,10 +33,11 @@ Built preview (`vite preview`) on HeadlessChrome 147, viewport 1280×633, comple
 
 | Mode | Tile layout reads | Tile animations | Avg click-to-2xRAF | Max click-to-2xRAF |
 | --- | ---: | ---: | ---: | ---: |
-| Desktop FLIP path | 800 | 379 | 19.33ms | 37.30ms |
-| Simulated touch/low-end path | 0 | 0 | 17.64ms | 21.50ms |
+| Desktop/default path | 800 | 375 | 18.32ms | 28.60ms |
+| Touch-like path, reduced motion false | 800 | 377 | 18.25ms | 24.60ms |
+| Reduced-motion path | 0 | 0 | 17.48ms | 19.50ms |
 
-The important result is not the small desktop-headless wall-time delta; it is that the low-end path removes the forced tile layout reads and generated animations entirely. Combined with the mobile CSS media query, touch devices also avoid the per-tile filtered/blended pseudo-element.
+The important result is that touch/mobile keeps the intentional shuffle feedback, while the low-end CSS media query still removes the per-tile filtered/blended platinum pseudo-element. The only JavaScript animation path that now removes FLIP layout reads and generated animations is `prefers-reduced-motion`.
 
 ## Verification
 

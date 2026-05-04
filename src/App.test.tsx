@@ -610,9 +610,65 @@ describe('Lexi Tiles app', () => {
     }
   })
 
-  it('skips FLIP layout reads and animations on touch-sized devices', async () => {
+  it('keeps FLIP shuffle animations on touch-sized devices', async () => {
     const matchMedia = vi.fn((query: string) => ({
       matches: query === '(pointer: coarse)' || query === '(hover: none)' || query === '(max-width: 640px)',
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }))
+    const animate = vi.fn()
+    const originalAnimate = HTMLElement.prototype.animate
+    const originalRect = HTMLElement.prototype.getBoundingClientRect
+
+    vi.stubGlobal('matchMedia', matchMedia)
+    Object.defineProperty(HTMLElement.prototype, 'animate', {
+      configurable: true,
+      value: animate,
+    })
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      if (!this.classList.contains('tile') || !this.parentElement) {
+        return originalRect.call(this)
+      }
+
+      const index = Array.from(this.parentElement.children).indexOf(this)
+      return {
+        x: index * 100,
+        y: 0,
+        width: 90,
+        height: 52,
+        top: 0,
+        right: index * 100 + 90,
+        bottom: 52,
+        left: index * 100,
+        toJSON: () => ({}),
+      }
+    }
+
+    try {
+      renderDaily()
+
+      await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
+
+      expect(matchMedia).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)')
+      expect(matchMedia).not.toHaveBeenCalledWith('(pointer: coarse)')
+      expect(animate).toHaveBeenCalled()
+    } finally {
+      Object.defineProperty(HTMLElement.prototype, 'animate', {
+        configurable: true,
+        value: originalAnimate,
+      })
+      HTMLElement.prototype.getBoundingClientRect = originalRect
+    }
+  })
+
+  it('skips FLIP layout reads and animations when reduced motion is requested', async () => {
+    const matchMedia = vi.fn((query: string) => ({
+      matches: query === '(prefers-reduced-motion: reduce)',
       media: query,
       onchange: null,
       addListener: vi.fn(),
@@ -648,7 +704,7 @@ describe('Lexi Tiles app', () => {
 
       await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
 
-      expect(matchMedia).toHaveBeenCalledWith('(hover: none)')
+      expect(matchMedia).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)')
       expect(getBoundingClientRect).not.toHaveBeenCalled()
       expect(animate).not.toHaveBeenCalled()
     } finally {

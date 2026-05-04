@@ -217,12 +217,7 @@ const shouldReduceTileMotion = () => {
     return false
   }
 
-  return [
-    '(prefers-reduced-motion: reduce)',
-    '(hover: none)',
-    '(pointer: coarse)',
-    '(max-width: 640px)',
-  ].some((query) => window.matchMedia(query).matches)
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
 const playFlipAnimations = (firstPositions: Map<number, DOMRect>, tileNodes: Map<number, HTMLButtonElement>) => {
