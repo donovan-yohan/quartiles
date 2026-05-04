@@ -482,16 +482,25 @@
   .tile--exhausted {
     background:
       radial-gradient(
-        ellipse at calc(50% + var(--tile-holo-x)) calc(48% + var(--tile-holo-y)),
-        hsla(calc(var(--tile-holo-hue) + 18deg), 96%, 91%, 0.28) 0 18%,
-        transparent 58%
+        ellipse 150% 135% at calc(22% + var(--tile-holo-x)) calc(18% + var(--tile-holo-y)),
+        hsla(calc(var(--tile-holo-hue) + 18deg), 86%, 86%, 0.3) 0 25%,
+        hsla(calc(var(--tile-holo-hue) + 18deg), 86%, 86%, 0.12) 52%,
+        transparent 78%
       ),
       radial-gradient(
-        ellipse at calc(76% + var(--tile-holo-y)) 30%,
-        hsla(calc(var(--tile-holo-hue) + 142deg), 92%, 86%, 0.18) 0 16%,
-        transparent 55%
+        ellipse 135% 120% at calc(78% + var(--tile-holo-y)) calc(28% + var(--tile-holo-x)),
+        hsla(calc(var(--tile-holo-hue) + 142deg), 82%, 80%, 0.24) 0 24%,
+        hsla(calc(var(--tile-holo-hue) + 142deg), 82%, 80%, 0.1) 50%,
+        transparent 76%
       ),
-      var(--platinum-bg);
+      radial-gradient(
+        ellipse 140% 120% at calc(55% - var(--tile-holo-x)) calc(82% - var(--tile-holo-y)),
+        hsla(calc(var(--tile-holo-hue) + 302deg), 82%, 83%, 0.22) 0 24%,
+        transparent 72%
+      ),
+      linear-gradient(135deg, rgba(206, 250, 255, 0.06), rgba(96, 170, 190, 0.04)),
+      linear-gradient(180deg, rgba(12, 18, 27, 0.22), rgba(13, 19, 28, 0.34)),
+      rgba(46, 84, 100, 0.72);
   }
 
   .tile--exhausted::before {
