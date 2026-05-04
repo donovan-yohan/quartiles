@@ -205,6 +205,36 @@ const moveTilesToTop = (order: number[], topTileIds: number[]) => {
   return [...topTileIds, ...order.filter((tileId) => !topTileSet.has(tileId))]
 }
 
+const orderExhaustedTilesForPostQuartetShuffle = (
+  exhaustedTileIds: Set<number>,
+  foundQuartets: PuzzleWord[],
+  currentOrder: number[],
+) => {
+  const orderedExhaustedTileIds: number[] = []
+  const orderedExhaustedTileIdSet = new Set<number>()
+
+  foundQuartets.forEach((quartet) => {
+    if (!quartet.tileIds.every((tileId) => exhaustedTileIds.has(tileId))) {
+      return
+    }
+
+    quartet.tileIds.forEach((tileId) => {
+      if (!orderedExhaustedTileIdSet.has(tileId)) {
+        orderedExhaustedTileIdSet.add(tileId)
+        orderedExhaustedTileIds.push(tileId)
+      }
+    })
+  })
+
+  currentOrder.forEach((tileId) => {
+    if (exhaustedTileIds.has(tileId) && !orderedExhaustedTileIdSet.has(tileId)) {
+      orderedExhaustedTileIds.push(tileId)
+    }
+  })
+
+  return orderedExhaustedTileIds
+}
+
 const shuffleUnpinnedTiles = (order: number[], pinnedTileOrder: number[]) => {
   const pinnedTileSet = new Set(pinnedTileOrder)
   const unpinnedOrder = order.filter((tileId) => !pinnedTileSet.has(tileId))
@@ -608,7 +638,13 @@ function App() {
     }
 
     captureFlipPositions()
-    setTileOrder((current) => shuffleUnpinnedTiles(moveTilesToTop(current, pinnedTileOrder), pinnedTileOrder))
+    setTileOrder((current) => {
+      const nextPinnedTileOrder = allQuartetsFound
+        ? orderExhaustedTilesForPostQuartetShuffle(exhaustedTileIds, foundQuartets, current)
+        : pinnedTileOrder
+
+      return shuffleUnpinnedTiles(moveTilesToTop(current, nextPinnedTileOrder), nextPinnedTileOrder)
+    })
   }
 
   const previousDailyDate = getAdjacentDailyDate(puzzle.id, -1)

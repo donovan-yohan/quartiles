@@ -455,7 +455,7 @@ describe('Lexi Tiles app', () => {
     expect([...afterShuffle].sort()).toEqual([...beforeShuffle].sort())
   })
 
-  it('lets shuffle move every tile again after all quartets are found', async () => {
+  it('shuffles remaining tiles after all quartets are found while keeping all tiles visible', async () => {
     const random = vi.spyOn(Math, 'random').mockReturnValue(0)
     renderDaily()
 
@@ -530,6 +530,74 @@ describe('Lexi Tiles app', () => {
     expect(screen.getByRole('status')).toHaveTextContent(/platinum medal/i)
     expect(screen.getByRole('status')).toHaveTextContent(/every word/i)
     expect(screen.getByTestId('tile-grid')).toHaveClass('tile-grid--platinum')
+  })
+
+  it('pins exhausted platinum tiles above remaining playable tiles when shuffling after all quartets are found', async () => {
+    const allButWhere = [
+      'ass',
+      'associate',
+      'ate',
+      'aureate',
+      'authority',
+      'eve',
+      'every',
+      'everywhere',
+      'exec',
+      'executed',
+      'his',
+      'ocreate',
+      'reed',
+      'reeve',
+      'rete',
+      'rite',
+      'sop',
+      'sophistic',
+      'sophisticate',
+      'teed',
+      'tho',
+      'thorite',
+      'tic',
+    ]
+    const puzzle = createDailyPuzzle(gameplayDailyDate)
+    const foundWordSet = new Set(allButWhere)
+    const exhaustedTileIds = new Set(
+      puzzle.tiles.flatMap((_, tileId) =>
+        puzzle.words.some((word) => !foundWordSet.has(word.word) && word.tileIds.includes(tileId)) ? [] : [tileId],
+      ),
+    )
+    const exhaustedQuartetTileIds = puzzle.words
+      .filter((word) => word.isQuartet && word.tileIds.every((tileId) => exhaustedTileIds.has(tileId)))
+      .flatMap((word) => word.tileIds)
+    const exhaustedQuartetTileIdSet = new Set(exhaustedQuartetTileIds)
+    const initialTileOrder = Array.from({ length: puzzle.tiles.length }, (_, index) => puzzle.tiles.length - index - 1)
+    const expectedPinnedTileIds = [
+      ...exhaustedQuartetTileIds,
+      ...initialTileOrder.filter((tileId) => exhaustedTileIds.has(tileId) && !exhaustedQuartetTileIdSet.has(tileId)),
+    ]
+    const expectedPinnedLabels = expectedPinnedTileIds.map((tileId) => puzzle.tiles[tileId])
+
+    expect(exhaustedQuartetTileIds.length).toBeGreaterThanOrEqual(4)
+    writeProgressCookie(gameplayDailyDate, {
+      foundWords: allButWhere,
+      tileOrder: initialTileOrder,
+      hintedWords: [],
+    })
+    renderDaily()
+
+    expect(activeTileLabels().slice(0, expectedPinnedLabels.length)).not.toEqual(expectedPinnedLabels)
+
+    await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
+
+    const tileButtons = screen.getAllByRole('button').filter((button) => button.classList.contains('tile'))
+    expect(tileButtons.map((button) => button.textContent).slice(0, expectedPinnedLabels.length)).toEqual(
+      expectedPinnedLabels,
+    )
+    expect(tileButtons.slice(0, expectedPinnedLabels.length).every((button) => button.classList.contains('tile--exhausted'))).toBe(
+      true,
+    )
+    expect(tileButtons.slice(expectedPinnedLabels.length).every((button) => !button.classList.contains('tile--exhausted'))).toBe(
+      true,
+    )
   })
 
   it('opens a words-left overlay grouped by remaining total letter lengths', async () => {
