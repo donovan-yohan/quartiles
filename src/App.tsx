@@ -1,4 +1,4 @@
-import { type CSSProperties, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { memo, type CSSProperties, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Check, Info, Lightbulb, Medal, Shuffle, Sparkles, X } from 'lucide-react'
 import {
   AVAILABLE_DAILY_DATES,
@@ -44,6 +44,7 @@ type SavedProgress = {
   foundWords: string[]
   tileOrder: number[]
   hintedWords: string[]
+  puzzleVersion?: string
 }
 
 type AppRoute =
@@ -59,6 +60,22 @@ type AppRoute =
 const progressCookieNameForPuzzle = (puzzle: TilePuzzle) => `${progressCookiePrefix}${puzzle.id}`
 const dailyPathForDate = (date: string) => `/daily/${date}`
 const resolveAvailableDailyDate = (date: string) => (AVAILABLE_DAILY_DATES.includes(date) ? date : LATEST_DAILY_DATE)
+const rebalancedLegacyDailyPuzzleIds = new Set(['2026-04-27', '2026-04-28', '2026-04-29', '2026-05-01', '2026-05-02'])
+const progressVersionForPuzzle = (puzzle: TilePuzzle) => {
+  const versionSource = [
+    puzzle.id,
+    puzzle.tiles.join('|'),
+    puzzle.words.map((word) => `${word.word}:${word.tileIds.join(',')}`).join('|'),
+  ].join('::')
+  let checksum = 0
+
+  for (const character of versionSource) {
+    checksum = (checksum * 31 + character.charCodeAt(0)) >>> 0
+  }
+
+  return checksum.toString(36)
+}
+const isLegacyProgressUnsafeForPuzzle = (puzzle: TilePuzzle) => rebalancedLegacyDailyPuzzleIds.has(puzzle.id)
 const medalDetailsByTier: Record<Exclude<MedalTier, 'none'>, MedalDetails> = {
   bronze: { label: 'Bronze', className: 'medal-badge--bronze' },
   silver: { label: 'Silver', className: 'medal-badge--silver' },
@@ -135,6 +152,14 @@ const readSavedProgress = (puzzle: TilePuzzle): SavedProgress | null => {
     }
 
     const parsed = JSON.parse(decodeURIComponent(rawProgress)) as Partial<SavedProgress>
+    const currentPuzzleVersion = progressVersionForPuzzle(puzzle)
+    if (parsed.puzzleVersion && parsed.puzzleVersion !== currentPuzzleVersion) {
+      return null
+    }
+    if (!parsed.puzzleVersion && isLegacyProgressUnsafeForPuzzle(puzzle)) {
+      return null
+    }
+
     const foundWords = uniqueKnownWords(parsed.foundWords, puzzle)
     const tileOrder = isValidTileOrder(parsed.tileOrder, puzzle) ? parsed.tileOrder : defaultTileOrder(puzzle)
     const hintedWords = uniqueKnownWords(parsed.hintedWords, puzzle)
@@ -150,7 +175,9 @@ const writeSavedProgress = (puzzle: TilePuzzle, foundWords: string[], tileOrder:
     return
   }
 
-  const progress = encodeURIComponent(JSON.stringify({ foundWords, tileOrder, hintedWords }))
+  const progress = encodeURIComponent(
+    JSON.stringify({ foundWords, tileOrder, hintedWords, puzzleVersion: progressVersionForPuzzle(puzzle) }),
+  )
   document.cookie = `${progressCookieNameForPuzzle(puzzle)}=${progress}; Max-Age=31536000; Path=/; SameSite=Lax`
 }
 
@@ -205,6 +232,36 @@ const moveTilesToTop = (order: number[], topTileIds: number[]) => {
   return [...topTileIds, ...order.filter((tileId) => !topTileSet.has(tileId))]
 }
 
+const orderExhaustedTilesForPostQuartetShuffle = (
+  exhaustedTileIds: Set<number>,
+  foundQuartets: PuzzleWord[],
+  currentOrder: number[],
+) => {
+  const orderedExhaustedTileIds: number[] = []
+  const orderedExhaustedTileIdSet = new Set<number>()
+
+  foundQuartets.forEach((quartet) => {
+    if (!quartet.tileIds.every((tileId) => exhaustedTileIds.has(tileId))) {
+      return
+    }
+
+    quartet.tileIds.forEach((tileId) => {
+      if (!orderedExhaustedTileIdSet.has(tileId)) {
+        orderedExhaustedTileIdSet.add(tileId)
+        orderedExhaustedTileIds.push(tileId)
+      }
+    })
+  })
+
+  currentOrder.forEach((tileId) => {
+    if (exhaustedTileIds.has(tileId) && !orderedExhaustedTileIdSet.has(tileId)) {
+      orderedExhaustedTileIds.push(tileId)
+    }
+  })
+
+  return orderedExhaustedTileIds
+}
+
 const shuffleUnpinnedTiles = (order: number[], pinnedTileOrder: number[]) => {
   const pinnedTileSet = new Set(pinnedTileOrder)
   const unpinnedOrder = order.filter((tileId) => !pinnedTileSet.has(tileId))
@@ -212,11 +269,16 @@ const shuffleUnpinnedTiles = (order: number[], pinnedTileOrder: number[]) => {
   return [...pinnedTileOrder, ...shuffleOrder(unpinnedOrder)]
 }
 
-const shouldReduceMotion = () =>
-  typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+const shouldReduceTileMotion = () => {
+  if (typeof window === 'undefined' || !window.matchMedia) {
+    return false
+  }
+
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
 
 const playFlipAnimations = (firstPositions: Map<number, DOMRect>, tileNodes: Map<number, HTMLButtonElement>) => {
-  if (shouldReduceMotion()) {
+  if (shouldReduceTileMotion()) {
     return
   }
 
@@ -249,7 +311,7 @@ type TileButtonProps = {
   foundQuartetTile: boolean
   exhausted: boolean
   onClick: (index: number) => void
-  buttonRef?: (node: HTMLButtonElement | null) => void
+  registerTileNode: (index: number, node: HTMLButtonElement | null) => void
 }
 
 const tileHoloVariation = (tileId: number, label: string): CSSProperties => {
@@ -264,8 +326,18 @@ const tileHoloVariation = (tileId: number, label: string): CSSProperties => {
   } as CSSProperties
 }
 
-function TileButton({ index, label, selected, foundQuartetTile, exhausted, onClick, buttonRef }: TileButtonProps) {
+const TileButton = memo(function TileButton({
+  index,
+  label,
+  selected,
+  foundQuartetTile,
+  exhausted,
+  onClick,
+  registerTileNode,
+}: TileButtonProps) {
   const className = `tile${foundQuartetTile ? ' tile--quartet' : ''}${exhausted ? ' tile--exhausted' : ''}${selected ? ' tile--selected' : ''}`
+  const holoStyle = useMemo(() => (exhausted ? tileHoloVariation(index, label) : undefined), [exhausted, index, label])
+  const buttonRef = useCallback((node: HTMLButtonElement | null) => registerTileNode(index, node), [index, registerTileNode])
 
   return (
     <button
@@ -274,14 +346,14 @@ function TileButton({ index, label, selected, foundQuartetTile, exhausted, onCli
       className={className}
       aria-pressed={selected}
       disabled={exhausted}
-      style={tileHoloVariation(index, label)}
+      style={holoStyle}
       title={exhausted ? 'No remaining words use this tile' : undefined}
       onClick={() => onClick(index)}
     >
       <span className="tile__label">{label}</span>
     </button>
   )
-}
+})
 
 type ControlsProps = {
   selectedCount: number
@@ -440,14 +512,14 @@ function App() {
   const tileNodes = useRef(new Map<number, HTMLButtonElement>())
   const pendingFlipPositions = useRef(new Map<number, DOMRect>())
 
-  const setTileNode = (tileId: number) => (node: HTMLButtonElement | null) => {
+  const setTileNode = useCallback((tileId: number, node: HTMLButtonElement | null) => {
     if (node) {
       tileNodes.current.set(tileId, node)
       return
     }
 
     tileNodes.current.delete(tileId)
-  }
+  }, [])
 
   const resetForPuzzle = useCallback((nextPuzzle: TilePuzzle, nextMessage: string, restoreProgress = false) => {
     const savedProgress = restoreProgress ? readSavedProgress(nextPuzzle) : null
@@ -574,6 +646,11 @@ function App() {
   }, [displayTileOrder])
 
   const captureFlipPositions = () => {
+    if (shouldReduceTileMotion()) {
+      pendingFlipPositions.current.clear()
+      return
+    }
+
     pendingFlipPositions.current = new Map(
       displayTileOrder.flatMap((tileId) => {
         const tile = tileNodes.current.get(tileId)
@@ -588,21 +665,23 @@ function App() {
     }
 
     captureFlipPositions()
-    setTileOrder((current) => shuffleUnpinnedTiles(moveTilesToTop(current, pinnedTileOrder), pinnedTileOrder))
+    setTileOrder((current) => {
+      const nextPinnedTileOrder = allQuartetsFound
+        ? orderExhaustedTilesForPostQuartetShuffle(exhaustedTileIds, foundQuartets, current)
+        : pinnedTileOrder
+
+      return shuffleUnpinnedTiles(moveTilesToTop(current, nextPinnedTileOrder), nextPinnedTileOrder)
+    })
   }
 
   const previousDailyDate = getAdjacentDailyDate(puzzle.id, -1)
   const nextDailyDate = getAdjacentDailyDate(puzzle.id, 1)
 
-  const toggleTile = (tileId: number) => {
-    if (exhaustedTileIds.has(tileId)) {
-      return
-    }
-
+  const toggleTile = useCallback((tileId: number) => {
     setSelectedTileIds((current) =>
       current.includes(tileId) ? current.filter((selected) => selected !== tileId) : [...current, tileId],
     )
-  }
+  }, [])
 
   const submitWord = () => {
     const result = validateGuess(puzzle, selectedTileIds)
@@ -752,7 +831,7 @@ function App() {
               foundQuartetTile={foundQuartetTileIds.has(tileId)}
               exhausted={exhaustedTileIds.has(tileId)}
               onClick={toggleTile}
-              buttonRef={setTileNode(tileId)}
+              registerTileNode={setTileNode}
             />
           ))}
         </div>

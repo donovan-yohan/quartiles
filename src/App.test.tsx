@@ -14,9 +14,28 @@ const gameplayDailyDate = '2026-05-02'
 const appCss = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), 'App.css'), 'utf8')
 
 const progressCookieName = (date: string) => `lexi_tiles_progress_${date}`
+const progressVersionForTestPuzzle = (date: string) => {
+  const puzzle = createDailyPuzzle(date)
+  const versionSource = [
+    puzzle.id,
+    puzzle.tiles.join('|'),
+    puzzle.words.map((word) => `${word.word}:${word.tileIds.join(',')}`).join('|'),
+  ].join('::')
+  let checksum = 0
 
-const writeProgressCookie = (date: string, progress: unknown) => {
-  document.cookie = `${progressCookieName(date)}=${encodeURIComponent(JSON.stringify(progress))}; Path=/; SameSite=Lax`
+  for (const character of versionSource) {
+    checksum = (checksum * 31 + character.charCodeAt(0)) >>> 0
+  }
+
+  return checksum.toString(36)
+}
+
+const writeProgressCookie = (date: string, progress: unknown, versioned = true) => {
+  const progressWithVersion =
+    versioned && progress && typeof progress === 'object'
+      ? { ...progress, puzzleVersion: progressVersionForTestPuzzle(date) }
+      : progress
+  document.cookie = `${progressCookieName(date)}=${encodeURIComponent(JSON.stringify(progressWithVersion))}; Path=/; SameSite=Lax`
 }
 
 const readProgressCookie = (date: string) => {
@@ -46,6 +65,7 @@ afterEach(() => {
   clearCookies()
   window.history.replaceState(null, '', '/')
   vi.restoreAllMocks()
+  vi.unstubAllGlobals()
 })
 
 describe('Lexi Tiles app', () => {
@@ -246,14 +266,24 @@ describe('Lexi Tiles app', () => {
     ])
   })
 
+  const mobilePlatinumMediaPattern =
+    '@media \\(hover: none\\), \\(pointer: coarse\\), \\(max-width: 640px\\), \\(prefers-reduced-motion: reduce\\) \\{[\\s\\S]*?\\.tile--exhausted::before\\s*{[\\s\\S]*?\\n {2}}\\n}'
+
   it('keeps exhausted tile holographic highlights static without the dark diagonal split', () => {
     const exhaustedBeforeBlock = appCss.match(/\.tile--exhausted::before\s*{[\s\S]*?\n}/)?.[0] ?? ''
+    const mobilePlatinumBlock = appCss.match(new RegExp(mobilePlatinumMediaPattern))?.[0] ?? ''
 
     expect(appCss).toMatch(/\.tile--exhausted::before,\s*\.tile--exhausted::after\s*{[^}]*position:\s*absolute/)
     expect(exhaustedBeforeBlock).toMatch(/radial-gradient/)
     expect(exhaustedBeforeBlock).toMatch(/mix-blend-mode:\s*screen/)
     expect(exhaustedBeforeBlock).toMatch(/transform:\s*translate3d\(var\(--tile-holo-x\), var\(--tile-holo-y\), 0\) scale\(1\.04\)/)
     expect(appCss).toMatch(/\.tile--exhausted::after\s*{[^}]*display:\s*none/)
+    expect(mobilePlatinumBlock).toMatch(/\.tile--exhausted\s*{[^}]*radial-gradient/)
+    expect(mobilePlatinumBlock.match(/radial-gradient/g)).toHaveLength(3)
+    expect(mobilePlatinumBlock).toMatch(/calc\(var\(--tile-holo-hue\) \+ 302deg\)/)
+    expect(mobilePlatinumBlock).toMatch(/linear-gradient\(180deg, rgba\(12, 18, 27, 0\.22\), rgba\(13, 19, 28, 0\.34\)\)/)
+    expect(mobilePlatinumBlock).toMatch(/\.tile--exhausted::before\s*{[^}]*display:\s*none/)
+    expect(mobilePlatinumBlock).not.toMatch(/mix-blend-mode|filter:\s*blur|translate3d/)
     expect(appCss).not.toMatch(/@keyframes\s+tile-holo-drift/)
     expect(appCss).not.toMatch(/background-position/)
     expect(exhaustedBeforeBlock).not.toMatch(/\banimation\b|will-change|linear-gradient|rotate/)
@@ -390,12 +420,31 @@ describe('Lexi Tiles app', () => {
 
     expect(screen.getByRole('listitem')).toHaveTextContent(/where/i)
     expect(screen.getByText(/score: 2/i)).toBeInTheDocument()
+    expect(readProgressCookie(gameplayDailyDate).puzzleVersion).toBe(progressVersionForTestPuzzle(gameplayDailyDate))
 
     firstSession.unmount()
     renderDaily()
 
     expect(screen.getByRole('listitem')).toHaveTextContent(/where/i)
     expect(screen.getByText(/score: 2/i)).toBeInTheDocument()
+  })
+
+  it('ignores legacy progress for daily puzzles whose source tiles were rebalanced', () => {
+    writeProgressCookie(
+      gameplayDailyDate,
+      {
+        foundWords: ['where', 'everywhere'],
+        tileOrder: Array.from({ length: 20 }, (_, index) => index),
+        hintedWords: ['where'],
+      },
+      false,
+    )
+
+    renderDaily()
+
+    expect(screen.getByText(/score: 0/i)).toBeInTheDocument()
+    expect(screen.getByText(/found words will collect here/i)).toBeInTheDocument()
+    expect(screen.queryByText(/where \(2 pts\)/i)).not.toBeInTheDocument()
   })
 
   it('loads previous daily puzzles from their date URL', () => {
@@ -447,7 +496,7 @@ describe('Lexi Tiles app', () => {
     expect([...afterShuffle].sort()).toEqual([...beforeShuffle].sort())
   })
 
-  it('lets shuffle move every tile again after all quartets are found', async () => {
+  it('shuffles remaining tiles after all quartets are found while keeping all tiles visible', async () => {
     const random = vi.spyOn(Math, 'random').mockReturnValue(0)
     renderDaily()
 
@@ -524,6 +573,74 @@ describe('Lexi Tiles app', () => {
     expect(screen.getByTestId('tile-grid')).toHaveClass('tile-grid--platinum')
   })
 
+  it('pins exhausted platinum tiles above remaining playable tiles when shuffling after all quartets are found', async () => {
+    const allButWhere = [
+      'ass',
+      'associate',
+      'ate',
+      'aureate',
+      'authority',
+      'eve',
+      'every',
+      'everywhere',
+      'exec',
+      'executed',
+      'his',
+      'ocreate',
+      'reed',
+      'reeve',
+      'rete',
+      'rite',
+      'sop',
+      'sophistic',
+      'sophisticate',
+      'teed',
+      'tho',
+      'thorite',
+      'tic',
+    ]
+    const puzzle = createDailyPuzzle(gameplayDailyDate)
+    const foundWordSet = new Set(allButWhere)
+    const exhaustedTileIds = new Set(
+      puzzle.tiles.flatMap((_, tileId) =>
+        puzzle.words.some((word) => !foundWordSet.has(word.word) && word.tileIds.includes(tileId)) ? [] : [tileId],
+      ),
+    )
+    const exhaustedQuartetTileIds = puzzle.words
+      .filter((word) => word.isQuartet && word.tileIds.every((tileId) => exhaustedTileIds.has(tileId)))
+      .flatMap((word) => word.tileIds)
+    const exhaustedQuartetTileIdSet = new Set(exhaustedQuartetTileIds)
+    const initialTileOrder = Array.from({ length: puzzle.tiles.length }, (_, index) => puzzle.tiles.length - index - 1)
+    const expectedPinnedTileIds = [
+      ...exhaustedQuartetTileIds,
+      ...initialTileOrder.filter((tileId) => exhaustedTileIds.has(tileId) && !exhaustedQuartetTileIdSet.has(tileId)),
+    ]
+    const expectedPinnedLabels = expectedPinnedTileIds.map((tileId) => puzzle.tiles[tileId])
+
+    expect(exhaustedQuartetTileIds.length).toBeGreaterThanOrEqual(4)
+    writeProgressCookie(gameplayDailyDate, {
+      foundWords: allButWhere,
+      tileOrder: initialTileOrder,
+      hintedWords: [],
+    })
+    renderDaily()
+
+    expect(activeTileLabels().slice(0, expectedPinnedLabels.length)).not.toEqual(expectedPinnedLabels)
+
+    await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
+
+    const tileButtons = screen.getAllByRole('button').filter((button) => button.classList.contains('tile'))
+    expect(tileButtons.map((button) => button.textContent).slice(0, expectedPinnedLabels.length)).toEqual(
+      expectedPinnedLabels,
+    )
+    expect(tileButtons.slice(0, expectedPinnedLabels.length).every((button) => button.classList.contains('tile--exhausted'))).toBe(
+      true,
+    )
+    expect(tileButtons.slice(expectedPinnedLabels.length).every((button) => !button.classList.contains('tile--exhausted'))).toBe(
+      true,
+    )
+  })
+
   it('opens a words-left overlay grouped by remaining total letter lengths', async () => {
     renderDaily()
 
@@ -593,6 +710,174 @@ describe('Lexi Tiles app', () => {
         ]),
         expect.objectContaining({ easing: expect.any(String), duration: expect.any(Number) }),
       )
+    } finally {
+      Object.defineProperty(HTMLElement.prototype, 'animate', {
+        configurable: true,
+        value: originalAnimate,
+      })
+      HTMLElement.prototype.getBoundingClientRect = originalRect
+    }
+  })
+
+  it('keeps FLIP shuffle animations on touch-sized devices', async () => {
+    const matchMedia = vi.fn((query: string) => ({
+      matches: query === '(pointer: coarse)' || query === '(hover: none)' || query === '(max-width: 640px)',
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }))
+    const animate = vi.fn()
+    const originalAnimate = HTMLElement.prototype.animate
+    const originalRect = HTMLElement.prototype.getBoundingClientRect
+
+    vi.stubGlobal('matchMedia', matchMedia)
+    Object.defineProperty(HTMLElement.prototype, 'animate', {
+      configurable: true,
+      value: animate,
+    })
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      if (!this.classList.contains('tile') || !this.parentElement) {
+        return originalRect.call(this)
+      }
+
+      const index = Array.from(this.parentElement.children).indexOf(this)
+      return {
+        x: index * 100,
+        y: 0,
+        width: 90,
+        height: 52,
+        top: 0,
+        right: index * 100 + 90,
+        bottom: 52,
+        left: index * 100,
+        toJSON: () => ({}),
+      }
+    }
+
+    try {
+      renderDaily()
+
+      await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
+
+      expect(matchMedia).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)')
+      expect(matchMedia).not.toHaveBeenCalledWith('(pointer: coarse)')
+      expect(animate).toHaveBeenCalled()
+    } finally {
+      Object.defineProperty(HTMLElement.prototype, 'animate', {
+        configurable: true,
+        value: originalAnimate,
+      })
+      HTMLElement.prototype.getBoundingClientRect = originalRect
+    }
+  })
+
+  it('keeps FLIP quartet-pinning animations on touch-sized devices', async () => {
+    const matchMedia = vi.fn((query: string) => ({
+      matches: query === '(pointer: coarse)' || query === '(hover: none)' || query === '(max-width: 640px)',
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }))
+    const animate = vi.fn()
+    const originalAnimate = HTMLElement.prototype.animate
+    const originalRect = HTMLElement.prototype.getBoundingClientRect
+    const puzzle = createDailyPuzzle(gameplayDailyDate)
+
+    writeProgressCookie(gameplayDailyDate, {
+      foundWords: [],
+      tileOrder: Array.from({ length: puzzle.tiles.length }, (_, index) => puzzle.tiles.length - index - 1),
+      hintedWords: [],
+    })
+    vi.stubGlobal('matchMedia', matchMedia)
+    Object.defineProperty(HTMLElement.prototype, 'animate', {
+      configurable: true,
+      value: animate,
+    })
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      if (!this.classList.contains('tile') || !this.parentElement) {
+        return originalRect.call(this)
+      }
+
+      const index = Array.from(this.parentElement.children).indexOf(this)
+      return {
+        x: index * 100,
+        y: 0,
+        width: 90,
+        height: 52,
+        top: 0,
+        right: index * 100 + 90,
+        bottom: 52,
+        left: index * 100,
+        toJSON: () => ({}),
+      }
+    }
+
+    try {
+      renderDaily()
+
+      await submitTiles(['eve', 'ry', 'whe', 're'])
+
+      expect(matchMedia).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)')
+      expect(matchMedia).not.toHaveBeenCalledWith('(pointer: coarse)')
+      expect(animate).toHaveBeenCalled()
+    } finally {
+      Object.defineProperty(HTMLElement.prototype, 'animate', {
+        configurable: true,
+        value: originalAnimate,
+      })
+      HTMLElement.prototype.getBoundingClientRect = originalRect
+    }
+  })
+
+  it('skips FLIP layout reads and animations when reduced motion is requested', async () => {
+    const matchMedia = vi.fn((query: string) => ({
+      matches: query === '(prefers-reduced-motion: reduce)',
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }))
+    const animate = vi.fn()
+    const getBoundingClientRect = vi.fn(() => ({
+      x: 0,
+      y: 0,
+      width: 90,
+      height: 52,
+      top: 0,
+      right: 90,
+      bottom: 52,
+      left: 0,
+      toJSON: () => ({}),
+    }))
+    const originalAnimate = HTMLElement.prototype.animate
+    const originalRect = HTMLElement.prototype.getBoundingClientRect
+
+    vi.stubGlobal('matchMedia', matchMedia)
+    Object.defineProperty(HTMLElement.prototype, 'animate', {
+      configurable: true,
+      value: animate,
+    })
+    HTMLElement.prototype.getBoundingClientRect = getBoundingClientRect
+
+    try {
+      renderDaily()
+
+      await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
+
+      expect(matchMedia).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)')
+      expect(getBoundingClientRect).not.toHaveBeenCalled()
+      expect(animate).not.toHaveBeenCalled()
     } finally {
       Object.defineProperty(HTMLElement.prototype, 'animate', {
         configurable: true,

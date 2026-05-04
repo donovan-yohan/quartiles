@@ -245,11 +245,11 @@ describe('daily puzzle dictionary coverage', () => {
     })
   })
 
-  it('keeps daily source tiles unique and at least two letters long', () => {
+  it('keeps daily source tiles unique and between two and four letters long', () => {
     for (const date of AVAILABLE_DAILY_DATES) {
       const sourceTiles = resolveDailyPuzzleData(date).quartets.flat()
 
-      expect(sourceTiles.every((tile) => tile.length >= 2), `${date} has a short source tile`).toBe(true)
+      expect(sourceTiles.every((tile) => tile.length >= 2 && tile.length <= 4), `${date} has a source tile outside 2-4 letters`).toBe(true)
       expect(new Set(sourceTiles).size, `${date} has duplicate source tiles`).toBe(sourceTiles.length)
     }
   })
