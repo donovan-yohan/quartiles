@@ -44,6 +44,7 @@ type SavedProgress = {
   foundWords: string[]
   tileOrder: number[]
   hintedWords: string[]
+  puzzleVersion?: string
 }
 
 type AppRoute =
@@ -59,6 +60,22 @@ type AppRoute =
 const progressCookieNameForPuzzle = (puzzle: TilePuzzle) => `${progressCookiePrefix}${puzzle.id}`
 const dailyPathForDate = (date: string) => `/daily/${date}`
 const resolveAvailableDailyDate = (date: string) => (AVAILABLE_DAILY_DATES.includes(date) ? date : LATEST_DAILY_DATE)
+const rebalancedLegacyDailyPuzzleIds = new Set(['2026-04-27', '2026-04-28', '2026-04-29', '2026-05-01', '2026-05-02'])
+const progressVersionForPuzzle = (puzzle: TilePuzzle) => {
+  const versionSource = [
+    puzzle.id,
+    puzzle.tiles.join('|'),
+    puzzle.words.map((word) => `${word.word}:${word.tileIds.join(',')}`).join('|'),
+  ].join('::')
+  let checksum = 0
+
+  for (const character of versionSource) {
+    checksum = (checksum * 31 + character.charCodeAt(0)) >>> 0
+  }
+
+  return checksum.toString(36)
+}
+const isLegacyProgressUnsafeForPuzzle = (puzzle: TilePuzzle) => rebalancedLegacyDailyPuzzleIds.has(puzzle.id)
 const medalDetailsByTier: Record<Exclude<MedalTier, 'none'>, MedalDetails> = {
   bronze: { label: 'Bronze', className: 'medal-badge--bronze' },
   silver: { label: 'Silver', className: 'medal-badge--silver' },
@@ -135,6 +152,14 @@ const readSavedProgress = (puzzle: TilePuzzle): SavedProgress | null => {
     }
 
     const parsed = JSON.parse(decodeURIComponent(rawProgress)) as Partial<SavedProgress>
+    const currentPuzzleVersion = progressVersionForPuzzle(puzzle)
+    if (parsed.puzzleVersion && parsed.puzzleVersion !== currentPuzzleVersion) {
+      return null
+    }
+    if (!parsed.puzzleVersion && isLegacyProgressUnsafeForPuzzle(puzzle)) {
+      return null
+    }
+
     const foundWords = uniqueKnownWords(parsed.foundWords, puzzle)
     const tileOrder = isValidTileOrder(parsed.tileOrder, puzzle) ? parsed.tileOrder : defaultTileOrder(puzzle)
     const hintedWords = uniqueKnownWords(parsed.hintedWords, puzzle)
@@ -150,7 +175,9 @@ const writeSavedProgress = (puzzle: TilePuzzle, foundWords: string[], tileOrder:
     return
   }
 
-  const progress = encodeURIComponent(JSON.stringify({ foundWords, tileOrder, hintedWords }))
+  const progress = encodeURIComponent(
+    JSON.stringify({ foundWords, tileOrder, hintedWords, puzzleVersion: progressVersionForPuzzle(puzzle) }),
+  )
   document.cookie = `${progressCookieNameForPuzzle(puzzle)}=${progress}; Max-Age=31536000; Path=/; SameSite=Lax`
 }
 
@@ -651,14 +678,10 @@ function App() {
   const nextDailyDate = getAdjacentDailyDate(puzzle.id, 1)
 
   const toggleTile = useCallback((tileId: number) => {
-    if (exhaustedTileIds.has(tileId)) {
-      return
-    }
-
     setSelectedTileIds((current) =>
       current.includes(tileId) ? current.filter((selected) => selected !== tileId) : [...current, tileId],
     )
-  }, [exhaustedTileIds])
+  }, [])
 
   const submitWord = () => {
     const result = validateGuess(puzzle, selectedTileIds)

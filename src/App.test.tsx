@@ -14,9 +14,28 @@ const gameplayDailyDate = '2026-05-02'
 const appCss = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), 'App.css'), 'utf8')
 
 const progressCookieName = (date: string) => `lexi_tiles_progress_${date}`
+const progressVersionForTestPuzzle = (date: string) => {
+  const puzzle = createDailyPuzzle(date)
+  const versionSource = [
+    puzzle.id,
+    puzzle.tiles.join('|'),
+    puzzle.words.map((word) => `${word.word}:${word.tileIds.join(',')}`).join('|'),
+  ].join('::')
+  let checksum = 0
 
-const writeProgressCookie = (date: string, progress: unknown) => {
-  document.cookie = `${progressCookieName(date)}=${encodeURIComponent(JSON.stringify(progress))}; Path=/; SameSite=Lax`
+  for (const character of versionSource) {
+    checksum = (checksum * 31 + character.charCodeAt(0)) >>> 0
+  }
+
+  return checksum.toString(36)
+}
+
+const writeProgressCookie = (date: string, progress: unknown, versioned = true) => {
+  const progressWithVersion =
+    versioned && progress && typeof progress === 'object'
+      ? { ...progress, puzzleVersion: progressVersionForTestPuzzle(date) }
+      : progress
+  document.cookie = `${progressCookieName(date)}=${encodeURIComponent(JSON.stringify(progressWithVersion))}; Path=/; SameSite=Lax`
 }
 
 const readProgressCookie = (date: string) => {
@@ -401,12 +420,31 @@ describe('Lexi Tiles app', () => {
 
     expect(screen.getByRole('listitem')).toHaveTextContent(/where/i)
     expect(screen.getByText(/score: 2/i)).toBeInTheDocument()
+    expect(readProgressCookie(gameplayDailyDate).puzzleVersion).toBe(progressVersionForTestPuzzle(gameplayDailyDate))
 
     firstSession.unmount()
     renderDaily()
 
     expect(screen.getByRole('listitem')).toHaveTextContent(/where/i)
     expect(screen.getByText(/score: 2/i)).toBeInTheDocument()
+  })
+
+  it('ignores legacy progress for daily puzzles whose source tiles were rebalanced', () => {
+    writeProgressCookie(
+      gameplayDailyDate,
+      {
+        foundWords: ['where', 'everywhere'],
+        tileOrder: Array.from({ length: 20 }, (_, index) => index),
+        hintedWords: ['where'],
+      },
+      false,
+    )
+
+    renderDaily()
+
+    expect(screen.getByText(/score: 0/i)).toBeInTheDocument()
+    expect(screen.getByText(/found words will collect here/i)).toBeInTheDocument()
+    expect(screen.queryByText(/where \(2 pts\)/i)).not.toBeInTheDocument()
   })
 
   it('loads previous daily puzzles from their date URL', () => {
@@ -724,6 +762,68 @@ describe('Lexi Tiles app', () => {
       renderDaily()
 
       await userEvent.click(screen.getByRole('button', { name: /shuffle/i }))
+
+      expect(matchMedia).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)')
+      expect(matchMedia).not.toHaveBeenCalledWith('(pointer: coarse)')
+      expect(animate).toHaveBeenCalled()
+    } finally {
+      Object.defineProperty(HTMLElement.prototype, 'animate', {
+        configurable: true,
+        value: originalAnimate,
+      })
+      HTMLElement.prototype.getBoundingClientRect = originalRect
+    }
+  })
+
+  it('keeps FLIP quartet-pinning animations on touch-sized devices', async () => {
+    const matchMedia = vi.fn((query: string) => ({
+      matches: query === '(pointer: coarse)' || query === '(hover: none)' || query === '(max-width: 640px)',
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }))
+    const animate = vi.fn()
+    const originalAnimate = HTMLElement.prototype.animate
+    const originalRect = HTMLElement.prototype.getBoundingClientRect
+    const puzzle = createDailyPuzzle(gameplayDailyDate)
+
+    writeProgressCookie(gameplayDailyDate, {
+      foundWords: [],
+      tileOrder: Array.from({ length: puzzle.tiles.length }, (_, index) => puzzle.tiles.length - index - 1),
+      hintedWords: [],
+    })
+    vi.stubGlobal('matchMedia', matchMedia)
+    Object.defineProperty(HTMLElement.prototype, 'animate', {
+      configurable: true,
+      value: animate,
+    })
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      if (!this.classList.contains('tile') || !this.parentElement) {
+        return originalRect.call(this)
+      }
+
+      const index = Array.from(this.parentElement.children).indexOf(this)
+      return {
+        x: index * 100,
+        y: 0,
+        width: 90,
+        height: 52,
+        top: 0,
+        right: index * 100 + 90,
+        bottom: 52,
+        left: index * 100,
+        toJSON: () => ({}),
+      }
+    }
+
+    try {
+      renderDaily()
+
+      await submitTiles(['eve', 'ry', 'whe', 're'])
 
       expect(matchMedia).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)')
       expect(matchMedia).not.toHaveBeenCalledWith('(pointer: coarse)')
