@@ -43,4 +43,9 @@ export const DAILY_PUZZLES = [
     quartets: [["emb","arr","as","sing"],["ex","per","imen","tal"],["misu","nder","sto","od"],["re","li","gi","on"],["adv","ert","is","es"]],
     words: ['advert', 'advertises', 'advises', 'arras', 'arrases', 'arris', 'asper', 'aspersing', 'embarrassing', 'exert', 'exes', 'exon', 'experimental', 'lies', 'lion', 'lire', 'misunderstood', 'misusing', 'odes', 'ones', 'per', 'peris', 'reason', 'region', 'relies', 'religion', 'render', 'sing', 'singes', 'stogies', 'stood', 'store', 'talas', 'tales', 'tallies', 'talon'],
   },
+  {
+    date: '2026-05-04',
+    quartets: [["ob","se","rvat","ion"],["imp","ort","ant","ly"],["ma","in","tai","ning"],["di","rec","to","ry"],["uns","ui","ta","ble"]],
+    words: ['ant', 'dining', 'directory', 'imp', 'imply', 'import', 'important', 'importantly', 'inion', 'inly', 'inning', 'into', 'intoning', 'ion', 'lyse', 'main', 'mainly', 'maintaining', 'observation', 'obtain', 'obtaining', 'ort', 'recant', 'recto', 'rectory', 'table', 'tain', 'tamable', 'toning', 'unstable', 'unsuitable'],
+  },
 ] as const
