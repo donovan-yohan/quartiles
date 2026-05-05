@@ -48,4 +48,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ob","se","rvat","ion"],["imp","ort","ant","ly"],["ma","in","tai","ning"],["di","rec","to","ry"],["uns","ui","ta","ble"]],
     words: ['ant', 'dining', 'directory', 'imp', 'imply', 'import', 'important', 'importantly', 'inion', 'inly', 'inning', 'into', 'intoning', 'ion', 'lyse', 'main', 'mainly', 'maintaining', 'observation', 'obtain', 'obtaining', 'ort', 'recant', 'recto', 'rectory', 'table', 'tain', 'tamable', 'toning', 'unstable', 'unsuitable'],
   },
+  {
+    date: '2026-05-05',
+    quartets: [["exp","er","ie","nced"],["apo","lo","gi","es"],["re","mo","te","ly"],["dis","co","ur","aged"],["cons","eq","uen","tly"]],
+    words: ['aged', 'apologies', 'coly', 'conceder', 'concedes', 'cons', 'consequently', 'core', 'cote', 'courtly', 'dis', 'disco', 'discouraged', 'experienced', 'expertly', 'explore', 'gite', 'loco', 'logier', 'lore', 'lour', 'lyre', 'modiste', 'moly', 'more', 'mote', 'recons', 'rely', 'remote', 'remotely', 'rete', 'tees'],
+  },
 ] as const

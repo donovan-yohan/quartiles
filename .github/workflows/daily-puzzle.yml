@@ -2,15 +2,23 @@ name: Daily puzzle generation
 
 on:
   schedule:
-    # GitHub cron is UTC. Run at both likely America/New_York midnight offsets.
-    # Avoid minute 0 because GitHub scheduled workflows can be delayed/dropped at
-    # the top of the hour; the generator is idempotent, so the second run exits
-    # cleanly if the date exists.
-    - cron: '13 4,5 * * *'
+    # GitHub cron is UTC. Run redundant catch-up windows around and after
+    # America/New_York midnight. Scheduled workflows can be delayed or skipped;
+    # the catch-up script is idempotent and fills any missing dates through today.
+    - cron: '17,47 4-8 * * *'
   workflow_dispatch:
+    inputs:
+      date:
+        description: 'YYYY-MM-DD, today, or catch-up'
+        required: false
+        default: 'catch-up'
 
 permissions:
   contents: write
+
+concurrency:
+  group: daily-puzzle-generation
+  cancel-in-progress: false
 
 jobs:
   generate:
@@ -24,9 +32,10 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - name: Add today's America/New_York puzzle
+      - name: Add missing America/New_York puzzles
         run: |
-          npm run add:daily-puzzle -- --date=today
+          DATE_INPUT="${{ github.event.inputs.date || 'catch-up' }}"
+          npm run add:daily-puzzle -- --date="${DATE_INPUT}"
           npm run generate:daily-words
       - run: npm run check:daily-words
       - run: npm test
