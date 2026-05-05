@@ -40,14 +40,15 @@ npm run dev
 
 Generation fails unless every daily board has exactly five quartet rows of four tiles, every tile text is unique within that board, every tile is 2–4 letters long, and exactly the five target four-tile words are valid. This prevents duplicate tiles, one-letter fragments, overlong fragments, and accidental “extra quartets.”
 
-Add a new dated puzzle manually with:
+Add one or more missing daily puzzles manually with:
 
 ```bash
 npm run add:daily-puzzle -- --date=YYYY-MM-DD
+npm run add:daily-puzzle -- --date=catch-up
 npm run generate:daily-words
 ```
 
-The `Daily puzzle generation` GitHub Actions workflow runs at the two UTC offsets around America/New_York midnight, adds the date if missing, verifies, commits, and pushes. Vercel should deploy from that push.
+`--date=catch-up` fills every missing date after the latest checked-in puzzle through today's America/New_York date. The `Daily puzzle generation` GitHub Actions workflow runs redundant catch-up attempts around and after America/New_York midnight, verifies the generated data, commits, and pushes. Vercel should deploy from that push.
 
 ## Verification
 

@@ -4,6 +4,7 @@ import wordlistEnglish from 'wordlist-english'
 
 const dailyPuzzlesPath = fileURLToPath(new URL('../src/data/daily-puzzles.json', import.meta.url))
 const minTileLength = 2
+const maxTileLength = 4
 const maxTilesPerWord = 4
 const targetQuartetCount = 5
 const maxAttempts = 10000
@@ -31,21 +32,36 @@ const seededRandom = (seed) => {
   }
 }
 
-const parseDateArg = () => {
-  const dateArg = process.argv.find((arg) => arg.startsWith('--date='))?.slice('--date='.length)
-  if (dateArg && dateArg !== 'today') {
-    if (!datePattern.test(dateArg)) {
-      throw new Error(`--date must be YYYY-MM-DD or today, got ${dateArg}`)
-    }
-    return dateArg
-  }
-
-  return new Intl.DateTimeFormat('en-CA', {
+const todayInNewYork = () =>
+  new Intl.DateTimeFormat('en-CA', {
     timeZone: 'America/New_York',
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
   }).format(new Date())
+
+const nextDate = (date) => {
+  const [year, month, day] = date.split('-').map(Number)
+  const next = new Date(Date.UTC(year, month - 1, day + 1))
+  return next.toISOString().slice(0, 10)
+}
+
+const parseDateArg = () => {
+  const dateArg = process.argv.find((arg) => arg.startsWith('--date='))?.slice('--date='.length) ?? 'today'
+
+  if (dateArg === 'today') {
+    return { mode: 'single', dates: [todayInNewYork()] }
+  }
+
+  if (dateArg === 'catch-up') {
+    return { mode: 'catch-up', dates: [] }
+  }
+
+  if (!datePattern.test(dateArg)) {
+    throw new Error(`--date must be YYYY-MM-DD, today, or catch-up, got ${dateArg}`)
+  }
+
+  return { mode: 'single', dates: [dateArg] }
 }
 
 const segmentations = (word) => {
@@ -59,7 +75,7 @@ const segmentations = (word) => {
     }
 
     const remainingParts = maxTilesPerWord - parts.length
-    for (let end = start + minTileLength; end <= word.length; end += 1) {
+    for (let end = start + minTileLength; end <= Math.min(word.length, start + maxTileLength); end += 1) {
       const remainingChars = word.length - end
       if (remainingChars < (remainingParts - 1) * minTileLength) {
         continue
@@ -178,15 +194,46 @@ const generatePuzzleForDate = (date) => {
   return { date, quartets: best.quartets }
 }
 
-const date = parseDateArg()
+const dateSelection = parseDateArg()
 const dailyPuzzles = JSON.parse(readFileSync(dailyPuzzlesPath, 'utf8'))
-if (dailyPuzzles.some((puzzle) => puzzle.date === date)) {
-  console.log(`${date} already exists in src/data/daily-puzzles.json`)
+const existingDates = new Set(dailyPuzzles.map((puzzle) => puzzle.date))
+const datesToAdd =
+  dateSelection.mode === 'catch-up'
+    ? (() => {
+        const latestDate = [...existingDates].sort((left, right) => left.localeCompare(right)).at(-1)
+        if (!latestDate) {
+          return [todayInNewYork()]
+        }
+
+        const today = todayInNewYork()
+        const missingDates = []
+        for (let date = nextDate(latestDate); date <= today; date = nextDate(date)) {
+          if (!existingDates.has(date)) {
+            missingDates.push(date)
+          }
+        }
+        return missingDates
+      })()
+    : dateSelection.dates.filter((date) => !existingDates.has(date))
+
+if (datesToAdd.length === 0) {
+  const requestedDates = dateSelection.mode === 'catch-up' ? `through ${todayInNewYork()}` : dateSelection.dates.join(', ')
+  console.log(`No daily puzzles to add for ${requestedDates}.`)
   process.exit(0)
 }
 
-const puzzle = generatePuzzleForDate(date)
-dailyPuzzles.push(puzzle)
+const addedPuzzles = []
+for (const date of datesToAdd) {
+  const puzzle = generatePuzzleForDate(date)
+  dailyPuzzles.push(puzzle)
+  existingDates.add(date)
+  addedPuzzles.push(puzzle)
+}
+
 dailyPuzzles.sort((left, right) => left.date.localeCompare(right.date))
 writeFileSync(`${dailyPuzzlesPath}`, `${JSON.stringify(dailyPuzzles, null, 2)}\n`)
-console.log(`Added ${date}: ${puzzle.quartets.map((quartet) => quartet.join('')).join(', ')}`)
+console.log(
+  `Added ${addedPuzzles.length} daily puzzle${addedPuzzles.length === 1 ? '' : 's'}: ${addedPuzzles
+    .map((puzzle) => `${puzzle.date} (${puzzle.quartets.map((quartet) => quartet.join('')).join(', ')})`)
+    .join('; ')}`,
+)
