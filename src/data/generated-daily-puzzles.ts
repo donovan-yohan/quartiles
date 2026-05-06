@@ -53,4 +53,9 @@ export const DAILY_PUZZLES = [
     quartets: [["exp","er","ie","nced"],["apo","lo","gi","es"],["re","mo","te","ly"],["dis","co","ur","aged"],["cons","eq","uen","tly"]],
     words: ['aged', 'apologies', 'coly', 'conceder', 'concedes', 'cons', 'consequently', 'core', 'cote', 'courtly', 'dis', 'disco', 'discouraged', 'experienced', 'expertly', 'explore', 'gite', 'loco', 'logier', 'lore', 'lour', 'lyre', 'modiste', 'moly', 'more', 'mote', 'recons', 'rely', 'remote', 'remotely', 'rete', 'tees'],
   },
+  {
+    date: '2026-05-06',
+    quartets: [["con","tin","ua","lly"],["doc","um","enti","ng"],["ap","pre","ci","ates"],["emb","ar","rass","ing"],["inc","omp","at","ible"]],
+    words: ['aping', 'appreciates', 'arcing', 'arum', 'con', 'coning', 'continua', 'continually', 'doc', 'documenting', 'embarrass', 'embarrassing', 'enticing', 'incompatible', 'pre', 'tin'],
+  },
 ] as const
