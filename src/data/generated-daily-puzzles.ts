@@ -58,4 +58,9 @@ export const DAILY_PUZZLES = [
     quartets: [["con","tin","ua","lly"],["doc","um","enti","ng"],["ap","pre","ci","ates"],["emb","ar","rass","ing"],["inc","omp","at","ible"]],
     words: ['aping', 'appreciates', 'arcing', 'arum', 'con', 'coning', 'continua', 'continually', 'doc', 'documenting', 'embarrass', 'embarrassing', 'enticing', 'incompatible', 'pre', 'tin'],
   },
+  {
+    date: '2026-05-07',
+    quartets: [["int","rodu","ci","ng"],["ma","te","ri","als"],["ne","vert","hel","ess"],["intr","od","uct","ion"],["cat","eg","or","ies"]],
+    words: ['cat', 'categories', 'cation', 'cine', 'cinema', 'cite', 'introducing', 'introduction', 'ion', 'macing', 'mane', 'marine', 'mate', 'materials', 'nevertheless', 'orals', 'rials', 'ricing', 'ring', 'rite', 'teals'],
+  },
 ] as const
