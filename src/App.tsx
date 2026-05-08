@@ -1,5 +1,5 @@
-import { memo, type CSSProperties, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Check, Info, Lightbulb, Medal, Shuffle, Sparkles, X } from 'lucide-react'
+import { memo, type CSSProperties, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Check, Info, Lightbulb, Medal, Share2, Shuffle, Sparkles, X } from 'lucide-react'
 import {
   AVAILABLE_DAILY_DATES,
   createDailyPuzzle,
@@ -183,6 +183,33 @@ const writeSavedProgress = (puzzle: TilePuzzle, foundWords: string[], tileOrder:
 
 const formatWord = (word: PuzzleWord) => `${word.word} (${scoreWord(word.tileIds)} pts)`
 
+const writeClipboardText = async (text: string) => {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(text)
+      return
+    } catch {
+      // Fall through to the textarea copy path for browsers that expose clipboard but deny it.
+    }
+  }
+
+  const textArea = document.createElement('textarea')
+  textArea.value = text
+  textArea.setAttribute('readonly', '')
+  textArea.style.position = 'fixed'
+  textArea.style.opacity = '0'
+  document.body.appendChild(textArea)
+  textArea.select()
+
+  try {
+    if (!document.execCommand('copy')) {
+      throw new Error('copy command failed')
+    }
+  } finally {
+    document.body.removeChild(textArea)
+  }
+}
+
 const medalDetailsForTier = (tier: MedalTier) => (tier === 'none' ? null : medalDetailsByTier[tier])
 
 function MedalBadge({ tier, compact = false }: { tier: MedalTier; compact?: boolean }) {
@@ -361,27 +388,67 @@ type ControlsProps = {
   onShuffle: () => void
   onSubmit: () => void
   onHint: () => void
+  onHelp: () => void
+  onShare: () => void
+  shareTooltip: string
+  showShareChallenge: boolean
 }
 
-function Controls({ selectedCount, onClear, onShuffle, onSubmit, onHint }: ControlsProps) {
+function Controls({
+  selectedCount,
+  onClear,
+  onShuffle,
+  onSubmit,
+  onHint,
+  onHelp,
+  onShare,
+  shareTooltip,
+  showShareChallenge,
+}: ControlsProps) {
+  const shareChallengeTooltipId = useId()
+
   return (
-    <div className="controls" aria-label="Puzzle controls">
-      <button type="button" className="control-button" onClick={onShuffle}>
-        <Shuffle aria-hidden="true" size={18} />
-        Shuffle
-      </button>
-      <button type="button" className="control-button" onClick={onClear} disabled={selectedCount === 0}>
-        <X aria-hidden="true" size={18} />
-        Clear
-      </button>
-      <button type="button" className="control-button primary" onClick={onSubmit} disabled={selectedCount === 0}>
-        <Check aria-hidden="true" size={18} />
-        Submit word
-      </button>
-      <button type="button" className="control-button hint" onClick={onHint}>
-        <Lightbulb aria-hidden="true" size={18} />
-        Hint
-      </button>
+    <div className="controls-layout" role="group" aria-label="Puzzle controls">
+      <div className="controls">
+        <button type="button" className="control-button" onClick={onShuffle}>
+          <Shuffle aria-hidden="true" size={18} />
+          Shuffle
+        </button>
+        <button type="button" className="control-button" onClick={onClear} disabled={selectedCount === 0}>
+          <X aria-hidden="true" size={18} />
+          Clear
+        </button>
+        <button type="button" className="control-button primary" onClick={onSubmit} disabled={selectedCount === 0}>
+          <Check aria-hidden="true" size={18} />
+          Submit word
+        </button>
+        <button type="button" className="control-button hint" onClick={onHint}>
+          <Lightbulb aria-hidden="true" size={18} />
+          Hint
+        </button>
+      </div>
+      <div className="control-icons" role="group" aria-label="Puzzle extras">
+        <button type="button" className="control-icon-button" aria-label="How to play" title="How to play" onClick={onHelp}>
+          ?
+        </button>
+        <div className={`share-action${showShareChallenge ? ' share-action--challenge' : ''}`}>
+          <button
+            type="button"
+            className="control-icon-button"
+            aria-label="Share your results"
+            aria-describedby={showShareChallenge ? shareChallengeTooltipId : undefined}
+            title={showShareChallenge ? undefined : shareTooltip}
+            onClick={onShare}
+          >
+            <Share2 aria-hidden="true" size={18} />
+          </button>
+          {showShareChallenge ? (
+            <span id={shareChallengeTooltipId} className="share-action__tooltip" role="tooltip">
+              Challenge your friends to beat your platinum run.
+            </span>
+          ) : null}
+        </div>
+      </div>
     </div>
   )
 }
@@ -509,6 +576,7 @@ function App() {
   const [message, setMessage] = useState<StatusMessage>(() => createStatus('Ready.'))
   const [tileOrder, setTileOrder] = useState<number[]>(initialGame.tileOrder)
   const [showRemainingLengths, setShowRemainingLengths] = useState(false)
+  const [showHowToPlay, setShowHowToPlay] = useState(false)
   const tileNodes = useRef(new Map<number, HTMLButtonElement>())
   const pendingFlipPositions = useRef(new Map<number, DOMRect>())
 
@@ -531,6 +599,7 @@ function App() {
     setTileOrder(savedProgress?.tileOrder ?? defaultTileOrder(nextPuzzle))
     setMessage(createStatus(nextMessage))
     setShowRemainingLengths(false)
+    setShowHowToPlay(false)
   }, [])
 
   const loadDailyPuzzleByDate = useCallback(
@@ -602,6 +671,14 @@ function App() {
   const displayTileOrder = useMemo(() => moveTilesToTop(tileOrder, pinnedTileOrder), [pinnedTileOrder, tileOrder])
   const selectedWord = selectedTileIds.map((tileId) => puzzle.tiles[tileId]).join('')
   const score = calculateScore(puzzle, foundWords)
+  const totalScore = useMemo(
+    () =>
+      calculateScore(
+        puzzle,
+        puzzle.words.map((word) => word.word),
+      ),
+    [puzzle],
+  )
   const remaining = puzzle.words.length - foundWords.length
   const medalTier = getMedalAward(puzzle, foundWords)
   const allWordsFound = puzzle.words.length > 0 && puzzle.words.every((word) => foundWordSet.has(word.word))
@@ -622,19 +699,20 @@ function App() {
   }, [foundWordSet, puzzle.words])
 
   useEffect(() => {
-    if (!showRemainingLengths) {
+    if (!showRemainingLengths && !showHowToPlay) {
       return
     }
 
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setShowRemainingLengths(false)
+        setShowHowToPlay(false)
       }
     }
 
     window.addEventListener('keydown', closeOnEscape)
     return () => window.removeEventListener('keydown', closeOnEscape)
-  }, [showRemainingLengths])
+  }, [showHowToPlay, showRemainingLengths])
 
   useLayoutEffect(() => {
     if (pendingFlipPositions.current.size === 0) {
@@ -752,6 +830,20 @@ function App() {
     setMessage(createStatus(`Try a ${hint.tileIds.length}-tile word worth ${scoreWord(hint.tileIds)} points: starts with ${hint.word.slice(0, 2)}.`))
   }
 
+  const shareGame = useCallback(async () => {
+    const gameUrl = new URL(dailyPathForDate(puzzle.id), window.location.origin).toString()
+    const shareText = `Lexi Tiles ${puzzle.id}: ${score}/${totalScore} points, ${foundQuartets.length}/${quartetWords.length} quartets, ${foundWords.length}/${puzzle.words.length} words. Play: ${gameUrl}`
+
+    try {
+      await writeClipboardText(shareText)
+      setMessage(createStatus('Share text copied. Challenge someone before they pretend this was luck.', 'success'))
+    } catch {
+      setMessage(createStatus('Could not copy share text. Your browser is being annoying.', 'error'))
+    }
+  }, [foundQuartets.length, foundWords.length, puzzle.id, puzzle.words.length, quartetWords.length, score, totalScore])
+
+  const shareTooltip = allWordsFound ? 'Challenge your friends to beat your platinum run.' : 'Copy share link and score'
+
   if (route.kind === 'home') {
     return <HomePage page={route.page} />
   }
@@ -842,6 +934,10 @@ function App() {
           onShuffle={shuffleTiles}
           onSubmit={submitWord}
           onHint={showHint}
+          onHelp={() => setShowHowToPlay(true)}
+          onShare={shareGame}
+          shareTooltip={shareTooltip}
+          showShareChallenge={allWordsFound}
         />
       </section>
 
@@ -853,6 +949,33 @@ function App() {
         {message.celebration ? <Sparkles aria-hidden="true" size={16} /> : null}
         {message.text}
       </section>
+
+      {showHowToPlay ? (
+        <div className="word-length-backdrop" role="presentation" onClick={() => setShowHowToPlay(false)}>
+          <div
+            className="word-length-dialog help-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="how-to-play-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="word-length-dialog__header">
+              <h2 id="how-to-play-title">How to play</h2>
+              <button type="button" className="word-length-dialog__close" onClick={() => setShowHowToPlay(false)}>
+                <X aria-hidden="true" size={16} />
+                Close
+              </button>
+            </div>
+            <ol className="help-steps">
+              <li>Tap tile fragments in order to build a word, then submit it.</li>
+              <li>Longer tile chains score more points: two tiles score 2, three score 4, and four score 8.</li>
+              <li>The five four-tile target words are quartets. Finding one turns its tiles blue and pins them near the top.</li>
+              <li>Platinum tiles are exhausted tiles: every known word using that tile has already been found.</li>
+              <li>Find every word on the board to earn platinum for the whole puzzle.</li>
+            </ol>
+          </div>
+        </div>
+      ) : null}
 
       {showRemainingLengths ? (
         <div

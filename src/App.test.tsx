@@ -8,10 +8,12 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from './App'
 import { createDailyPuzzle, LATEST_DAILY_DATE } from './lib/daily'
+import { calculateScore } from './lib/puzzle'
 
 const latestDailyDate = LATEST_DAILY_DATE
 const gameplayDailyDate = '2026-05-02'
 const appCss = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), 'App.css'), 'utf8')
+const originalClipboard = navigator.clipboard
 
 const progressCookieName = (date: string) => `lexi_tiles_progress_${date}`
 const progressVersionForTestPuzzle = (date: string) => {
@@ -61,11 +63,24 @@ const renderDaily = (date = gameplayDailyDate) => {
   return render(<App />)
 }
 
+const stubClipboard = () => {
+  const writeText = vi.fn().mockResolvedValue(undefined)
+  Object.defineProperty(navigator, 'clipboard', {
+    configurable: true,
+    value: { writeText },
+  })
+  return writeText
+}
+
 afterEach(() => {
   clearCookies()
   window.history.replaceState(null, '', '/')
   vi.restoreAllMocks()
   vi.unstubAllGlobals()
+  Object.defineProperty(navigator, 'clipboard', {
+    configurable: true,
+    value: originalClipboard,
+  })
 })
 
 describe('Lexi Tiles app', () => {
@@ -90,7 +105,46 @@ describe('Lexi Tiles app', () => {
     expect(screen.queryByText(/how to play/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/build words by tapping/i)).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /hint/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /how to play/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /share your results/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: gameplayDailyDate })).toBeInTheDocument()
+  })
+
+  it('opens a how-to-play modal from the question mark control', async () => {
+    renderDaily()
+
+    await userEvent.click(screen.getByRole('button', { name: /how to play/i }))
+
+    const dialog = screen.getByRole('dialog', { name: /how to play/i })
+    expect(within(dialog).getByText(/five four-tile target words are quartets/i)).toBeInTheDocument()
+    expect(within(dialog).getByText(/platinum tiles are exhausted tiles/i)).toBeInTheDocument()
+
+    await userEvent.click(within(dialog).getByRole('button', { name: /close/i }))
+
+    expect(screen.queryByRole('dialog', { name: /how to play/i })).not.toBeInTheDocument()
+  })
+
+  it('copies a share link with score, quartet, and word totals', async () => {
+    const writeText = stubClipboard()
+    const puzzle = createDailyPuzzle(gameplayDailyDate)
+    const foundWords = ['where', 'everywhere']
+    const totalScore = calculateScore(
+      puzzle,
+      puzzle.words.map((word) => word.word),
+    )
+    writeProgressCookie(gameplayDailyDate, {
+      foundWords,
+      tileOrder: Array.from({ length: 20 }, (_, index) => index),
+      hintedWords: [],
+    })
+    renderDaily()
+
+    await userEvent.click(screen.getByRole('button', { name: /share your results/i }))
+
+    expect(writeText).toHaveBeenCalledWith(
+      `Lexi Tiles ${gameplayDailyDate}: 10/${totalScore} points, 1/5 quartets, 2/24 words. Play: http://localhost:3000/daily/${gameplayDailyDate}`,
+    )
+    expect(screen.getByRole('status')).toHaveTextContent(/share text copied/i)
   })
 
   it('keeps the puzzle tile grid at four columns for the 20 playable tiles', () => {
@@ -571,6 +625,53 @@ describe('Lexi Tiles app', () => {
     expect(screen.getByRole('status')).toHaveTextContent(/platinum medal/i)
     expect(screen.getByRole('status')).toHaveTextContent(/every word/i)
     expect(screen.getByTestId('tile-grid')).toHaveClass('tile-grid--platinum')
+  })
+
+  it('shows a challenge-friends tooltip on share after platinum', async () => {
+    const allButWhere = [
+      'ass',
+      'associate',
+      'ate',
+      'aureate',
+      'authority',
+      'eve',
+      'every',
+      'everywhere',
+      'exec',
+      'executed',
+      'his',
+      'ocreate',
+      'reed',
+      'reeve',
+      'rete',
+      'rite',
+      'sop',
+      'sophistic',
+      'sophisticate',
+      'teed',
+      'tho',
+      'thorite',
+      'tic',
+    ]
+    writeProgressCookie(gameplayDailyDate, {
+      foundWords: allButWhere,
+      tileOrder: Array.from({ length: 20 }, (_, index) => index),
+      hintedWords: [],
+    })
+    renderDaily()
+
+    const shareButton = screen.getByRole('button', { name: /share your results/i })
+    expect(shareButton).toHaveAttribute('title', 'Copy share link and score')
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+
+    await submitTiles(['whe', 're'])
+
+    const platinumShareButton = screen.getByRole('button', { name: /share your results/i })
+    const tooltip = screen.getByRole('tooltip')
+    expect(platinumShareButton).not.toHaveAttribute('title')
+    expect(platinumShareButton).toHaveAttribute('aria-describedby', tooltip.id)
+    expect(tooltip).toHaveTextContent('Challenge your friends to beat your platinum run.')
+    expect(appCss).toMatch(/\.share-action__tooltip\s*{[\s\S]*position:\s*absolute/)
   })
 
   it('pins exhausted platinum tiles above remaining playable tiles when shuffling after all quartets are found', async () => {
