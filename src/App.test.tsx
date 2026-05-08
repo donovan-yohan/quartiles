@@ -660,15 +660,18 @@ describe('Lexi Tiles app', () => {
     })
     renderDaily()
 
-    expect(screen.getByRole('button', { name: /share your results/i })).toHaveAttribute('title', 'Copy share link and score')
+    const shareButton = screen.getByRole('button', { name: /share your results/i })
+    expect(shareButton).toHaveAttribute('title', 'Copy share link and score')
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
 
     await submitTiles(['whe', 're'])
 
-    expect(screen.getByRole('button', { name: /share your results/i })).toHaveAttribute(
-      'title',
-      'Challenge your friends to beat your platinum run.',
-    )
-    expect(appCss).toMatch(/\.share-action--challenge::after\s*{[\s\S]*content:\s*attr\(data-tooltip\)/)
+    const platinumShareButton = screen.getByRole('button', { name: /share your results/i })
+    const tooltip = screen.getByRole('tooltip')
+    expect(platinumShareButton).not.toHaveAttribute('title')
+    expect(platinumShareButton).toHaveAttribute('aria-describedby', tooltip.id)
+    expect(tooltip).toHaveTextContent('Challenge your friends to beat your platinum run.')
+    expect(appCss).toMatch(/\.share-action__tooltip\s*{[\s\S]*position:\s*absolute/)
   })
 
   it('pins exhausted platinum tiles above remaining playable tiles when shuffling after all quartets are found', async () => {

@@ -1,4 +1,4 @@
-import { memo, type CSSProperties, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { memo, type CSSProperties, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Check, Info, Lightbulb, Medal, Share2, Shuffle, Sparkles, X } from 'lucide-react'
 import {
   AVAILABLE_DAILY_DATES,
@@ -405,8 +405,10 @@ function Controls({
   shareTooltip,
   showShareChallenge,
 }: ControlsProps) {
+  const shareChallengeTooltipId = useId()
+
   return (
-    <div className="controls-layout" aria-label="Puzzle controls">
+    <div className="controls-layout" role="group" aria-label="Puzzle controls">
       <div className="controls">
         <button type="button" className="control-button" onClick={onShuffle}>
           <Shuffle aria-hidden="true" size={18} />
@@ -425,17 +427,26 @@ function Controls({
           Hint
         </button>
       </div>
-      <div className="control-icons" aria-label="Puzzle extras">
+      <div className="control-icons" role="group" aria-label="Puzzle extras">
         <button type="button" className="control-icon-button" aria-label="How to play" title="How to play" onClick={onHelp}>
           ?
         </button>
-        <div
-          className={`share-action${showShareChallenge ? ' share-action--challenge' : ''}`}
-          data-tooltip="Challenge your friends to beat your platinum run."
-        >
-          <button type="button" className="control-icon-button" aria-label="Share your results" title={shareTooltip} onClick={onShare}>
+        <div className={`share-action${showShareChallenge ? ' share-action--challenge' : ''}`}>
+          <button
+            type="button"
+            className="control-icon-button"
+            aria-label="Share your results"
+            aria-describedby={showShareChallenge ? shareChallengeTooltipId : undefined}
+            title={showShareChallenge ? undefined : shareTooltip}
+            onClick={onShare}
+          >
             <Share2 aria-hidden="true" size={18} />
           </button>
+          {showShareChallenge ? (
+            <span id={shareChallengeTooltipId} className="share-action__tooltip" role="tooltip">
+              Challenge your friends to beat your platinum run.
+            </span>
+          ) : null}
         </div>
       </div>
     </div>
@@ -660,9 +671,13 @@ function App() {
   const displayTileOrder = useMemo(() => moveTilesToTop(tileOrder, pinnedTileOrder), [pinnedTileOrder, tileOrder])
   const selectedWord = selectedTileIds.map((tileId) => puzzle.tiles[tileId]).join('')
   const score = calculateScore(puzzle, foundWords)
-  const totalScore = calculateScore(
-    puzzle,
-    puzzle.words.map((word) => word.word),
+  const totalScore = useMemo(
+    () =>
+      calculateScore(
+        puzzle,
+        puzzle.words.map((word) => word.word),
+      ),
+    [puzzle],
   )
   const remaining = puzzle.words.length - foundWords.length
   const medalTier = getMedalAward(puzzle, foundWords)
@@ -815,7 +830,7 @@ function App() {
     setMessage(createStatus(`Try a ${hint.tileIds.length}-tile word worth ${scoreWord(hint.tileIds)} points: starts with ${hint.word.slice(0, 2)}.`))
   }
 
-  const shareGame = async () => {
+  const shareGame = useCallback(async () => {
     const gameUrl = new URL(dailyPathForDate(puzzle.id), window.location.origin).toString()
     const shareText = `Lexi Tiles ${puzzle.id}: ${score}/${totalScore} points, ${foundQuartets.length}/${quartetWords.length} quartets, ${foundWords.length}/${puzzle.words.length} words. Play: ${gameUrl}`
 
@@ -825,7 +840,7 @@ function App() {
     } catch {
       setMessage(createStatus('Could not copy share text. Your browser is being annoying.', 'error'))
     }
-  }
+  }, [foundQuartets.length, foundWords.length, puzzle.id, puzzle.words.length, quartetWords.length, score, totalScore])
 
   const shareTooltip = allWordsFound ? 'Challenge your friends to beat your platinum run.' : 'Copy share link and score'
 
