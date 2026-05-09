@@ -18,6 +18,7 @@ import {
 import './App.css'
 
 const progressCookiePrefix = 'lexi_tiles_progress_'
+const kofiSupportUrl = 'https://ko-fi.com/donovanyohan'
 const dailyPathPattern = /^\/daily\/(\d{4}-\d{2}-\d{2})\/?$/
 export const historyPageSize = 7
 
@@ -224,6 +225,17 @@ function MedalBadge({ tier, compact = false }: { tier: MedalTier; compact?: bool
       <Medal aria-hidden="true" size={compact ? 13 : 15} />
       {details.label}
     </span>
+  )
+}
+
+function DonateFooter() {
+  return (
+    <footer className="donate-footer">
+      <a className="donate-link" href={kofiSupportUrl} target="_blank" rel="noopener noreferrer">
+        <span aria-hidden="true">♥</span>
+        Buy me a Coffee
+      </a>
+    </footer>
   )
 }
 
@@ -558,6 +570,7 @@ function HomePage({ page }: { page: number }) {
           </nav>
         ) : null}
       </section>
+      <DonateFooter />
     </main>
   )
 }
@@ -1028,6 +1041,7 @@ function App() {
           <p className="empty-state">Found words will collect here as you solve the board.</p>
         )}
       </section>
+      <DonateFooter />
     </main>
   )
 }

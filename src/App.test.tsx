@@ -125,6 +125,10 @@ describe('Lexi Tiles app', () => {
     expect(screen.getByRole('button', { name: /how to play/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /share your results/i })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: gameplayDailyDate })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /buy me a coffee/i })).toHaveAttribute(
+      'href',
+      'https://ko-fi.com/donovanyohan',
+    )
   })
 
   it('opens a how-to-play modal from the question mark control', async () => {
@@ -376,6 +380,10 @@ describe('Lexi Tiles app', () => {
     expect(screen.getByRole('link', { name: /play today's puzzle/i })).toHaveAttribute(
       'href',
       `/daily/${latestDailyDate}`,
+    )
+    expect(screen.getByRole('link', { name: /buy me a coffee/i })).toHaveAttribute(
+      'href',
+      'https://ko-fi.com/donovanyohan',
     )
     expect(screen.getAllByTestId('history-entry')).toHaveLength(7)
   })
