@@ -6,13 +6,12 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import App from './App'
+import App, { historyPageSize } from './App'
 import { AVAILABLE_DAILY_DATES, createDailyPuzzle, LATEST_DAILY_DATE } from './lib/daily'
 import { calculateScore } from './lib/puzzle'
 
 const latestDailyDate = LATEST_DAILY_DATE
 const gameplayDailyDate = '2026-05-02'
-const testHistoryPageSize = 7
 const appCss = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), 'App.css'), 'utf8')
 const originalClipboard = navigator.clipboard
 
@@ -72,7 +71,7 @@ const historyPathForDate = (date: string) => {
     throw new Error(`Daily puzzle ${date} is not available`)
   }
 
-  const page = Math.floor(dateIndex / testHistoryPageSize) + 1
+  const page = Math.floor(dateIndex / historyPageSize) + 1
   return page === 1 ? '/' : `/?page=${page}`
 }
 
