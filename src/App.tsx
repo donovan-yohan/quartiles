@@ -19,7 +19,7 @@ import './App.css'
 
 const progressCookiePrefix = 'lexi_tiles_progress_'
 const dailyPathPattern = /^\/daily\/(\d{4}-\d{2}-\d{2})\/?$/
-const historyPageSize = 7
+export const historyPageSize = 7
 
 type StatusKind = 'info' | 'success' | 'error'
 

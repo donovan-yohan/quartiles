@@ -6,8 +6,8 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import App from './App'
-import { createDailyPuzzle, LATEST_DAILY_DATE } from './lib/daily'
+import App, { historyPageSize } from './App'
+import { AVAILABLE_DAILY_DATES, createDailyPuzzle, LATEST_DAILY_DATE } from './lib/daily'
 import { calculateScore } from './lib/puzzle'
 
 const latestDailyDate = LATEST_DAILY_DATE
@@ -60,6 +60,23 @@ const clearCookies = () => {
 
 const renderDaily = (date = gameplayDailyDate) => {
   window.history.pushState(null, '', `/daily/${date}`)
+  return render(<App />)
+}
+
+const historyPathForDate = (date: string) => {
+  const newestFirstDates = [...AVAILABLE_DAILY_DATES].reverse()
+  const dateIndex = newestFirstDates.indexOf(date)
+
+  if (dateIndex < 0) {
+    throw new Error(`Daily puzzle ${date} is not available`)
+  }
+
+  const page = Math.floor(dateIndex / historyPageSize) + 1
+  return page === 1 ? '/' : `/?page=${page}`
+}
+
+const renderHomeWithHistoryDate = (date = gameplayDailyDate) => {
+  window.history.replaceState(null, '', historyPathForDate(date))
   return render(<App />)
 }
 
@@ -370,7 +387,7 @@ describe('Lexi Tiles app', () => {
       hintedWords: ['everywhere', 'where'],
     })
 
-    render(<App />)
+    renderHomeWithHistoryDate()
 
     const gameplayEntry = screen.getByTestId(`history-entry-${gameplayDailyDate}`)
     expect(within(gameplayEntry).getByText('Progress 2/24')).toBeInTheDocument()
@@ -415,8 +432,7 @@ describe('Lexi Tiles app', () => {
     expect(savedProgress.hintedWords[0]).toEqual(expect.any(String))
 
     dailySession.unmount()
-    window.history.replaceState(null, '', '/')
-    render(<App />)
+    renderHomeWithHistoryDate()
 
     const gameplayEntry = screen.getByTestId(`history-entry-${gameplayDailyDate}`)
     expect(within(gameplayEntry).getByText('Hints 1')).toBeInTheDocument()

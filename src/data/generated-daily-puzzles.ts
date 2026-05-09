@@ -68,4 +68,9 @@ export const DAILY_PUZZLES = [
     quartets: [["na","ti","on","al"],["su","pe","rvi","sor"],["di","sap","pea","ring"],["indi","vid","ua","lly"],["fa","ci","li","ty"]],
     words: ['cion', 'city', 'dial', 'dilly', 'disappearing', 'facial', 'facility', 'faring', 'individually', 'lion', 'livid', 'nape', 'nation', 'national', 'pea', 'peal', 'peaty', 'penally', 'peon', 'ring', 'sap', 'sully', 'supervisor', 'tiring', 'type'],
   },
+  {
+    date: '2026-05-09',
+    quartets: [["comm","uni","cat","ion"],["rel","ig","io","us"],["re","la","ti","ve"],["ind","iv","idu","ally"],["po","ssib","ili","ty"]],
+    words: ['ally', 'cat', 'cation', 'catty', 'communication', 'community', 'individually', 'ion', 'lati', 'lave', 'pore', 'possibility', 'really', 'relative', 'religion', 'religious', 'tire', 'typo', 'uni', 'unitive', 'unity', 'vela'],
+  },
 ] as const
