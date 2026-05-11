@@ -78,4 +78,9 @@ export const DAILY_PUZZLES = [
     quartets: [["tec","hn","ol","ogy"],["unf","ort","un","ate"],["dem","oc","ra","tic"],["dis","adv","anta","ge"],["re","le","as","ed"]],
     words: ['advantage', 'advocate', 'anta', 'ate', 'democratic', 'dis', 'disadvantage', 'edge', 'geed', 'geology', 'leas', 'leased', 'ocreate', 'ology', 'ort', 'rage', 'rale', 'rare', 'reed', 'released', 'reticle', 'technology', 'tic', 'unfed', 'unfortunate'],
   },
+  {
+    date: '2026-05-11',
+    quartets: [["co","mmu","ni","ty"],["rel","ig","io","us"],["op","por","tu","nity"],["mis","unde","rsto","od"],["dis","ap","pe","ar"]],
+    words: ['appear', 'arty', 'community', 'coop', 'cope', 'dis', 'disappear', 'disco', 'misty', 'mistype', 'misunderstood', 'odious', 'opportunity', 'opus', 'pear', 'religious', 'type', 'understood'],
+  },
 ] as const
