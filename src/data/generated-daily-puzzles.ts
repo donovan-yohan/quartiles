@@ -83,4 +83,9 @@ export const DAILY_PUZZLES = [
     quartets: [["co","mmu","ni","ty"],["rel","ig","io","us"],["op","por","tu","nity"],["mis","unde","rsto","od"],["dis","ap","pe","ar"]],
     words: ['appear', 'arty', 'community', 'coop', 'cope', 'dis', 'disappear', 'disco', 'misty', 'mistype', 'misunderstood', 'odious', 'opportunity', 'opus', 'pear', 'religious', 'type', 'understood'],
   },
+  {
+    date: '2026-05-12',
+    quartets: [["pa","ra","ll","el"],["sig","nifi","can","tly"],["una","ccep","ta","ble"],["di","sapp","ea","ring"],["enc","our","ag","ing"]],
+    words: ['can', 'caning', 'dill', 'disappearing', 'earing', 'eatable', 'encouraging', 'our', 'pall', 'palling', 'parable', 'parallel', 'paring', 'patly', 'raring', 'rata', 'ratable', 'ring', 'ringing', 'sapping', 'significantly', 'table', 'tael', 'tall', 'taring', 'unable', 'unacceptable'],
+  },
 ] as const
