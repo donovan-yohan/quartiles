@@ -88,4 +88,9 @@ export const DAILY_PUZZLES = [
     quartets: [["pa","ra","ll","el"],["sig","nifi","can","tly"],["una","ccep","ta","ble"],["di","sapp","ea","ring"],["enc","our","ag","ing"]],
     words: ['can', 'caning', 'dill', 'disappearing', 'earing', 'eatable', 'encouraging', 'our', 'pall', 'palling', 'parable', 'parallel', 'paring', 'patly', 'raring', 'rata', 'ratable', 'ring', 'ringing', 'sapping', 'significantly', 'table', 'tael', 'tall', 'taring', 'unable', 'unacceptable'],
   },
+  {
+    date: '2026-05-13',
+    quartets: [["au","di","en","ce"],["ar","tif","ici","al"],["opp","ort","unit","ies"],["in","fo","rmi","ng"],["es","tabl","ish","ed"]],
+    words: ['alar', 'ales', 'ares', 'artificial', 'audial', 'audience', 'cedi', 'ceding', 'dial', 'diaries', 'dice', 'died', 'dies', 'ding', 'dinged', 'dinges', 'eddies', 'ending', 'establish', 'established', 'foal', 'foaled', 'foes', 'foin', 'forming', 'icing', 'indies', 'info', 'informing', 'opportunities', 'ort', 'tabled', 'tables', 'unit', 'united', 'unites', 'unities'],
+  },
 ] as const
