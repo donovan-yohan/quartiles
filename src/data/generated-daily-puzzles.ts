@@ -93,4 +93,9 @@ export const DAILY_PUZZLES = [
     quartets: [["au","di","en","ce"],["ar","tif","ici","al"],["opp","ort","unit","ies"],["in","fo","rmi","ng"],["es","tabl","ish","ed"]],
     words: ['alar', 'ales', 'ares', 'artificial', 'audial', 'audience', 'cedi', 'ceding', 'dial', 'diaries', 'dice', 'died', 'dies', 'ding', 'dinged', 'dinges', 'eddies', 'ending', 'establish', 'established', 'foal', 'foaled', 'foes', 'foin', 'forming', 'icing', 'indies', 'info', 'informing', 'opportunities', 'ort', 'tabled', 'tables', 'unit', 'united', 'unites', 'unities'],
   },
+  {
+    date: '2026-05-14',
+    quartets: [["diff","icu","lti","es"],["dis","co","ur","age"],["exp","la","ini","ng"],["con","seq","uen","tly"],["di","stin","gu","ish"]],
+    words: ['age', 'coding', 'coining', 'cola', 'con', 'cones', 'consequently', 'courage', 'courtly', 'dies', 'difficulties', 'ding', 'dinges', 'dis', 'disco', 'discourage', 'distingu', 'distinguish', 'explaining', 'gula', 'ladies', 'lading', 'langur', 'sequently'],
+  },
 ] as const
