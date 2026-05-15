@@ -98,4 +98,9 @@ export const DAILY_PUZZLES = [
     quartets: [["diff","icu","lti","es"],["dis","co","ur","age"],["exp","la","ini","ng"],["con","seq","uen","tly"],["di","stin","gu","ish"]],
     words: ['age', 'coding', 'coining', 'cola', 'con', 'cones', 'consequently', 'courage', 'courtly', 'dies', 'difficulties', 'ding', 'dinges', 'dis', 'disco', 'discourage', 'distingu', 'distinguish', 'explaining', 'gula', 'ladies', 'lading', 'langur', 'sequently'],
   },
+  {
+    date: '2026-05-15',
+    quartets: [["re","li","ab","le"],["co","mpa","ra","ble"],["exp","eri","men","tal"],["ar","ith","met","ic"],["ma","in","ta","ins"]],
+    words: ['able', 'arable', 'arithmetic', 'armet', 'blear', 'coble', 'coin', 'coins', 'cole', 'coli', 'coma', 'comet', 'comparable', 'compare', 'core', 'experimental', 'ins', 'instable', 'liable', 'liar', 'limen', 'lira', 'lire', 'main', 'mains', 'maintains', 'male', 'mara', 'mare', 'men', 'mental', 'met', 'metic', 'rain', 'rains', 'rale', 'ramen', 'rare', 'rata', 'ratable', 'ratal', 'rear', 'recoin', 'rein', 'reins', 'reliable', 'remain', 'remains', 'retable', 'retain', 'retains', 'table', 'taco', 'tain', 'tale', 'tali', 'tamable', 'tamale', 'tare'],
+  },
 ] as const
