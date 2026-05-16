@@ -103,4 +103,9 @@ export const DAILY_PUZZLES = [
     quartets: [["re","li","ab","le"],["co","mpa","ra","ble"],["exp","eri","men","tal"],["ar","ith","met","ic"],["ma","in","ta","ins"]],
     words: ['able', 'arable', 'arithmetic', 'armet', 'blear', 'coble', 'coin', 'coins', 'cole', 'coli', 'coma', 'comet', 'comparable', 'compare', 'core', 'experimental', 'ins', 'instable', 'liable', 'liar', 'limen', 'lira', 'lire', 'main', 'mains', 'maintains', 'male', 'mara', 'mare', 'men', 'mental', 'met', 'metic', 'rain', 'rains', 'rale', 'ramen', 'rare', 'rata', 'ratable', 'ratal', 'rear', 'recoin', 'rein', 'reins', 'reliable', 'remain', 'remains', 'retable', 'retain', 'retains', 'table', 'taco', 'tain', 'tale', 'tali', 'tamable', 'tamale', 'tare'],
   },
+  {
+    date: '2026-05-16',
+    quartets: [["sig","nifi","can","tly"],["so","me","bo","dy"],["ap","plic","at","ion"],["in","tel","lige","nce"],["inst","it","uti","on"]],
+    words: ['application', 'aptly', 'boat', 'body', 'bonce', 'boon', 'botel', 'can', 'canap', 'candy', 'canon', 'canso', 'inaptly', 'inion', 'institution', 'intelligence', 'ion', 'meat', 'onion', 'plication', 'significantly', 'soap', 'some', 'somebody', 'soon'],
+  },
 ] as const
