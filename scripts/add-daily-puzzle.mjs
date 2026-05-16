@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import wordlistEnglish from 'wordlist-english'
+import { validateSourcePuzzle } from './daily-puzzle-source.mjs'
 
 const dailyPuzzlesPath = fileURLToPath(new URL('../src/data/daily-puzzles.json', import.meta.url))
 const minTileLength = 2
@@ -208,6 +209,7 @@ const generatePuzzleForDate = (date) => {
 
 const dateSelection = parseDateArg()
 const dailyPuzzles = JSON.parse(readFileSync(dailyPuzzlesPath, 'utf8'))
+dailyPuzzles.forEach(validateSourcePuzzle)
 const existingDates = new Set(dailyPuzzles.map((puzzle) => puzzle.date))
 const datesToAdd =
   dateSelection.mode === 'catch-up'
@@ -237,6 +239,7 @@ if (datesToAdd.length === 0) {
 const addedPuzzles = []
 for (const date of datesToAdd) {
   const puzzle = generatePuzzleForDate(date)
+  validateSourcePuzzle(puzzle)
   dailyPuzzles.push(puzzle)
   existingDates.add(date)
   addedPuzzles.push(puzzle)

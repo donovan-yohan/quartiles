@@ -38,7 +38,7 @@ npm run dev
 
 `npm run generate:daily-words` refreshes `src/data/generated-daily-puzzles.ts` from `src/data/daily-puzzles.json` and the MIT-licensed `wordlist-english` npm package. The generator treats the configured word source as the playable dictionary: it enumerates every 1-4 tile string that can be built from each dated board, keeps every match in that source, always includes the five target quartet words, and filters a small explicit blocklist for inappropriate entries.
 
-Generation fails unless every daily board has exactly five quartet rows of four tiles, every tile text is unique within that board, every tile is 2–4 letters long, and exactly the five target four-tile words are valid. This prevents duplicate tiles, one-letter fragments, overlong fragments, and accidental “extra quartets.”
+Generation fails unless every daily board has exactly five quartet rows of four tiles, every tile text is unique within that board, every configured quartet word is unique, every tile is 2–4 letters long, and exactly the five target four-tile tile-id paths are valid. This prevents duplicate tiles, duplicate target-word segmentations, one-letter fragments, overlong fragments, and accidental “extra quartets.”
 
 Add one or more missing daily puzzles manually with:
 
