@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import wordlistEnglish from 'wordlist-english'
+import { validateSourcePuzzle } from './daily-puzzle-source.mjs'
 
 const dailyPuzzlesPath = fileURLToPath(new URL('../src/data/daily-puzzles.json', import.meta.url))
 const minTileLength = 2
@@ -10,6 +11,7 @@ const targetQuartetCount = 5
 const maxAttempts = 10000
 const datePattern = /^\d{4}-\d{2}-\d{2}$/
 const normalize = (word) => word.toLowerCase().replace(/[^a-z]/g, '')
+const pathSignature = (tileIds) => tileIds.join(',')
 const fullWordSet = new Set(wordlistEnglish.english.map(normalize).filter((word) => word.length >= 3))
 const commonWords = [...new Set(wordlistEnglish['english/10'].map(normalize))].filter(
   (word) => word.length >= 8 && word.length <= 13 && /^[a-z]+$/.test(word),
@@ -111,15 +113,15 @@ const candidateWords = [...optionsByWord.keys()]
 
 const sample = (items, random) => items[Math.floor(random() * items.length)]
 
-const fourTileWordsForBoard = (tiles, requiredWords) => {
+const fourTilePathsForBoard = (tiles, requiredWords) => {
   const sourceWords = new Set(fullWordSet)
   requiredWords.forEach((word) => sourceWords.add(word))
-  const found = new Set()
+  const found = []
 
-  const search = (prefix, usedTileIds) => {
-    if (usedTileIds.size === maxTilesPerWord) {
+  const search = (prefix, usedTileIds, tileIds) => {
+    if (tileIds.length === maxTilesPerWord) {
       if (sourceWords.has(prefix)) {
-        found.add(prefix)
+        found.push({ word: prefix, tileIds: [...tileIds], signature: pathSignature(tileIds) })
       }
       return
     }
@@ -130,20 +132,31 @@ const fourTileWordsForBoard = (tiles, requiredWords) => {
       }
 
       usedTileIds.add(tileId)
-      search(prefix + tiles[tileId], usedTileIds)
+      search(prefix + tiles[tileId], usedTileIds, [...tileIds, tileId])
       usedTileIds.delete(tileId)
     }
   }
 
-  search('', new Set())
-  return [...found].sort((left, right) => left.localeCompare(right))
+  search('', new Set(), [])
+  return found.sort((left, right) => left.word.localeCompare(right.word) || left.signature.localeCompare(right.signature))
 }
 
 const isExactQuartetBoard = (quartets) => {
-  const targets = quartets.map((quartet) => quartet.join('')).sort((left, right) => left.localeCompare(right))
   const tiles = quartets.flat()
-  const fourTileWords = fourTileWordsForBoard(tiles, targets)
-  return fourTileWords.length === targetQuartetCount && fourTileWords.every((word, index) => word === targets[index])
+  const targets = quartets.map((quartet, quartetIndex) => {
+    const tileIds = quartet.map((_, tileIndex) => quartetIndex * maxTilesPerWord + tileIndex)
+    return { word: quartet.join(''), tileIds, signature: pathSignature(tileIds) }
+  })
+  const fourTilePaths = fourTilePathsForBoard(
+    tiles,
+    targets.map((target) => target.word),
+  )
+  const targetSignatures = new Set(targets.map((target) => target.signature))
+
+  return (
+    fourTilePaths.length === targetQuartetCount &&
+    fourTilePaths.every((path) => targetSignatures.has(path.signature))
+  )
 }
 
 const generatePuzzleForDate = (date) => {
@@ -196,6 +209,7 @@ const generatePuzzleForDate = (date) => {
 
 const dateSelection = parseDateArg()
 const dailyPuzzles = JSON.parse(readFileSync(dailyPuzzlesPath, 'utf8'))
+dailyPuzzles.forEach(validateSourcePuzzle)
 const existingDates = new Set(dailyPuzzles.map((puzzle) => puzzle.date))
 const datesToAdd =
   dateSelection.mode === 'catch-up'
@@ -225,6 +239,7 @@ if (datesToAdd.length === 0) {
 const addedPuzzles = []
 for (const date of datesToAdd) {
   const puzzle = generatePuzzleForDate(date)
+  validateSourcePuzzle(puzzle)
   dailyPuzzles.push(puzzle)
   existingDates.add(date)
   addedPuzzles.push(puzzle)
