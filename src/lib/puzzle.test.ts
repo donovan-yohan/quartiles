@@ -34,6 +34,18 @@ describe('word validation', () => {
     })
   })
 
+  it('rejects an alternate tile path that spells a known word but is not the stored puzzle path', () => {
+    const exactPathPuzzle: TilePuzzle = {
+      id: 'exact-path',
+      title: 'Exact path board',
+      tiles: ['ab', 'c', 'a', 'bc'],
+      words: [{ word: 'abc', tileIds: [0, 1] }],
+    }
+
+    expect(validateGuess(exactPathPuzzle, [0, 1])).toMatchObject({ ok: true, word: 'abc' })
+    expect(validateGuess(exactPathPuzzle, [2, 3])).toEqual({ ok: false, reason: 'Not in this puzzle.' })
+  })
+
   it('rejects unknown tile combinations and duplicate tile use with clear reasons', () => {
     expect(validateGuess(miniPuzzle, [3, 8])).toEqual({ ok: false, reason: 'Not in this puzzle.' })
     expect(validateGuess(miniPuzzle, [3, 3])).toEqual({ ok: false, reason: 'Each tile can only be used once.' })
@@ -261,7 +273,7 @@ describe('daily puzzle dictionary coverage', () => {
         .map((quartet) => quartet.join(''))
         .sort((left, right) => left.localeCompare(right))
 
-      expect(validateExactQuartetPuzzle(puzzle, targetQuartetWords), `${date} failed exact quartet validation`).toEqual({
+      expect(validateExactQuartetPuzzle(puzzle, targetQuartetWords), `${date} failed exact quartet validation`).toMatchObject({
         ok: true,
         quartetWords: targetQuartetWords,
       })
@@ -282,14 +294,65 @@ describe('daily puzzle dictionary coverage', () => {
       dictionary: ['abcd', 'abce', 'efgh', 'ijkl', 'mnop', 'qrst'],
     })
 
-    expect(validateExactQuartetPuzzle(puzzle, ['abcd', 'efgh', 'ijkl', 'mnop', 'qrst'])).toEqual({
+    expect(validateExactQuartetPuzzle(puzzle, ['abcd', 'efgh', 'ijkl', 'mnop', 'qrst'])).toMatchObject({
       ok: false,
       quartetWords: ['abcd', 'abce', 'efgh', 'ijkl', 'mnop', 'qrst'],
       targetQuartetWords: ['abcd', 'efgh', 'ijkl', 'mnop', 'qrst'],
       extraQuartetWords: ['abce'],
       missingTargetQuartetWords: [],
-      reason: 'Expected exactly 5 target quartets and no extra four-tile words.',
+      reason: 'Expected exactly 5 target quartet paths and no extra four-tile paths.',
     })
+  })
+
+  it('reports duplicate four-tile paths for the same quartet word as extra valid paths', () => {
+    const puzzle = buildPuzzleFromQuartets({
+      seed: 'duplicate-four-tile-path',
+      title: 'Duplicate quartet path board',
+      quartets: [
+        ['ab', 'cd', 'ef', 'gh'],
+        ['abc', 'de', 'f', 'zz'],
+        ['ij', 'kl', 'mn', 'op'],
+        ['qr', 'st', 'uv', 'wx'],
+        ['ya', 'yb', 'yc', 'yd'],
+      ],
+      dictionary: ['abcdefgh', 'abcdefzz', 'ijklmnop', 'qrstuvwx', 'yaybycyd'],
+    })
+
+    const result = validateExactQuartetPuzzle(puzzle, ['abcdefgh', 'abcdefzz', 'ijklmnop', 'qrstuvwx', 'yaybycyd'])
+
+    expect(result.ok).toBe(false)
+    if (!result.ok) {
+      expect(result.extraQuartetWords).toEqual(['abcdefgh', 'abcdefzz'])
+      expect(result.missingTargetQuartetWords).toEqual([])
+      expect(result.reason).toBe('Expected exactly 5 target quartet paths and no extra four-tile paths.')
+      expect(result.quartetPaths.map((path) => path.word)).toEqual([
+        'abcdefgh',
+        'abcdefgh',
+        'abcdefzz',
+        'abcdefzz',
+        'ijklmnop',
+        'qrstuvwx',
+        'yaybycyd',
+      ])
+      expect(new Set(result.quartetPaths.map((path) => path.signature)).size).toBe(7)
+    }
+  })
+
+  it('keeps the patched May 16 board to exactly five configured quartet tile paths', () => {
+    const date = '2026-05-16'
+    const puzzle = createDailyPuzzle(date)
+    const targetQuartetWords = resolveDailyPuzzleData(date).quartets
+      .map((quartet) => quartet.join(''))
+      .sort((left, right) => left.localeCompare(right))
+
+    const result = validateExactQuartetPuzzle(puzzle, targetQuartetWords)
+
+    expect(result, `${date} failed path-aware quartet validation`).toMatchObject({
+      ok: true,
+      quartetWords: targetQuartetWords,
+    })
+    expect(result.quartetPaths).toHaveLength(5)
+    expect(result.quartetPaths.map((path) => path.word)).toEqual(targetQuartetWords)
   })
 })
 

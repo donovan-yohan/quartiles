@@ -38,6 +38,9 @@ export const QUARTILE_COMPLETION_COUNT = 5
 export const QUARTILE_COMPLETION_BONUS = 40
 
 const normalize = (value: string) => value.toLowerCase().replace(/[^a-z]/g, '')
+const pathSignature = (tileIds: number[]) => tileIds.join(',')
+const sameTilePath = (left: number[], right: number[]) =>
+  left.length === right.length && left.every((tileId, index) => tileId === right[index])
 
 const hashSeed = (seed: string) => {
   let hash = 2166136261
@@ -146,7 +149,9 @@ export const validateGuess = (puzzle: TilePuzzle, tileIds: number[]): GuessResul
   }
 
   const guess = normalize(tileIds.map((tileId) => puzzle.tiles[tileId]).join(''))
-  const word = puzzle.words.find((candidate) => candidate.word === guess)
+  const word = puzzle.words.find(
+    (candidate) => candidate.word === guess && sameTilePath(candidate.tileIds, tileIds),
+  )
 
   if (!word) {
     return { ok: false, reason: 'Not in this puzzle.' }
@@ -155,8 +160,8 @@ export const validateGuess = (puzzle: TilePuzzle, tileIds: number[]): GuessResul
   return {
     ok: true,
     word: word.word,
-    tileIds: [...tileIds],
-    points: scoreWord(tileIds),
+    tileIds: [...word.tileIds],
+    points: scoreWord(word.tileIds),
     isQuartet: Boolean(word.isQuartet),
   }
 }
@@ -233,55 +238,110 @@ export const getMedalAward = (puzzle: TilePuzzle, foundWords: string[]): MedalTi
   return 'none'
 }
 
+export type QuartetPath = {
+  word: string
+  tileIds: number[]
+  signature: string
+}
+
 export type ExactQuartetPuzzleValidation =
   | {
       ok: true
       quartetWords: string[]
+      quartetPaths: QuartetPath[]
     }
   | {
       ok: false
       quartetWords: string[]
+      quartetPaths: QuartetPath[]
       targetQuartetWords: string[]
+      targetQuartetPaths: QuartetPath[]
       extraQuartetWords: string[]
+      extraQuartetPaths: QuartetPath[]
       missingTargetQuartetWords: string[]
+      missingTargetQuartetPaths: QuartetPath[]
       reason: string
     }
 
-export const getFourTileWords = (puzzle: TilePuzzle) =>
-  puzzle.words
-    .filter((word) => word.tileIds.length === MAX_TILES_PER_WORD)
-    .map((word) => word.word)
-    .sort((left, right) => left.localeCompare(right))
+const sortQuartetPaths = (left: QuartetPath, right: QuartetPath) =>
+  left.word.localeCompare(right.word) || left.signature.localeCompare(right.signature)
+
+export const getFourTileWordPaths = (puzzle: TilePuzzle): QuartetPath[] => {
+  const puzzleWordSet = new Set(puzzle.words.map((word) => word.word))
+  const paths: QuartetPath[] = []
+
+  const search = (prefix: string, usedTileIds: Set<number>, tileIds: number[]) => {
+    if (tileIds.length === MAX_TILES_PER_WORD) {
+      if (puzzleWordSet.has(prefix)) {
+        paths.push({ word: prefix, tileIds: [...tileIds], signature: pathSignature(tileIds) })
+      }
+      return
+    }
+
+    for (let tileId = 0; tileId < puzzle.tiles.length; tileId += 1) {
+      if (usedTileIds.has(tileId)) {
+        continue
+      }
+
+      usedTileIds.add(tileId)
+      search(prefix + normalize(puzzle.tiles[tileId]), usedTileIds, [...tileIds, tileId])
+      usedTileIds.delete(tileId)
+    }
+  }
+
+  search('', new Set<number>(), [])
+  return paths.sort(sortQuartetPaths)
+}
+
+export const getFourTileWords = (puzzle: TilePuzzle) => getFourTileWordPaths(puzzle).map((path) => path.word)
 
 export const validateExactQuartetPuzzle = (
   puzzle: TilePuzzle,
   targetQuartetWords: string[],
 ): ExactQuartetPuzzleValidation => {
-  const quartetWords = getFourTileWords(puzzle)
+  const quartetPaths = getFourTileWordPaths(puzzle)
+  const quartetWords = quartetPaths.map((path) => path.word)
   const targetWords = [...new Set(targetQuartetWords.map(normalize).filter(Boolean))].sort((left, right) =>
     left.localeCompare(right),
   )
-  const quartetWordSet = new Set(quartetWords)
   const targetWordSet = new Set(targetWords)
-  const extraQuartetWords = quartetWords.filter((word) => !targetWordSet.has(word))
-  const missingTargetQuartetWords = targetWords.filter((word) => !quartetWordSet.has(word))
+  const targetQuartetPaths = puzzle.words
+    .filter((word) => word.isQuartet && word.tileIds.length === MAX_TILES_PER_WORD && targetWordSet.has(word.word))
+    .map((word) => ({ word: word.word, tileIds: [...word.tileIds], signature: pathSignature(word.tileIds) }))
+    .sort(sortQuartetPaths)
+  const quartetPathSignatures = new Set(quartetPaths.map((path) => path.signature))
+  const targetPathSignatures = new Set(targetQuartetPaths.map((path) => path.signature))
+  const targetPathWords = new Set(targetQuartetPaths.map((path) => path.word))
+  const extraQuartetPaths = quartetPaths.filter((path) => !targetPathSignatures.has(path.signature))
+  const missingTargetQuartetPaths = targetQuartetPaths.filter((path) => !quartetPathSignatures.has(path.signature))
+  const missingTargetQuartetWords = [
+    ...targetWords.filter((word) => !targetPathWords.has(word)),
+    ...missingTargetQuartetPaths.map((path) => path.word),
+  ]
+  const duplicateTargetPathCount = targetQuartetPaths.length - targetPathSignatures.size
 
   if (
-    quartetWords.length === QUARTILE_COMPLETION_COUNT &&
+    quartetPaths.length === QUARTILE_COMPLETION_COUNT &&
     targetWords.length === QUARTILE_COMPLETION_COUNT &&
-    extraQuartetWords.length === 0 &&
+    targetQuartetPaths.length === QUARTILE_COMPLETION_COUNT &&
+    duplicateTargetPathCount === 0 &&
+    extraQuartetPaths.length === 0 &&
     missingTargetQuartetWords.length === 0
   ) {
-    return { ok: true, quartetWords }
+    return { ok: true, quartetWords, quartetPaths }
   }
 
   return {
     ok: false,
     quartetWords,
+    quartetPaths,
     targetQuartetWords: targetWords,
-    extraQuartetWords,
+    targetQuartetPaths,
+    extraQuartetWords: extraQuartetPaths.map((path) => path.word),
+    extraQuartetPaths,
     missingTargetQuartetWords,
-    reason: 'Expected exactly 5 target quartets and no extra four-tile words.',
+    missingTargetQuartetPaths,
+    reason: 'Expected exactly 5 target quartet paths and no extra four-tile paths.',
   }
 }
 
