@@ -108,4 +108,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ann","ounc","em","ent"],["ex","ce","ssi","ve"],["qu","al","if","ied"],["av","ai","lab","le"],["di","sco","ura","ging"]],
     words: ['alle', 'alleging', 'annal', 'annex', 'announcement', 'available', 'cedi', 'dial', 'dice', 'disco', 'discouraging', 'dive', 'excessive', 'lab', 'leal', 'quai', 'qualified', 'veal'],
   },
+  {
+    date: '2026-05-17',
+    quartets: [["ann","ounc","em","ent"],["ex","ce","ssi","ve"],["qu","al","if","ied"],["av","ai","lab","le"],["di","sco","ura","ging"]],
+    words: ['alle', 'alleging', 'annal', 'annex', 'announcement', 'available', 'cedi', 'dial', 'dice', 'disco', 'discouraging', 'dive', 'excessive', 'lab', 'leal', 'quai', 'qualified', 'veal'],
+  },
 ] as const
