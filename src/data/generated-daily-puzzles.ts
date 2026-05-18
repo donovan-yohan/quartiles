@@ -113,4 +113,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ann","ounc","em","ent"],["ex","ce","ssi","ve"],["qu","al","if","ied"],["av","ai","lab","le"],["di","sco","ura","ging"]],
     words: ['alle', 'alleging', 'annal', 'annex', 'announcement', 'available', 'cedi', 'dial', 'dice', 'disco', 'discouraging', 'dive', 'excessive', 'lab', 'leal', 'quai', 'qualified', 'veal'],
   },
+  {
+    date: '2026-05-18',
+    quartets: [["pri","nc","ip","les"],["as","soc","ia","te"],["bea","ut","if","ul"],["re","so","ur","ces"],["comp","at","ibi","lity"]],
+    words: ['associate', 'beaut', 'beautiful', 'compatibility', 'compre', 'prices', 'principles', 'reprices', 'resoles', 'resources', 'rete', 'sociality', 'socles', 'soles', 'sore', 'soul', 'sour', 'sources', 'teas', 'teat'],
+  },
 ] as const
