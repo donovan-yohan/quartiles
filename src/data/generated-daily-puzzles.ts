@@ -118,4 +118,9 @@ export const DAILY_PUZZLES = [
     quartets: [["pri","nc","ip","les"],["as","soc","ia","te"],["bea","ut","if","ul"],["re","so","ur","ces"],["comp","at","ibi","lity"]],
     words: ['associate', 'beaut', 'beautiful', 'compatibility', 'compre', 'prices', 'principles', 'reprices', 'resoles', 'resources', 'rete', 'sociality', 'socles', 'soles', 'sore', 'soul', 'sour', 'sources', 'teas', 'teat'],
   },
+  {
+    date: '2026-05-19',
+    quartets: [["dem","oc","ra","tic"],["re","la","ti","on"],["in","adeq","ua","te"],["expe","ri","en","ces"],["opp","ort","uni","ties"]],
+    words: ['adequate', 'democratic', 'demon', 'enlaces', 'entices', 'entire', 'entities', 'experiences', 'inadequate', 'inti', 'laces', 'lain', 'lari', 'late', 'lateen', 'lati', 'latices', 'ontic', 'opportunities', 'ort', 'races', 'rain', 'rare', 'rarities', 'rate', 'ration', 'rein', 'relate', 'relation', 'rete', 'reties', 'reunion', 'reunite', 'rices', 'rite', 'teen', 'tic', 'ties', 'tire', 'uni', 'union', 'unite', 'unities'],
+  },
 ] as const
