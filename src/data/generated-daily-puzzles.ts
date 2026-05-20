@@ -123,4 +123,9 @@ export const DAILY_PUZZLES = [
     quartets: [["dem","oc","ra","tic"],["re","la","ti","on"],["in","adeq","ua","te"],["expe","ri","en","ces"],["opp","ort","uni","ties"]],
     words: ['adequate', 'democratic', 'demon', 'enlaces', 'entices', 'entire', 'entities', 'experiences', 'inadequate', 'inti', 'laces', 'lain', 'lari', 'late', 'lateen', 'lati', 'latices', 'ontic', 'opportunities', 'ort', 'races', 'rain', 'rare', 'rarities', 'rate', 'ration', 'rein', 'relate', 'relation', 'rete', 'reties', 'reunion', 'reunite', 'rices', 'rite', 'teen', 'tic', 'ties', 'tire', 'uni', 'union', 'unite', 'unities'],
   },
+  {
+    date: '2026-05-20',
+    quartets: [["re","gu","la","rly"],["ri","di","culo","us"],["su","ppo","sed","ly"],["con","si","de","ring"],["intr","od","uc","ed"]],
+    words: ['con', 'coned', 'considering', 'deed', 'desire', 'desiring', 'deuced', 'died', 'dire', 'direly', 'disused', 'gula', 'introduced', 'lade', 'lari', 'lyre', 'recon', 'rede', 'reed', 'regularly', 'rely', 'reside', 'reused', 'ride', 'ridiculous', 'ring', 'ringed', 'ringside', 'seduced', 'side', 'sire', 'siring', 'sued', 'supposed', 'supposedly', 'sure', 'surely', 'surly', 'used'],
+  },
 ] as const
