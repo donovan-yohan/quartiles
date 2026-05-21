@@ -128,4 +128,9 @@ export const DAILY_PUZZLES = [
     quartets: [["re","gu","la","rly"],["ri","di","culo","us"],["su","ppo","sed","ly"],["con","si","de","ring"],["intr","od","uc","ed"]],
     words: ['con', 'coned', 'considering', 'deed', 'desire', 'desiring', 'deuced', 'died', 'dire', 'direly', 'disused', 'gula', 'introduced', 'lade', 'lari', 'lyre', 'recon', 'rede', 'reed', 'regularly', 'rely', 'reside', 'reused', 'ride', 'ridiculous', 'ring', 'ringed', 'ringside', 'seduced', 'side', 'sire', 'siring', 'sued', 'supposed', 'supposedly', 'sure', 'surely', 'surly', 'used'],
   },
+  {
+    date: '2026-05-21',
+    quartets: [["ar","ran","gem","ent"],["ne","cess","ari","ly"],["en","cou","ra","ge"],["com","mu","ni","ty"],["emb","arr","as","ses"]],
+    words: ['arenas', 'arias', 'arises', 'arrange', 'arrangement', 'arras', 'arrases', 'arty', 'asses', 'cess', 'comas', 'commune', 'community', 'courage', 'embarrasses', 'encourage', 'enrage', 'gear', 'gem', 'gene', 'genera', 'geneses', 'lyses', 'murage', 'muses', 'near', 'nearly', 'necessarily', 'nine', 'ninety', 'rage', 'ran', 'range'],
+  },
 ] as const
