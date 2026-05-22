@@ -133,4 +133,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ar","ran","gem","ent"],["ne","cess","ari","ly"],["en","cou","ra","ge"],["com","mu","ni","ty"],["emb","arr","as","ses"]],
     words: ['arenas', 'arias', 'arises', 'arrange', 'arrangement', 'arras', 'arrases', 'arty', 'asses', 'cess', 'comas', 'commune', 'community', 'courage', 'embarrasses', 'encourage', 'enrage', 'gear', 'gem', 'gene', 'genera', 'geneses', 'lyses', 'murage', 'muses', 'near', 'nearly', 'necessarily', 'nine', 'ninety', 'rage', 'ran', 'range'],
   },
+  {
+    date: '2026-05-22',
+    quartets: [["am","big","uo","us"],["dir","ec","to","ry"],["ar","it","hmet","ic"],["ex","ces","si","ve"],["acc","iden","ta","lly"]],
+    words: ['accidences', 'accidentally', 'ambiguous', 'arithmetic', 'big', 'cesta', 'directory', 'exam', 'excessive', 'exec', 'exit', 'silly', 'tally', 'taus', 'tolly', 'totally', 'very', 'veto'],
+  },
 ] as const
