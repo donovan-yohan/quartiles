@@ -138,4 +138,9 @@ export const DAILY_PUZZLES = [
     quartets: [["am","big","uo","us"],["dir","ec","to","ry"],["ar","it","hmet","ic"],["ex","ces","si","ve"],["acc","iden","ta","lly"]],
     words: ['accidences', 'accidentally', 'ambiguous', 'arithmetic', 'big', 'cesta', 'directory', 'exam', 'excessive', 'exec', 'exit', 'silly', 'tally', 'taus', 'tolly', 'totally', 'very', 'veto'],
   },
+  {
+    date: '2026-05-23',
+    quartets: [["em","ba","rras","ses"],["inc","ompa","tib","le"],["ind","ivi","du","al"],["dir","ec","tio","ns"],["dis","cour","ag","ing"]],
+    words: ['alba', 'alle', 'bale', 'bans', 'bases', 'courses', 'directions', 'dis', 'discouraging', 'discourses', 'dual', 'duns', 'durras', 'embarrasses', 'incompatible', 'individual', 'ingle', 'leal', 'lens', 'lensing'],
+  },
 ] as const
