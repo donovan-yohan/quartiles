@@ -143,4 +143,9 @@ export const DAILY_PUZZLES = [
     quartets: [["em","ba","rras","ses"],["inc","ompa","tib","le"],["ind","ivi","du","al"],["dir","ec","tio","ns"],["dis","cour","ag","ing"]],
     words: ['alba', 'alle', 'bale', 'bans', 'bases', 'courses', 'directions', 'dis', 'discouraging', 'discourses', 'dual', 'duns', 'durras', 'embarrasses', 'incompatible', 'individual', 'ingle', 'leal', 'lens', 'lensing'],
   },
+  {
+    date: '2026-05-24',
+    quartets: [["int","ern","ati","onal"],["ma","gni","tu","de"],["ex","is","ten","ce"],["dis","cou","ra","ging"],["co","mpla","in","ed"]],
+    words: ['cede', 'cedis', 'coati', 'code', 'coed', 'coin', 'coined', 'coma', 'complain', 'complained', 'complaint', 'deco', 'deed', 'dis', 'disco', 'discoed', 'discouraging', 'edging', 'exceed', 'exedra', 'existence', 'indeed', 'intern', 'international', 'interned', 'intis', 'mace', 'made', 'magnitude', 'main', 'mara', 'race', 'raging', 'rain', 'rained', 'raised', 'raisin', 'ten', 'tude', 'tuis', 'turaco'],
+  },
 ] as const
