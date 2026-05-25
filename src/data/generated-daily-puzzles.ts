@@ -148,4 +148,9 @@ export const DAILY_PUZZLES = [
     quartets: [["int","ern","ati","onal"],["ma","gni","tu","de"],["ex","is","ten","ce"],["dis","cou","ra","ging"],["co","mpla","in","ed"]],
     words: ['cede', 'cedis', 'coati', 'code', 'coed', 'coin', 'coined', 'coma', 'complain', 'complained', 'complaint', 'deco', 'deed', 'dis', 'disco', 'discoed', 'discouraging', 'edging', 'exceed', 'exedra', 'existence', 'indeed', 'intern', 'international', 'interned', 'intis', 'mace', 'made', 'magnitude', 'main', 'mara', 'race', 'raging', 'rain', 'rained', 'raised', 'raisin', 'ten', 'tude', 'tuis', 'turaco'],
   },
+  {
+    date: '2026-05-25',
+    quartets: [["fa","mi","li","ar"],["und","ergr","adua","te"],["co","nse","quen","ce"],["pos","sib","ilit","ies"],["pu","rc","ha","se"]],
+    words: ['arte', 'cense', 'coarse', 'coli', 'consequence', 'cote', 'face', 'familiar', 'fate', 'haar', 'halite', 'hate', 'liar', 'lice', 'license', 'lite', 'mice', 'mite', 'posies', 'posse', 'possibilities', 'puce', 'puli', 'pumice', 'purchase', 'sear', 'semi', 'sense', 'sequence', 'sib', 'tear', 'tense', 'undergraduate', 'undies'],
+  },
 ] as const
