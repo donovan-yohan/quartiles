@@ -153,4 +153,9 @@ export const DAILY_PUZZLES = [
     quartets: [["fa","mi","li","ar"],["und","ergr","adua","te"],["co","nse","quen","ce"],["pos","sib","ilit","ies"],["pu","rc","ha","se"]],
     words: ['arte', 'cense', 'coarse', 'coli', 'consequence', 'cote', 'face', 'familiar', 'fate', 'haar', 'halite', 'hate', 'liar', 'lice', 'license', 'lite', 'mice', 'mite', 'posies', 'posse', 'possibilities', 'puce', 'puli', 'pumice', 'purchase', 'sear', 'semi', 'sense', 'sequence', 'sib', 'tear', 'tense', 'undergraduate', 'undies'],
   },
+  {
+    date: '2026-05-26',
+    quartets: [["ab","ili","ti","es"],["re","pe","at","ing"],["diff","ic","ult","ies"],["in","te","rpr","ets"],["dis","cip","li","ne"]],
+    words: ['abates', 'abating', 'abets', 'abies', 'abilities', 'attire', 'difficult', 'difficulties', 'dis', 'discipline', 'ices', 'icing', 'inline', 'interprets', 'inti', 'intine', 'lies', 'line', 'lire', 'lite', 'neat', 'peat', 'pees', 'pelite', 'petite', 'recipes', 'rein', 'reining', 'relies', 'reline', 'repeat', 'repeating', 'rete', 'retene', 'reties', 'teat', 'tees', 'tepees', 'ties', 'tine', 'tire'],
+  },
 ] as const
