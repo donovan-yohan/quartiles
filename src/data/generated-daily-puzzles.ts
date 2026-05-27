@@ -158,4 +158,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ab","ili","ti","es"],["re","pe","at","ing"],["diff","ic","ult","ies"],["in","te","rpr","ets"],["dis","cip","li","ne"]],
     words: ['abates', 'abating', 'abets', 'abies', 'abilities', 'attire', 'difficult', 'difficulties', 'dis', 'discipline', 'ices', 'icing', 'inline', 'interprets', 'inti', 'intine', 'lies', 'line', 'lire', 'lite', 'neat', 'peat', 'pees', 'pelite', 'petite', 'recipes', 'rein', 'reining', 'relies', 'reline', 'repeat', 'repeating', 'rete', 'retene', 'reties', 'teat', 'tees', 'tepees', 'ties', 'tine', 'tire'],
   },
+  {
+    date: '2026-05-27',
+    quartets: [["un","ive","rsi","ty"],["sig","nifi","ca","ntly"],["op","por","tun","ity"],["cons","equ","ent","ly"],["ex","er","ci","se"]],
+    words: ['case', 'city', 'cons', 'consent', 'consequent', 'consequently', 'enter', 'entity', 'equity', 'excise', 'exercise', 'lyse', 'opportunity', 'seer', 'significantly', 'signifier', 'tun', 'tuner', 'unity', 'university'],
+  },
 ] as const
