@@ -163,4 +163,9 @@ export const DAILY_PUZZLES = [
     quartets: [["un","ive","rsi","ty"],["sig","nifi","ca","ntly"],["op","por","tun","ity"],["cons","equ","ent","ly"],["ex","er","ci","se"]],
     words: ['case', 'city', 'cons', 'consent', 'consequent', 'consequently', 'enter', 'entity', 'equity', 'excise', 'exercise', 'lyse', 'opportunity', 'seer', 'significantly', 'signifier', 'tun', 'tuner', 'unity', 'university'],
   },
+  {
+    date: '2026-05-28',
+    quartets: [["im","medi","ate","ly"],["rel","ig","io","us"],["cir","cu","msta","nce"],["soph","is","tica","tes"],["nec","es","si","ty"]],
+    words: ['ate', 'cir', 'circumstance', 'cues', 'immediate', 'immediately', 'mediate', 'mediately', 'medius', 'necessity', 'relate', 'religious', 'since', 'sites', 'sophisticates', 'testy', 'uses'],
+  },
 ] as const
