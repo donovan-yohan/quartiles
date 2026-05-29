@@ -168,4 +168,9 @@ export const DAILY_PUZZLES = [
     quartets: [["im","medi","ate","ly"],["rel","ig","io","us"],["cir","cu","msta","nce"],["soph","is","tica","tes"],["nec","es","si","ty"]],
     words: ['ate', 'cir', 'circumstance', 'cues', 'immediate', 'immediately', 'mediate', 'mediately', 'medius', 'necessity', 'relate', 'religious', 'since', 'sites', 'sophisticates', 'testy', 'uses'],
   },
+  {
+    date: '2026-05-29',
+    quartets: [["li","ke","wi","se"],["in","vis","ib","le"],["art","if","ic","ial"],["ri","dic","ul","ous"],["con","tri","bu","te"]],
+    words: ['art', 'article', 'artificial', 'con', 'conic', 'conte', 'contribute', 'contrite', 'invisible', 'like', 'likewise', 'lite', 'ridiculous', 'rile', 'rise', 'rite', 'serious', 'tribute', 'trike', 'trite', 'visible', 'wile', 'wise', 'wite'],
+  },
 ] as const
