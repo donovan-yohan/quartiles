@@ -173,4 +173,9 @@ export const DAILY_PUZZLES = [
     quartets: [["li","ke","wi","se"],["in","vis","ib","le"],["art","if","ic","ial"],["ri","dic","ul","ous"],["con","tri","bu","te"]],
     words: ['art', 'article', 'artificial', 'con', 'conic', 'conte', 'contribute', 'contrite', 'invisible', 'like', 'likewise', 'lite', 'ridiculous', 'rile', 'rise', 'rite', 'serious', 'tribute', 'trike', 'trite', 'visible', 'wile', 'wise', 'wite'],
   },
+  {
+    date: '2026-05-30',
+    quartets: [["em","ba","rras","sed"],["circ","um","stan","ces"],["su","pe","ri","or"],["ind","iv","idu","al"],["te","chno","lo","gy"]],
+    words: ['alba', 'alum', 'barite', 'barium', 'based', 'bate', 'circumstances', 'embarrassed', 'individual', 'lobate', 'logy', 'lope', 'oral', 'orgy', 'peal', 'peba', 'peri', 'rial', 'rices', 'ripe', 'rite', 'sedgy', 'sedum', 'stances', 'superior', 'teal', 'techno', 'technology', 'teem'],
+  },
 ] as const
