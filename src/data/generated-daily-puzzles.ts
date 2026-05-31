@@ -178,4 +178,9 @@ export const DAILY_PUZZLES = [
     quartets: [["em","ba","rras","sed"],["circ","um","stan","ces"],["su","pe","ri","or"],["ind","iv","idu","al"],["te","chno","lo","gy"]],
     words: ['alba', 'alum', 'barite', 'barium', 'based', 'bate', 'circumstances', 'embarrassed', 'individual', 'lobate', 'logy', 'lope', 'oral', 'orgy', 'peal', 'peba', 'peri', 'rial', 'rices', 'ripe', 'rite', 'sedgy', 'sedum', 'stances', 'superior', 'teal', 'techno', 'technology', 'teem'],
   },
+  {
+    date: '2026-05-31',
+    quartets: [["au","to","mob","ile"],["me","anin","gle","ss"],["su","pe","ri","or"],["op","po","sit","ion"],["in","conv","eni","ence"]],
+    words: ['auto', 'automobile', 'convenience', 'inconvenience', 'ingle', 'inion', 'into', 'ion', 'meaningless', 'mess', 'mob', 'mobile', 'opinion', 'opposition', 'peri', 'pome', 'poop', 'poor', 'pope', 'posit', 'position', 'rime', 'ripe', 'sit', 'superior', 'suss', 'toile', 'tome', 'tope', 'tori', 'toss'],
+  },
 ] as const
