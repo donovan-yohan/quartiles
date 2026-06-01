@@ -183,4 +183,9 @@ export const DAILY_PUZZLES = [
     quartets: [["au","to","mob","ile"],["me","anin","gle","ss"],["su","pe","ri","or"],["op","po","sit","ion"],["in","conv","eni","ence"]],
     words: ['auto', 'automobile', 'convenience', 'inconvenience', 'ingle', 'inion', 'into', 'ion', 'meaningless', 'mess', 'mob', 'mobile', 'opinion', 'opposition', 'peri', 'pome', 'poop', 'poor', 'pope', 'posit', 'position', 'rime', 'ripe', 'sit', 'superior', 'suss', 'toile', 'tome', 'tope', 'tori', 'toss'],
   },
+  {
+    date: '2026-06-01',
+    quartets: [["in","tern","ati","onal"],["dis","co","veri","ng"],["unfo","rtu","nate","ly"],["so","lu","ti","ons"],["con","seq","uen","ce"]],
+    words: ['cedis', 'coati', 'coating', 'coin', 'coly', 'con', 'connate', 'consequence', 'coons', 'covering', 'dis', 'disco', 'discovering', 'inly', 'innate', 'innately', 'intern', 'international', 'inti', 'luce', 'lunate', 'lung', 'luting', 'sequence', 'solutions', 'song', 'tern', 'ting', 'tingly', 'unfortunate', 'unfortunately', 'verily'],
+  },
 ] as const
