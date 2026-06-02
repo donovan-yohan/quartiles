@@ -188,4 +188,9 @@ export const DAILY_PUZZLES = [
     quartets: [["in","tern","ati","onal"],["dis","co","veri","ng"],["unfo","rtu","nate","ly"],["so","lu","ti","ons"],["con","seq","uen","ce"]],
     words: ['cedis', 'coati', 'coating', 'coin', 'coly', 'con', 'connate', 'consequence', 'coons', 'covering', 'dis', 'disco', 'discovering', 'inly', 'innate', 'innately', 'intern', 'international', 'inti', 'luce', 'lunate', 'lung', 'luting', 'sequence', 'solutions', 'song', 'tern', 'ting', 'tingly', 'unfortunate', 'unfortunately', 'verily'],
   },
+  {
+    date: '2026-06-02',
+    quartets: [["pe","cu","li","ar"],["ins","ti","tut","ions"],["com","mer","ci","al"],["re","pea","te","dly"],["rec","omm","en","ded"]],
+    words: ['alar', 'arte', 'cite', 'commercial', 'compete', 'cure', 'cute', 'ended', 'entire', 'ins', 'institutions', 'ions', 'liar', 'lien', 'lire', 'lite', 'pea', 'peal', 'pear', 'peculiar', 'peen', 'pelite', 'petite', 'real', 'rear', 'recipe', 'recite', 'recommended', 'recti', 'redly', 'reins', 'repeal', 'repeatedly', 'rete', 'teal', 'tear', 'teen', 'tided', 'timer', 'tire', 'tiredly', 'tut', 'tutti'],
+  },
 ] as const
