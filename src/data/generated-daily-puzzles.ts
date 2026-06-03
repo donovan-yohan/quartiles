@@ -193,4 +193,9 @@ export const DAILY_PUZZLES = [
     quartets: [["pe","cu","li","ar"],["ins","ti","tut","ions"],["com","mer","ci","al"],["re","pea","te","dly"],["rec","omm","en","ded"]],
     words: ['alar', 'arte', 'cite', 'commercial', 'compete', 'cure', 'cute', 'ended', 'entire', 'ins', 'institutions', 'ions', 'liar', 'lien', 'lire', 'lite', 'pea', 'peal', 'pear', 'peculiar', 'peen', 'pelite', 'petite', 'real', 'rear', 'recipe', 'recite', 'recommended', 'recti', 'redly', 'reins', 'repeal', 'repeatedly', 'rete', 'teal', 'tear', 'teen', 'tided', 'timer', 'tire', 'tiredly', 'tut', 'tutti'],
   },
+  {
+    date: '2026-06-03',
+    quartets: [["av","ail","ab","le"],["soph","ist","ica","ted"],["im","agi","nat","ion"],["spe","ci","fic","ally"],["po","we","rf","ul"]],
+    words: ['able', 'ableist', 'agile', 'ail', 'ally', 'avail', 'available', 'avion', 'cited', 'imagination', 'ion', 'istle', 'nation', 'nationally', 'pole', 'powerful', 'sophist', 'sophisticated', 'specially', 'specific', 'specifically', 'ted'],
+  },
 ] as const
