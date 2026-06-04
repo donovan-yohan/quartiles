@@ -198,4 +198,9 @@ export const DAILY_PUZZLES = [
     quartets: [["av","ail","ab","le"],["soph","ist","ica","ted"],["im","agi","nat","ion"],["spe","ci","fic","ally"],["po","we","rf","ul"]],
     words: ['able', 'ableist', 'agile', 'ail', 'ally', 'avail', 'available', 'avion', 'cited', 'imagination', 'ion', 'istle', 'nation', 'nationally', 'pole', 'powerful', 'sophist', 'sophisticated', 'specially', 'specific', 'specifically', 'ted'],
   },
+  {
+    date: '2026-06-04',
+    quartets: [["fa","mi","li","ar"],["int","ell","igen","ce"],["pa","rag","ra","ph"],["de","fin","iti","ve"],["app","rop","ria","te"]],
+    words: ['appropriate', 'arte', 'cede', 'cerate', 'ceria', 'dear', 'deface', 'definitive', 'deli', 'ell', 'face', 'fade', 'faint', 'familiar', 'fate', 'fave', 'fin', 'intelligence', 'liar', 'lice', 'lira', 'lite', 'live', 'mice', 'mite', 'pace', 'paint', 'parade', 'paragraph', 'paraph', 'pate', 'pave', 'race', 'rag', 'rate', 'rave', 'ria', 'tear', 'tephra'],
+  },
 ] as const
