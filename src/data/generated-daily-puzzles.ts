@@ -203,4 +203,9 @@ export const DAILY_PUZZLES = [
     quartets: [["fa","mi","li","ar"],["int","ell","igen","ce"],["pa","rag","ra","ph"],["de","fin","iti","ve"],["app","rop","ria","te"]],
     words: ['appropriate', 'arte', 'cede', 'cerate', 'ceria', 'dear', 'deface', 'definitive', 'deli', 'ell', 'face', 'fade', 'faint', 'familiar', 'fate', 'fave', 'fin', 'intelligence', 'liar', 'lice', 'lira', 'lite', 'live', 'mice', 'mite', 'pace', 'paint', 'parade', 'paragraph', 'paraph', 'pate', 'pave', 'race', 'rag', 'rate', 'rave', 'ria', 'tear', 'tephra'],
   },
+  {
+    date: '2026-06-05',
+    quartets: [["suf","fi","cie","ntly"],["unr","eas","ona","ble"],["sig","nif","ican","ce"],["va","ca","ti","ons"],["fu","nda","me","ntal"]],
+    words: ['cable', 'came', 'cations', 'ceca', 'cental', 'findable', 'fume', 'fundamental', 'mendable', 'mental', 'significance', 'suffice', 'sufficiently', 'time', 'unreasonable', 'unreasons', 'vacantly', 'vacations', 'vanda'],
+  },
 ] as const
