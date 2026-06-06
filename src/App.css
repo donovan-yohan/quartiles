@@ -115,9 +115,38 @@
 }
 
 .home-hero h1 {
-  font-size: 34px;
-  line-height: 1;
   margin: 0;
+}
+
+.lexitiles-logo {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  width: min(100%, 390px);
+}
+
+.lexitiles-logo__tile {
+  aspect-ratio: 1 / .82;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--accent-border);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.045)),
+    #11151d;
+  color: var(--tile-fg);
+  box-shadow: var(--tile-shadow);
+  font-size: clamp(26px, 7vw, 46px);
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  line-height: 1;
+}
+
+.lexitiles-logo__tile--accent {
+  border-color: var(--tile-selected-border);
+  background: linear-gradient(180deg, var(--tile-selected-bg), var(--accent-strong));
+  color: var(--tile-selected-fg);
+  box-shadow: var(--tile-selected-shadow);
 }
 
 .home-hero p {

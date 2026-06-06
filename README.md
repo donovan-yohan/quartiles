@@ -1,6 +1,6 @@
-# Lexi Tiles
+# lexitiles
 
-Lexi Tiles is a mobile-first, open-source word-fragment puzzle. Tap tiles in order to build valid words, chase the four-part bonus words, and use hints when your brain starts leaking out of your ears.
+lexitiles is a mobile-first, open-source word-fragment puzzle. Tap tiles in order to build valid words, chase the four-part bonus words, and use hints when your brain starts leaking out of your ears.
 
 The repository name is `quartiles`, but the app intentionally avoids Apple naming, branding, assets, and UI copy.
 

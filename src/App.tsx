@@ -239,6 +239,19 @@ function DonateFooter() {
   )
 }
 
+function LexitilesLogo() {
+  return (
+    <span className="lexitiles-logo" aria-hidden="true">
+      <span className="lexitiles-logo__tile">le</span>
+      <span className="lexitiles-logo__tile lexitiles-logo__tile--accent">xi</span>
+      <span className="lexitiles-logo__tile">ti</span>
+      <span className="lexitiles-logo__tile">les</span>
+    </span>
+  )
+}
+
+const appName = 'lexitiles'
+
 const nextHint = (words: PuzzleWord[], foundWords: Set<string>) =>
   [...words]
     .filter((word) => !foundWords.has(word.word))
@@ -513,7 +526,9 @@ function HomePage({ page }: { page: number }) {
     <main className="app-shell home-shell">
       <section className="home-hero">
         <p className="mode-label">Daily word puzzle</p>
-        <h1>Lexi Tiles</h1>
+        <h1 aria-label={appName}>
+          <LexitilesLogo />
+        </h1>
         <p>
           Find the five target quartets by combining tile fragments into complete words. Shorter words also score, but
           the board is complete when every target quartet has been found.
@@ -845,7 +860,7 @@ function App() {
 
   const shareGame = useCallback(async () => {
     const gameUrl = new URL(dailyPathForDate(puzzle.id), window.location.origin).toString()
-    const shareText = `Lexi Tiles ${puzzle.id}: ${score}/${totalScore} points, ${foundQuartets.length}/${quartetWords.length} quartets, ${foundWords.length}/${puzzle.words.length} words. Play: ${gameUrl}`
+    const shareText = `${appName} ${puzzle.id}: ${score}/${totalScore} points, ${foundQuartets.length}/${quartetWords.length} quartets, ${foundWords.length}/${puzzle.words.length} words. Play: ${gameUrl}`
 
     try {
       await writeClipboardText(shareText)

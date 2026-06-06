@@ -100,7 +100,7 @@ afterEach(() => {
   })
 })
 
-describe('Lexi Tiles app', () => {
+describe('lexitiles app', () => {
   const activeTileLabels = () =>
     screen
       .getAllByRole('button')
@@ -117,7 +117,7 @@ describe('Lexi Tiles app', () => {
   it('renders a compact daily puzzle without the app header, custom controls, or instructional copy', () => {
     renderDaily()
 
-    expect(screen.queryByRole('heading', { name: /lexi tiles/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: /lexitiles/i })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: /custom/i })).not.toBeInTheDocument()
     expect(screen.queryByText(/how to play/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/build words by tapping/i)).not.toBeInTheDocument()
@@ -163,7 +163,7 @@ describe('Lexi Tiles app', () => {
     await userEvent.click(screen.getByRole('button', { name: /share your results/i }))
 
     expect(writeText).toHaveBeenCalledWith(
-      `Lexi Tiles ${gameplayDailyDate}: 10/${totalScore} points, 1/5 quartets, 2/24 words. Play: http://localhost:3000/daily/${gameplayDailyDate}`,
+      `lexitiles ${gameplayDailyDate}: 10/${totalScore} points, 1/5 quartets, 2/24 words. Play: http://localhost:3000/daily/${gameplayDailyDate}`,
     )
     expect(screen.getByRole('status')).toHaveTextContent(/share text copied/i)
   })
@@ -374,7 +374,7 @@ describe('Lexi Tiles app', () => {
   it('renders the root tutorial with a latest puzzle CTA and 7 recent puzzle entries', () => {
     render(<App />)
 
-    expect(screen.getByRole('heading', { name: /lexi tiles/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /lexitiles/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /how to play/i })).toBeInTheDocument()
     expect(screen.getByText(/find the five target quartets/i)).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /play today's puzzle/i })).toHaveAttribute(

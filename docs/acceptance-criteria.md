@@ -1,6 +1,6 @@
-# Lexi Tiles acceptance criteria
+# lexitiles acceptance criteria
 
-This checklist captures the gameplay rules Lexi Tiles intentionally supports. It is based on public high-level descriptions of the tile-word puzzle format, not on copied source code or proprietary assets.
+This checklist captures the gameplay rules lexitiles intentionally supports. It is based on public high-level descriptions of the tile-word puzzle format, not on copied source code or proprietary assets.
 
 ## Research notes
 
