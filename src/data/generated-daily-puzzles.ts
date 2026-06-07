@@ -213,4 +213,9 @@ export const DAILY_PUZZLES = [
     quartets: [["int","rod","uc","es"],["phe","no","me","non"],["ca","pa","ci","ty"],["pre","par","ati","on"],["inci","dent","al","ly"]],
     words: ['ales', 'ally', 'alpaca', 'cadent', 'came', 'canoes', 'canon', 'capacity', 'cion', 'city', 'dent', 'dental', 'dentally', 'dentation', 'incident', 'incidental', 'incidentally', 'intones', 'introduces', 'meal', 'noes', 'non', 'nones', 'noon', 'ones', 'only', 'paint', 'paly', 'par', 'pares', 'party', 'phenomenon', 'pheon', 'pre', 'preparation', 'prepares', 'rod'],
   },
+  {
+    date: '2026-06-07',
+    quartets: [["in","tr","odu","ce"],["del","ibe","ra","tely"],["unre","as","ona","ble"],["dis","co","ver","ed"],["au","tom","ob","ile"]],
+    words: ['aura', 'automobile', 'bleed', 'ceased', 'cedis', 'coble', 'coed', 'coin', 'coined', 'cover', 'covered', 'deliberately', 'delver', 'dis', 'disco', 'discoed', 'discover', 'discovered', 'introduce', 'race', 'rain', 'rained', 'raver', 'tom', 'tribe', 'trona', 'unreasonable'],
+  },
 ] as const
