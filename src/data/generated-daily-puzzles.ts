@@ -228,4 +228,9 @@ export const DAILY_PUZZLES = [
     quartets: [["occ","as","io","nal"],["re","le","van","ce"],["ec","on","om","ic"],["co","mpat","ibil","ity"],["ind","iv","id","ual"]],
     words: ['cole', 'compatibility', 'coom', 'coon', 'core', 'economic', 'icon', 'idle', 'individual', 'leas', 'occasional', 'once', 'reason', 'relevance', 'renal', 'van', 'vanity'],
   },
+  {
+    date: '2026-06-10',
+    quartets: [["prog","ra","mm","ers"],["va","ri","ab","les"],["rel","ati","onsh","ip"],["comp","reh","ens","ive"],["de","fin","iti","ve"]],
+    words: ['abrade', 'abri', 'comprehensive', 'definers', 'definitive', 'derive', 'ens', 'fin', 'programmers', 'rales', 'rammers', 'rave', 'rehab', 'relationship', 'relative', 'relive', 'ride', 'riles', 'rive', 'vales', 'vara', 'variables', 'veers'],
+  },
 ] as const
