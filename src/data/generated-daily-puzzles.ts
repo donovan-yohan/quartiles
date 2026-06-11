@@ -233,4 +233,9 @@ export const DAILY_PUZZLES = [
     quartets: [["prog","ra","mm","ers"],["va","ri","ab","les"],["rel","ati","onsh","ip"],["comp","reh","ens","ive"],["de","fin","iti","ve"]],
     words: ['abrade', 'abri', 'comprehensive', 'definers', 'definitive', 'derive', 'ens', 'fin', 'programmers', 'rales', 'rammers', 'rave', 'rehab', 'relationship', 'relative', 'relive', 'ride', 'riles', 'rive', 'vales', 'vara', 'variables', 'veers'],
   },
+  {
+    date: '2026-06-11',
+    quartets: [["ye","ste","rd","ay"],["rid","ic","ulo","us"],["ap","pea","ra","nce"],["au","di","en","ce"],["dif","fic","ul","ties"]],
+    words: ['appearance', 'audience', 'aura', 'cedi', 'dice', 'difficulties', 'ficus', 'pea', 'peace', 'race', 'radius', 'rance', 'rid', 'ridiculous', 'ties', 'yesterday'],
+  },
 ] as const
