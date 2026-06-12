@@ -238,4 +238,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ye","ste","rd","ay"],["rid","ic","ulo","us"],["ap","pea","ra","nce"],["au","di","en","ce"],["dif","fic","ul","ties"]],
     words: ['appearance', 'audience', 'aura', 'cedi', 'dice', 'difficulties', 'ficus', 'pea', 'peace', 'race', 'radius', 'rance', 'rid', 'ridiculous', 'ties', 'yesterday'],
   },
+  {
+    date: '2026-06-12',
+    quartets: [["mu","lt","ip","le"],["ind","iv","idu","als"],["in","co","mpat","ible"],["the","or","et","ical"],["poss","ibi","lit","ies"]],
+    words: ['coals', 'coin', 'cole', 'colt', 'compatible', 'incompatible', 'indies', 'individuals', 'ivies', 'ivories', 'leet', 'lethe', 'lit', 'mule', 'multiple', 'orals', 'orle', 'posset', 'possibilities', 'possible', 'the', 'theoretical', 'theories'],
+  },
 ] as const
