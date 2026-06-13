@@ -243,4 +243,9 @@ export const DAILY_PUZZLES = [
     quartets: [["mu","lt","ip","le"],["ind","iv","idu","als"],["in","co","mpat","ible"],["the","or","et","ical"],["poss","ibi","lit","ies"]],
     words: ['coals', 'coin', 'cole', 'colt', 'compatible', 'incompatible', 'indies', 'individuals', 'ivies', 'ivories', 'leet', 'lethe', 'lit', 'mule', 'multiple', 'orals', 'orle', 'posset', 'possibilities', 'possible', 'the', 'theoretical', 'theories'],
   },
+  {
+    date: '2026-06-13',
+    quartets: [["co","mmu","nica","te"],["di","sa","ppe","ared"],["ci","rcu","msta","nce"],["ev","id","en","ce"],["pr","oc","ess","ed"]],
+    words: ['cedi', 'circumstance', 'cite', 'coed', 'communicate', 'commute', 'cote', 'dice', 'died', 'disappeared', 'essence', 'even', 'evened', 'evidence', 'press', 'pressed', 'prided', 'process', 'processed', 'said', 'sance', 'sate', 'sateen', 'teared', 'teed', 'teen'],
+  },
 ] as const
