@@ -248,4 +248,9 @@ export const DAILY_PUZZLES = [
     quartets: [["co","mmu","nica","te"],["di","sa","ppe","ared"],["ci","rcu","msta","nce"],["ev","id","en","ce"],["pr","oc","ess","ed"]],
     words: ['cedi', 'circumstance', 'cite', 'coed', 'communicate', 'commute', 'cote', 'dice', 'died', 'disappeared', 'essence', 'even', 'evened', 'evidence', 'press', 'pressed', 'prided', 'process', 'processed', 'said', 'sance', 'sate', 'sateen', 'teared', 'teed', 'teen'],
   },
+  {
+    date: '2026-06-14',
+    quartets: [["rea","son","ab","ly"],["su","pe","ri","or"],["imp","rov","em","ents"],["sig","ni","fica","nce"],["oc","ca","si","on"]],
+    words: ['ably', 'abri', 'cape', 'imp', 'imply', 'imprison', 'improvements', 'nisi', 'occasion', 'ocrea', 'only', 'orca', 'pence', 'peon', 'peri', 'reason', 'reasonably', 'ripe', 'ripely', 'significance', 'since', 'son', 'sonly', 'superior'],
+  },
 ] as const
