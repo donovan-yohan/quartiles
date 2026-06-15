@@ -253,4 +253,9 @@ export const DAILY_PUZZLES = [
     quartets: [["rea","son","ab","ly"],["su","pe","ri","or"],["imp","rov","em","ents"],["sig","ni","fica","nce"],["oc","ca","si","on"]],
     words: ['ably', 'abri', 'cape', 'imp', 'imply', 'imprison', 'improvements', 'nisi', 'occasion', 'ocrea', 'only', 'orca', 'pence', 'peon', 'peri', 'reason', 'reasonably', 'ripe', 'ripely', 'significance', 'since', 'son', 'sonly', 'superior'],
   },
+  {
+    date: '2026-06-15',
+    quartets: [["bro","adc","as","ting"],["add","it","io","nal"],["sup","erv","is","or"],["de","fi","nit","ive"],["re","li","gi","on"]],
+    words: ['add', 'additional', 'additive', 'broadcasting', 'definitive', 'deli', 'final', 'fire', 'lion', 'lire', 'nit', 'orison', 'reason', 'rede', 'region', 'reive', 'religion', 'renal', 'sup', 'supervisor', 'ting'],
+  },
 ] as const
