@@ -258,4 +258,9 @@ export const DAILY_PUZZLES = [
     quartets: [["bro","adc","as","ting"],["add","it","io","nal"],["sup","erv","is","or"],["de","fi","nit","ive"],["re","li","gi","on"]],
     words: ['add', 'additional', 'additive', 'broadcasting', 'definitive', 'deli', 'final', 'fire', 'lion', 'lire', 'nit', 'orison', 'reason', 'rede', 'region', 'reive', 'religion', 'renal', 'sup', 'supervisor', 'ting'],
   },
+  {
+    date: '2026-06-16',
+    quartets: [["tho","us","an","ds"],["in","tro","duc","es"],["su","gge","sti","ons"],["inci","den","ta","lly"],["inf","orm","at","ion"]],
+    words: ['anion', 'anons', 'anta', 'anus', 'anuses', 'attain', 'den', 'dentally', 'ducat', 'incidentally', 'indenes', 'induces', 'infanta', 'inform', 'information', 'infuses', 'infusion', 'inion', 'introduces', 'ion', 'sties', 'stilly', 'suds', 'sues', 'suggestions', 'sully', 'tads', 'tain', 'tally', 'taus', 'tho', 'thous', 'thousands', 'troat', 'uses'],
+  },
 ] as const
