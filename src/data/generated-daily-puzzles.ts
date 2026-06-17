@@ -263,4 +263,9 @@ export const DAILY_PUZZLES = [
     quartets: [["tho","us","an","ds"],["in","tro","duc","es"],["su","gge","sti","ons"],["inci","den","ta","lly"],["inf","orm","at","ion"]],
     words: ['anion', 'anons', 'anta', 'anus', 'anuses', 'attain', 'den', 'dentally', 'ducat', 'incidentally', 'indenes', 'induces', 'infanta', 'inform', 'information', 'infuses', 'infusion', 'inion', 'introduces', 'ion', 'sties', 'stilly', 'suds', 'sues', 'suggestions', 'sully', 'tads', 'tain', 'tally', 'taus', 'tho', 'thous', 'thousands', 'troat', 'uses'],
   },
+  {
+    date: '2026-06-17',
+    quartets: [["pro","gra","mmi","ng"],["nec","es","sa","rily"],["im","agi","na","tion"],["acci","den","tal","ly"],["dem","oc","rat","ic"]],
+    words: ['accidental', 'accidentally', 'democrat', 'democratic', 'den', 'denim', 'dental', 'dentally', 'granges', 'ices', 'imagination', 'imaging', 'natal', 'nation', 'necessarily', 'octal', 'pro', 'programming', 'pronation', 'prong', 'prorates', 'prosaic', 'rat', 'rates', 'sang', 'tales', 'tally'],
+  },
 ] as const
