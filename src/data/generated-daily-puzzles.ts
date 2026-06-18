@@ -268,4 +268,9 @@ export const DAILY_PUZZLES = [
     quartets: [["pro","gra","mmi","ng"],["nec","es","sa","rily"],["im","agi","na","tion"],["acci","den","tal","ly"],["dem","oc","rat","ic"]],
     words: ['accidental', 'accidentally', 'democrat', 'democratic', 'den', 'denim', 'dental', 'dentally', 'granges', 'ices', 'imagination', 'imaging', 'natal', 'nation', 'necessarily', 'octal', 'pro', 'programming', 'pronation', 'prong', 'prorates', 'prosaic', 'rat', 'rates', 'sang', 'tales', 'tally'],
   },
+  {
+    date: '2026-06-18',
+    quartets: [["en","co","ura","ging"],["aft","er","no","on"],["qu","ic","ke","st"],["pa","rti","cul","ar"],["emb","arr","as","ses"]],
+    words: ['aft', 'after', 'afternoon', 'arenas', 'arras', 'asses', 'coke', 'coon', 'cost', 'costar', 'culpa', 'embarrasses', 'ember', 'encouraging', 'eras', 'erst', 'ginger', 'icon', 'keas', 'keen', 'keener', 'keno', 'noon', 'noses', 'paging', 'particular', 'past', 'pastas', 'quasar', 'quickest', 'star', 'starer', 'steric', 'stoner'],
+  },
 ] as const
