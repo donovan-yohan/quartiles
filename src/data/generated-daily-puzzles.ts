@@ -278,4 +278,9 @@ export const DAILY_PUZZLES = [
     quartets: [["exp","eri","enc","ed"],["po","te","nti","al"],["pun","ctua","ti","on"],["poss","ibi","lit","ies"],["auto","mati","ca","lly"]],
     words: ['alerion', 'alibi', 'alibied', 'auto', 'automatically', 'automation', 'capo', 'capote', 'cate', 'cation', 'experienced', 'lit', 'polities', 'poon', 'possibilities', 'potential', 'potion', 'pun', 'punctually', 'punctuate', 'punctuation', 'teal', 'teed', 'telly', 'tied'],
   },
+  {
+    date: '2026-06-20',
+    quartets: [["mat","hem","atic","al"],["su","gges","tio","ns"],["fund","ame","ntal","ly"],["gu","ar","an","tee"],["con","se","quen","ces"]],
+    words: ['alar', 'ally', 'anal', 'anally', 'ancon', 'con', 'conns', 'consequences', 'fund', 'fundamental', 'fundamentally', 'guan', 'guarantee', 'guns', 'hem', 'lyse', 'mat', 'mathematic', 'mathematical', 'seal', 'sear', 'sens', 'sequences', 'suggestions', 'suns', 'tee', 'teens'],
+  },
 ] as const
