@@ -283,4 +283,9 @@ export const DAILY_PUZZLES = [
     quartets: [["mat","hem","atic","al"],["su","gges","tio","ns"],["fund","ame","ntal","ly"],["gu","ar","an","tee"],["con","se","quen","ces"]],
     words: ['alar', 'ally', 'anal', 'anally', 'ancon', 'con', 'conns', 'consequences', 'fund', 'fundamental', 'fundamentally', 'guan', 'guarantee', 'guns', 'hem', 'lyse', 'mat', 'mathematic', 'mathematical', 'seal', 'sear', 'sens', 'sequences', 'suggestions', 'suns', 'tee', 'teens'],
   },
+  {
+    date: '2026-06-21',
+    quartets: [["ho","pe","fu","lly"],["cont","ri","but","ions"],["ex","er","ci","se"],["al","to","get","her"],["po","si","ti","ve"]],
+    words: ['alto', 'altogether', 'but', 'contributions', 'contrive', 'excise', 'exercise', 'expo', 'expose', 'fully', 'fuse', 'get', 'her', 'hoer', 'holly', 'hope', 'hopefully', 'hose', 'hosier', 'hove', 'ions', 'peal', 'peer', 'peri', 'pope', 'pose', 'positive', 'rial', 'rialto', 'ripe', 'rise', 'rive', 'seal', 'sealer', 'seer', 'serial', 'silly', 'tier', 'tofu', 'together', 'tolly', 'tope', 'tori', 'veal', 'veer', 'vegetal', 'verier', 'veto'],
+  },
 ] as const
