@@ -288,4 +288,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ho","pe","fu","lly"],["cont","ri","but","ions"],["ex","er","ci","se"],["al","to","get","her"],["po","si","ti","ve"]],
     words: ['alto', 'altogether', 'but', 'contributions', 'contrive', 'excise', 'exercise', 'expo', 'expose', 'fully', 'fuse', 'get', 'her', 'hoer', 'holly', 'hope', 'hopefully', 'hose', 'hosier', 'hove', 'ions', 'peal', 'peer', 'peri', 'pope', 'pose', 'positive', 'rial', 'rialto', 'ripe', 'rise', 'rive', 'seal', 'sealer', 'seer', 'serial', 'silly', 'tier', 'tofu', 'together', 'tolly', 'tope', 'tori', 'veal', 'veer', 'vegetal', 'verier', 'veto'],
   },
+  {
+    date: '2026-06-22',
+    quartets: [["dis","co","ur","age"],["op","port","unit","ies"],["tran","sfe","rr","ed"],["dist","ri","bu","te"],["tel","ep","ho","ne"]],
+    words: ['age', 'buried', 'burr', 'burred', 'butene', 'coed', 'coho', 'cone', 'coop', 'cooped', 'corries', 'cote', 'courage', 'dis', 'disco', 'discoed', 'discourage', 'disport', 'disported', 'distribute', 'disunited', 'hoed', 'hone', 'hoop', 'hooped', 'hotel', 'hour', 'need', 'oped', 'opportunities', 'port', 'portage', 'ported', 'rite', 'teed', 'telephone', 'transferred', 'unit', 'united', 'unities'],
+  },
 ] as const
