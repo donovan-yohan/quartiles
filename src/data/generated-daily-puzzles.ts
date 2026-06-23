@@ -293,4 +293,9 @@ export const DAILY_PUZZLES = [
     quartets: [["dis","co","ur","age"],["op","port","unit","ies"],["tran","sfe","rr","ed"],["dist","ri","bu","te"],["tel","ep","ho","ne"]],
     words: ['age', 'buried', 'burr', 'burred', 'butene', 'coed', 'coho', 'cone', 'coop', 'cooped', 'corries', 'cote', 'courage', 'dis', 'disco', 'discoed', 'discourage', 'disport', 'disported', 'distribute', 'disunited', 'hoed', 'hone', 'hoop', 'hooped', 'hotel', 'hour', 'need', 'oped', 'opportunities', 'port', 'portage', 'ported', 'rite', 'teed', 'telephone', 'transferred', 'unit', 'united', 'unities'],
   },
+  {
+    date: '2026-06-23',
+    quartets: [["im","me","dia","tely"],["alte","rnat","ive","ly"],["res","pe","cti","vely"],["ref","er","en","ce"],["re","mem","ber","ing"]],
+    words: ['alternating', 'alternative', 'alternatively', 'immediately', 'lying', 'lyre', 'lyres', 'media', 'mediately', 'member', 'mere', 'merely', 'meres', 'peen', 'peer', 'peering', 'receive', 'recti', 'ref', 'refer', 'reference', 'reive', 'rely', 'relying', 'remember', 'remembering', 'respectively'],
+  },
 ] as const
