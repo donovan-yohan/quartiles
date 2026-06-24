@@ -298,4 +298,9 @@ export const DAILY_PUZZLES = [
     quartets: [["im","me","dia","tely"],["alte","rnat","ive","ly"],["res","pe","cti","vely"],["ref","er","en","ce"],["re","mem","ber","ing"]],
     words: ['alternating', 'alternative', 'alternatively', 'immediately', 'lying', 'lyre', 'lyres', 'media', 'mediately', 'member', 'mere', 'merely', 'meres', 'peen', 'peer', 'peering', 'receive', 'recti', 'ref', 'refer', 'reference', 'reive', 'rely', 'relying', 'remember', 'remembering', 'respectively'],
   },
+  {
+    date: '2026-06-24',
+    quartets: [["bo","th","er","ed"],["imp","oss","ib","le"],["com","pati","bil","ity"],["es","ta","blis","hed"],["ne","ce","ssar","ily"]],
+    words: ['bilbo', 'bole', 'bone', 'both', 'bother', 'bothered', 'cetane', 'combo', 'comer', 'comes', 'comity', 'compatibility', 'edible', 'erne', 'established', 'heder', 'imp', 'impeder', 'impedes', 'impossible', 'leer', 'leered', 'leerily', 'lees', 'necessarily', 'need', 'needle', 'nether', 'tace', 'tale'],
+  },
 ] as const
