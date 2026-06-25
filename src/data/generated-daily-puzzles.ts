@@ -303,4 +303,9 @@ export const DAILY_PUZZLES = [
     quartets: [["bo","th","er","ed"],["imp","oss","ib","le"],["com","pati","bil","ity"],["es","ta","blis","hed"],["ne","ce","ssar","ily"]],
     words: ['bilbo', 'bole', 'bone', 'both', 'bother', 'bothered', 'cetane', 'combo', 'comer', 'comes', 'comity', 'compatibility', 'edible', 'erne', 'established', 'heder', 'imp', 'impeder', 'impedes', 'impossible', 'leer', 'leered', 'leerily', 'lees', 'necessarily', 'need', 'needle', 'nether', 'tace', 'tale'],
   },
+  {
+    date: '2026-06-25',
+    quartets: [["fin","an","ci","al"],["ex","ce","ptio","ns"],["lo","ca","ti","on"],["exp","eri","me","ntal"],["unf","ort","una","tely"]],
+    words: ['alerion', 'anal', 'anon', 'anti', 'came', 'cans', 'captions', 'cation', 'ceca', 'cental', 'cion', 'exceptions', 'exon', 'experimental', 'export', 'fin', 'final', 'finance', 'financial', 'loan', 'location', 'loci', 'loon', 'loti', 'lotion', 'meal', 'mean', 'melons', 'mensal', 'mental', 'once', 'ort', 'time', 'tins', 'unfortunately'],
+  },
 ] as const
