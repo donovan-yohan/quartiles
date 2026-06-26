@@ -433,10 +433,23 @@
   gap: 6px;
 }
 
+.tile-grid--dragging {
+  cursor: grabbing;
+}
+
+.tile-drag-active {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  overscroll-behavior: contain;
+}
+
 .tile {
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  display: grid;
+  place-items: center;
   min-width: 0;
   min-height: 52px;
   padding: 11px 4px;
@@ -448,7 +461,7 @@
   background: var(--control-button-bg);
   border: 1px solid var(--tile-border);
   border-radius: 8px;
-  cursor: pointer;
+  cursor: grab;
   box-shadow: var(--tile-shadow);
   text-align: center;
   word-break: break-word;
@@ -456,6 +469,30 @@
     box-shadow 0.15s ease;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+}
+
+.tile--drag-source {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tile--fixed {
+  cursor: pointer;
+}
+
+.tile--drag-overlay {
+  position: fixed;
+  left: var(--drag-left);
+  top: var(--drag-top);
+  z-index: 40;
+  width: var(--drag-width);
+  height: var(--drag-height);
+  box-sizing: border-box;
+  pointer-events: none;
+  cursor: grabbing;
+  transform: translate3d(var(--drag-x), var(--drag-y), 0) rotate(var(--drag-rotation)) scale(1.045);
+  transition: none;
+  will-change: transform;
 }
 
 .tile__label {

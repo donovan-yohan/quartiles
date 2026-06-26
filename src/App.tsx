@@ -1,4 +1,15 @@
-import { memo, type CSSProperties, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import {
+  memo,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { Check, Info, Lightbulb, Medal, Share2, Shuffle, Sparkles, X } from 'lucide-react'
 import {
   AVAILABLE_DAILY_DATES,
@@ -46,6 +57,40 @@ type SavedProgress = {
   tileOrder: number[]
   hintedWords: string[]
   puzzleVersion?: string
+}
+
+type TileRect = {
+  left: number
+  top: number
+  width: number
+  height: number
+  right: number
+  bottom: number
+}
+
+type PendingDrag = {
+  tileId: number
+  pointerId: number
+  startX: number
+  startY: number
+  currentX: number
+  currentY: number
+  pointerType: string
+  node: HTMLButtonElement
+  holdTimer: number
+}
+
+type DraggedTile = {
+  tileId: number
+  pointerId: number
+  label: string
+  className: string
+  originRect: TileRect
+  startX: number
+  startY: number
+  currentX: number
+  currentY: number
+  rotation: number
 }
 
 type AppRoute =
@@ -329,6 +374,54 @@ const shouldReduceTileMotion = () => {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
+const rectFromDomRect = (rect: DOMRect): TileRect => ({
+  left: rect.left,
+  top: rect.top,
+  width: rect.width,
+  height: rect.height,
+  right: rect.right,
+  bottom: rect.bottom,
+})
+
+const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max)
+
+const swapTileIds = (order: number[], firstTileId: number, secondTileId: number) => {
+  const firstIndex = order.indexOf(firstTileId)
+  const secondIndex = order.indexOf(secondTileId)
+
+  if (firstIndex < 0 || secondIndex < 0 || firstIndex === secondIndex) {
+    return order
+  }
+
+  const nextOrder = [...order]
+  ;[nextOrder[firstIndex], nextOrder[secondIndex]] = [nextOrder[secondIndex], nextOrder[firstIndex]]
+  return nextOrder
+}
+
+const swapUnpinnedTileIds = (order: number[], firstTileId: number, secondTileId: number, pinnedTileOrder: number[]) => {
+  const pinnedTileSet = new Set(pinnedTileOrder)
+  if (pinnedTileSet.has(firstTileId) || pinnedTileSet.has(secondTileId)) {
+    return order
+  }
+
+  return swapTileIds(order, firstTileId, secondTileId)
+}
+
+const tileAtPoint = (tileNodes: Map<number, HTMLButtonElement>, clientX: number, clientY: number, excludedTileId: number) => {
+  for (const [tileId, tile] of tileNodes) {
+    if (tileId === excludedTileId) {
+      continue
+    }
+
+    const rect = tile.getBoundingClientRect()
+    if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
+      return tileId
+    }
+  }
+
+  return null
+}
+
 const playFlipAnimations = (firstPositions: Map<number, DOMRect>, tileNodes: Map<number, HTMLButtonElement>) => {
   if (shouldReduceTileMotion()) {
     return
@@ -362,7 +455,12 @@ type TileButtonProps = {
   selected: boolean
   foundQuartetTile: boolean
   exhausted: boolean
+  dragging: boolean
+  draggable: boolean
   onClick: (index: number) => void
+  onPointerDown: (index: number, event: ReactPointerEvent<HTMLButtonElement>) => void
+  onPointerMove: (event: ReactPointerEvent<HTMLButtonElement>) => void
+  onPointerUp: (event: ReactPointerEvent<HTMLButtonElement>) => void
   registerTileNode: (index: number, node: HTMLButtonElement | null) => void
 }
 
@@ -384,10 +482,15 @@ const TileButton = memo(function TileButton({
   selected,
   foundQuartetTile,
   exhausted,
+  dragging,
+  draggable,
   onClick,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
   registerTileNode,
 }: TileButtonProps) {
-  const className = `tile${foundQuartetTile ? ' tile--quartet' : ''}${exhausted ? ' tile--exhausted' : ''}${selected ? ' tile--selected' : ''}`
+  const className = `tile${foundQuartetTile ? ' tile--quartet' : ''}${exhausted ? ' tile--exhausted' : ''}${selected ? ' tile--selected' : ''}${dragging ? ' tile--drag-source' : ''}${!draggable && !exhausted ? ' tile--fixed' : ''}`
   const holoStyle = useMemo(() => (exhausted ? tileHoloVariation(index, label) : undefined), [exhausted, index, label])
   const buttonRef = useCallback((node: HTMLButtonElement | null) => registerTileNode(index, node), [index, registerTileNode])
 
@@ -399,8 +502,12 @@ const TileButton = memo(function TileButton({
       aria-pressed={selected}
       disabled={exhausted}
       style={holoStyle}
-      title={exhausted ? 'No remaining words use this tile' : undefined}
+      title={exhausted ? 'No remaining words use this tile' : draggable ? 'Hold and drag to reorder this tile' : undefined}
       onClick={() => onClick(index)}
+      onPointerDown={(event) => onPointerDown(index, event)}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
     >
       <span className="tile__label">{label}</span>
     </button>
@@ -605,8 +712,16 @@ function App() {
   const [tileOrder, setTileOrder] = useState<number[]>(initialGame.tileOrder)
   const [showRemainingLengths, setShowRemainingLengths] = useState(false)
   const [showHowToPlay, setShowHowToPlay] = useState(false)
+  const [draggedTile, setDraggedTile] = useState<DraggedTile | null>(null)
   const tileNodes = useRef(new Map<number, HTMLButtonElement>())
   const pendingFlipPositions = useRef(new Map<number, DOMRect>())
+  const pendingDrag = useRef<PendingDrag | null>(null)
+  const draggedTileRef = useRef<DraggedTile | null>(null)
+  const dragRotation = useRef({ current: 0, target: 0, frame: 0 })
+  const lastDragSample = useRef<{ x: number; y: number; time: number } | null>(null)
+  const lastSwapTileId = useRef<number | null>(null)
+  const suppressClickTileId = useRef<number | null>(null)
+  const windowDragCleanup = useRef<(() => void) | null>(null)
 
   const setTileNode = useCallback((tileId: number, node: HTMLButtonElement | null) => {
     if (node) {
@@ -628,6 +743,8 @@ function App() {
     setMessage(createStatus(nextMessage))
     setShowRemainingLengths(false)
     setShowHowToPlay(false)
+    draggedTileRef.current = null
+    setDraggedTile(null)
   }, [])
 
   const loadDailyPuzzleByDate = useCallback(
@@ -653,6 +770,21 @@ function App() {
       updateDailyUrl(route.date, true)
     }
   }, [route])
+
+  useEffect(
+    () => () => {
+      if (pendingDrag.current) {
+        window.clearTimeout(pendingDrag.current.holdTimer)
+      }
+      windowDragCleanup.current?.()
+      windowDragCleanup.current = null
+      if (dragRotation.current.frame) {
+        window.cancelAnimationFrame(dragRotation.current.frame)
+        dragRotation.current.frame = 0
+      }
+    },
+    [],
+  )
 
   useEffect(() => {
     const syncRoute = () => {
@@ -751,7 +883,7 @@ function App() {
     pendingFlipPositions.current.clear()
   }, [displayTileOrder])
 
-  const captureFlipPositions = () => {
+  const captureFlipPositions = useCallback(() => {
     if (shouldReduceTileMotion()) {
       pendingFlipPositions.current.clear()
       return
@@ -763,7 +895,330 @@ function App() {
         return tile ? ([[tileId, tile.getBoundingClientRect()]] as const) : []
       }),
     )
-  }
+  }, [displayTileOrder])
+
+  const setDragRotation = useCallback((rotation: number) => {
+    setDraggedTile((current) => {
+      if (!current) {
+        return current
+      }
+
+      const nextDraggedTile = { ...current, rotation }
+      draggedTileRef.current = nextDraggedTile
+      return nextDraggedTile
+    })
+  }, [])
+
+  const stopDragRotation = useCallback(() => {
+    if (dragRotation.current.frame) {
+      window.cancelAnimationFrame(dragRotation.current.frame)
+    }
+
+    dragRotation.current = { current: 0, target: 0, frame: 0 }
+  }, [])
+
+  const runDragRotation = useCallback(() => {
+    if (dragRotation.current.frame) {
+      return
+    }
+
+    const tick = () => {
+      dragRotation.current.target *= 0.86
+      dragRotation.current.current += (dragRotation.current.target - dragRotation.current.current) * 0.24
+
+      if (Math.abs(dragRotation.current.current) < 0.04 && Math.abs(dragRotation.current.target) < 0.04) {
+        dragRotation.current.current = 0
+        dragRotation.current.target = 0
+        dragRotation.current.frame = 0
+        setDragRotation(0)
+        return
+      }
+
+      setDragRotation(dragRotation.current.current)
+      dragRotation.current.frame = window.requestAnimationFrame(tick)
+    }
+
+    dragRotation.current.frame = window.requestAnimationFrame(tick)
+  }, [setDragRotation])
+
+  const updateDragRotationTarget = useCallback(
+    (velocityX: number) => {
+      dragRotation.current.target = clamp(velocityX * 110, -7, 7)
+      runDragRotation()
+    },
+    [runDragRotation],
+  )
+
+  const finishDraggedTile = useCallback((dragState: DraggedTile | null) => {
+    stopDragRotation()
+    draggedTileRef.current = null
+    lastSwapTileId.current = null
+
+    if (!dragState) {
+      setDraggedTile(null)
+      return
+    }
+
+    const tile = tileNodes.current.get(dragState.tileId)
+    const finalRect = tile?.getBoundingClientRect()
+    const overlayLeft = dragState.originRect.left + dragState.currentX - dragState.startX
+    const overlayTop = dragState.originRect.top + dragState.currentY - dragState.startY
+
+    setDraggedTile(null)
+
+    if (!tile || !finalRect || shouldReduceTileMotion()) {
+      return
+    }
+
+    window.requestAnimationFrame(() => {
+      const animation = tile.animate(
+        [
+          {
+            transform: `translate(${overlayLeft - finalRect.left}px, ${overlayTop - finalRect.top}px) rotate(${dragState.rotation}deg)`,
+          },
+          { transform: 'translate(0, 0) rotate(0deg)' },
+        ],
+        { duration: 220, easing: 'cubic-bezier(0.2, 0, 0, 1)', fill: 'both' },
+      )
+      animation?.addEventListener?.('finish', () => animation.cancel(), { once: true })
+    })
+  }, [stopDragRotation])
+
+  useEffect(() => {
+    if (!draggedTile) {
+      return
+    }
+
+    document.body.classList.add('tile-drag-active')
+    return () => document.body.classList.remove('tile-drag-active')
+  }, [draggedTile])
+
+  const startTileDrag = useCallback(
+    (pending: PendingDrag) => {
+      const rect = rectFromDomRect(pending.node.getBoundingClientRect())
+      const foundQuartetTile = foundQuartetTileIds.has(pending.tileId)
+      const exhausted = exhaustedTileIds.has(pending.tileId)
+      const selected = selectedTileIds.includes(pending.tileId)
+      const className = `tile tile--drag-overlay${foundQuartetTile ? ' tile--quartet' : ''}${exhausted ? ' tile--exhausted' : ''}${selected ? ' tile--selected' : ''}`
+
+      const nextDraggedTile = {
+        tileId: pending.tileId,
+        pointerId: pending.pointerId,
+        label: puzzle.tiles[pending.tileId],
+        className,
+        originRect: rect,
+        startX: pending.startX,
+        startY: pending.startY,
+        currentX: pending.currentX,
+        currentY: pending.currentY,
+        rotation: 0,
+      }
+
+      lastDragSample.current = { x: pending.currentX, y: pending.currentY, time: performance.now() }
+      dragRotation.current.current = 0
+      dragRotation.current.target = 0
+      lastSwapTileId.current = null
+      draggedTileRef.current = nextDraggedTile
+      setDraggedTile(nextDraggedTile)
+      navigator.vibrate?.(8)
+    },
+    [exhaustedTileIds, foundQuartetTileIds, puzzle.tiles, selectedTileIds],
+  )
+
+  const cancelPendingTileDrag = useCallback(() => {
+    if (!pendingDrag.current) {
+      return
+    }
+
+    window.clearTimeout(pendingDrag.current.holdTimer)
+    pendingDrag.current = null
+  }, [])
+
+  const handleTilePointerDown = useCallback(
+    (tileId: number, event: ReactPointerEvent<HTMLButtonElement>) => {
+      if (event.button !== 0 || exhaustedTileIds.has(tileId) || pinnedTileOrder.includes(tileId)) {
+        return
+      }
+
+      cancelPendingTileDrag()
+      windowDragCleanup.current?.()
+      windowDragCleanup.current = null
+      const node = event.currentTarget
+      const pointerId = event.pointerId
+      const startX = event.clientX
+      const startY = event.clientY
+      const pointerType = event.pointerType
+      const holdTimer = window.setTimeout(() => {
+        const pending = pendingDrag.current
+        if (!pending || pending.pointerId !== pointerId) {
+          return
+        }
+
+        startTileDrag(pending)
+      }, pointerType === 'touch' ? 230 : 170)
+
+      pendingDrag.current = {
+        tileId,
+        pointerId,
+        startX,
+        startY,
+        currentX: startX,
+        currentY: startY,
+        pointerType,
+        node,
+        holdTimer,
+      }
+
+      const finishFromWindow = (nativeEvent: PointerEvent) => {
+        const pending = pendingDrag.current
+        if (pending?.pointerId === pointerId) {
+          window.clearTimeout(pending.holdTimer)
+          pending.node.releasePointerCapture?.(pointerId)
+        }
+
+        pendingDrag.current = null
+        lastDragSample.current = null
+        windowDragCleanup.current?.()
+        windowDragCleanup.current = null
+
+        const activeDrag = draggedTileRef.current
+        if (!activeDrag) {
+          return
+        }
+
+        suppressClickTileId.current = activeDrag.tileId
+        nativeEvent.preventDefault()
+        finishDraggedTile(activeDrag)
+      }
+      const cleanupWindowDrag = () => {
+        window.removeEventListener('pointerup', finishFromWindow, true)
+        window.removeEventListener('pointercancel', finishFromWindow, true)
+      }
+      window.addEventListener('pointerup', finishFromWindow, true)
+      window.addEventListener('pointercancel', finishFromWindow, true)
+      windowDragCleanup.current = cleanupWindowDrag
+
+      node.setPointerCapture?.(pointerId)
+    },
+    [cancelPendingTileDrag, exhaustedTileIds, finishDraggedTile, pinnedTileOrder, startTileDrag],
+  )
+
+  const moveTileDrag = useCallback(
+    (pointerId: number, clientX: number, clientY: number, preventDefault: () => void, movementX = 0) => {
+      const pending = pendingDrag.current
+      if (!pending || pending.pointerId !== pointerId) {
+        return
+      }
+
+      pending.currentX = clientX
+      pending.currentY = clientY
+
+      const activeDrag = draggedTileRef.current
+      if (!activeDrag) {
+        const distance = Math.hypot(clientX - pending.startX, clientY - pending.startY)
+        if (pending.pointerType === 'mouse' && distance > 8) {
+          window.clearTimeout(pending.holdTimer)
+          startTileDrag(pending)
+        }
+        return
+      }
+
+      preventDefault()
+      const now = performance.now()
+      const lastSample = lastDragSample.current ?? { x: clientX, y: clientY, time: now }
+      const elapsed = Math.max(now - lastSample.time, 16)
+      const deltaX = movementX || clientX - lastSample.x
+      const velocityX = deltaX / elapsed
+      lastDragSample.current = { x: clientX, y: clientY, time: now }
+      updateDragRotationTarget(velocityX)
+
+      setDraggedTile((current) => {
+        if (!current) {
+          return current
+        }
+
+        const nextDraggedTile = {
+          ...current,
+          currentX: clientX,
+          currentY: clientY,
+        }
+        draggedTileRef.current = nextDraggedTile
+        return nextDraggedTile
+      })
+
+      const targetTileId = tileAtPoint(tileNodes.current, clientX, clientY, activeDrag.tileId)
+      if (targetTileId === null) {
+        lastSwapTileId.current = null
+        return
+      }
+      if (lastSwapTileId.current === targetTileId) {
+        return
+      }
+      lastSwapTileId.current = targetTileId
+
+      captureFlipPositions()
+      setTileOrder((current) => swapUnpinnedTileIds(current, activeDrag.tileId, targetTileId, pinnedTileOrder))
+    },
+    [captureFlipPositions, pinnedTileOrder, startTileDrag, updateDragRotationTarget],
+  )
+
+  const handleTilePointerMove = useCallback(
+    (event: ReactPointerEvent<HTMLButtonElement>) => {
+      if (draggedTileRef.current) {
+        return
+      }
+
+      moveTileDrag(event.pointerId, event.clientX, event.clientY, () => event.preventDefault(), event.movementX)
+    },
+    [moveTileDrag],
+  )
+
+  useEffect(() => {
+    if (!draggedTile) {
+      return
+    }
+
+    const moveFromWindow = (event: PointerEvent) => {
+      moveTileDrag(event.pointerId, event.clientX, event.clientY, () => event.preventDefault(), event.movementX)
+    }
+    const moveFromMouse = (event: MouseEvent) => {
+      const pointerId = pendingDrag.current?.pointerId ?? draggedTileRef.current?.pointerId
+      if (pointerId === undefined) {
+        return
+      }
+
+      moveTileDrag(pointerId, event.clientX, event.clientY, () => event.preventDefault(), event.movementX)
+    }
+
+    window.addEventListener('pointermove', moveFromWindow, true)
+    window.addEventListener('mousemove', moveFromMouse, true)
+    return () => {
+      window.removeEventListener('pointermove', moveFromWindow, true)
+      window.removeEventListener('mousemove', moveFromMouse, true)
+    }
+  }, [draggedTile, moveTileDrag])
+
+  const handleTilePointerUp = useCallback(
+    (event: ReactPointerEvent<HTMLButtonElement>) => {
+      const pending = pendingDrag.current
+      if (pending?.pointerId === event.pointerId) {
+        window.clearTimeout(pending.holdTimer)
+        pending.node.releasePointerCapture?.(event.pointerId)
+      }
+      pendingDrag.current = null
+      lastDragSample.current = null
+      windowDragCleanup.current?.()
+      windowDragCleanup.current = null
+
+      const activeDrag = draggedTileRef.current
+      if (activeDrag) {
+        suppressClickTileId.current = activeDrag.tileId
+        event.preventDefault()
+        finishDraggedTile(activeDrag)
+      }
+    },
+    [finishDraggedTile],
+  )
 
   const shuffleTiles = () => {
     if (displayTileOrder.length < 2) {
@@ -784,6 +1239,11 @@ function App() {
   const nextDailyDate = getAdjacentDailyDate(puzzle.id, 1)
 
   const toggleTile = useCallback((tileId: number) => {
+    if (suppressClickTileId.current === tileId) {
+      suppressClickTileId.current = null
+      return
+    }
+
     setSelectedTileIds((current) =>
       current.includes(tileId) ? current.filter((selected) => selected !== tileId) : [...current, tileId],
     )
@@ -938,23 +1398,51 @@ function App() {
         </div>
 
         <div
-          className={`tile-grid${allWordsFound ? ' tile-grid--platinum' : ''}`}
+          className={`tile-grid${allWordsFound ? ' tile-grid--platinum' : ''}${draggedTile ? ' tile-grid--dragging' : ''}`}
           data-platinum-shine={allWordsFound ? 'true' : undefined}
           data-testid="tile-grid"
         >
-          {displayTileOrder.map((tileId) => (
-            <TileButton
-              key={tileId}
-              index={tileId}
-              label={puzzle.tiles[tileId]}
-              selected={selectedTileIds.includes(tileId)}
-              foundQuartetTile={foundQuartetTileIds.has(tileId)}
-              exhausted={exhaustedTileIds.has(tileId)}
-              onClick={toggleTile}
-              registerTileNode={setTileNode}
-            />
-          ))}
+          {displayTileOrder.map((tileId) => {
+            const draggable = !exhaustedTileIds.has(tileId) && !pinnedTileOrder.includes(tileId)
+            return (
+              <TileButton
+                key={tileId}
+                index={tileId}
+                label={puzzle.tiles[tileId]}
+                selected={selectedTileIds.includes(tileId)}
+                foundQuartetTile={foundQuartetTileIds.has(tileId)}
+                exhausted={exhaustedTileIds.has(tileId)}
+                dragging={draggedTile?.tileId === tileId}
+                draggable={draggable}
+                onClick={toggleTile}
+                onPointerDown={handleTilePointerDown}
+                onPointerMove={handleTilePointerMove}
+                onPointerUp={handleTilePointerUp}
+                registerTileNode={setTileNode}
+              />
+            )
+          })}
         </div>
+
+        {draggedTile ? (
+          <div
+            className={draggedTile.className}
+            aria-hidden="true"
+            style={
+              {
+                '--drag-left': `${draggedTile.originRect.left}px`,
+                '--drag-top': `${draggedTile.originRect.top}px`,
+                '--drag-width': `${draggedTile.originRect.width}px`,
+                '--drag-height': `${draggedTile.originRect.height}px`,
+                '--drag-x': `${draggedTile.currentX - draggedTile.startX}px`,
+                '--drag-y': `${draggedTile.currentY - draggedTile.startY}px`,
+                '--drag-rotation': `${draggedTile.rotation}deg`,
+              } as CSSProperties
+            }
+          >
+            <span className="tile__label">{draggedTile.label}</span>
+          </div>
+        ) : null}
 
         <Controls
           selectedCount={selectedTileIds.length}
