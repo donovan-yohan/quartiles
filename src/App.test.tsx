@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App, { historyPageSize } from './App'
 import { AVAILABLE_DAILY_DATES, createDailyPuzzle, LATEST_DAILY_DATE } from './lib/daily'
@@ -92,6 +92,7 @@ const stubClipboard = () => {
 afterEach(() => {
   clearCookies()
   window.history.replaceState(null, '', '/')
+  vi.useRealTimers()
   vi.restoreAllMocks()
   vi.unstubAllGlobals()
   Object.defineProperty(navigator, 'clipboard', {
@@ -106,6 +107,35 @@ describe('lexitiles app', () => {
       .getAllByRole('button')
       .filter((button) => button.classList.contains('tile'))
       .map((button) => button.textContent)
+
+  const stubTileGridRects = () => {
+    const tiles = screen.getAllByRole('button').filter((button) => button.classList.contains('tile'))
+    tiles.forEach((tile, index) => {
+      const column = index % 4
+      const row = Math.floor(index / 4)
+      const left = column * 60
+      const top = row * 60
+      const rect = {
+        x: left,
+        y: top,
+        left,
+        top,
+        width: 50,
+        height: 50,
+        right: left + 50,
+        bottom: top + 50,
+        toJSON: () => ({}),
+      } as DOMRect
+      vi.spyOn(tile, 'getBoundingClientRect').mockReturnValue(rect)
+      Object.defineProperty(tile, 'setPointerCapture', { configurable: true, value: vi.fn() })
+      Object.defineProperty(tile, 'releasePointerCapture', { configurable: true, value: vi.fn() })
+      Object.defineProperty(tile, 'animate', {
+        configurable: true,
+        value: vi.fn(() => ({ addEventListener: vi.fn(), cancel: vi.fn() })),
+      })
+    })
+    return tiles
+  }
 
   const submitTiles = async (labels: string[]) => {
     for (const label of labels) {
@@ -173,6 +203,8 @@ describe('lexitiles app', () => {
 
     expect(screen.getAllByRole('button').filter((button) => button.classList.contains('tile'))).toHaveLength(20)
     expect(appCss).toMatch(/\.tile-grid\s*{[^}]*grid-template-columns:\s*repeat\(4,\s*minmax\(0,\s*1fr\)\)/)
+    expect(appCss).toMatch(/\.tile\s*{[^}]*display:\s*grid/)
+    expect(appCss).toMatch(/\.tile\s*{[^}]*place-items:\s*center/)
     expect(appCss).not.toMatch(/\.tile-grid\s*{[^}]*grid-template-columns:\s*repeat\(5,/)
   })
 
@@ -572,6 +604,41 @@ describe('lexitiles app', () => {
     expect(afterShuffle.slice(0, 4)).toEqual(['eve', 'ry', 'whe', 're'])
     expect(afterShuffle.slice(4)).not.toEqual(beforeShuffle.slice(4))
     expect([...afterShuffle].sort()).toEqual([...beforeShuffle].sort())
+  })
+
+  it('reorders tiles by holding and dragging across another tile', () => {
+    vi.useFakeTimers()
+    renderDaily()
+    const beforeDrag = activeTileLabels()
+    const tiles = stubTileGridRects()
+
+    fireEvent.pointerDown(tiles[0], { button: 0, clientX: 25, clientY: 25, pointerId: 7, pointerType: 'mouse' })
+    act(() => vi.advanceTimersByTime(180))
+
+    expect(screen.getByTestId('tile-grid')).toHaveClass('tile-grid--dragging')
+    expect(screen.getByText(beforeDrag[0] ?? '', { selector: '.tile--drag-overlay .tile__label' })).toBeInTheDocument()
+
+    fireEvent.pointerMove(tiles[0], { clientX: 85, clientY: 25, pointerId: 7, pointerType: 'mouse' })
+    fireEvent.pointerUp(tiles[0], { clientX: 85, clientY: 25, pointerId: 7, pointerType: 'mouse' })
+
+    const afterDrag = activeTileLabels()
+    expect(afterDrag[0]).toBe(beforeDrag[1])
+    expect(afterDrag[1]).toBe(beforeDrag[0])
+    expect(afterDrag.slice(2)).toEqual(beforeDrag.slice(2))
+  })
+
+  it('does not select a tile when the hold-drag gesture ends', () => {
+    vi.useFakeTimers()
+    renderDaily()
+    const tiles = stubTileGridRects()
+
+    fireEvent.pointerDown(tiles[0], { button: 0, clientX: 25, clientY: 25, pointerId: 8, pointerType: 'mouse' })
+    act(() => vi.advanceTimersByTime(180))
+    fireEvent.pointerMove(tiles[0], { clientX: 85, clientY: 25, pointerId: 8, pointerType: 'mouse' })
+    fireEvent.pointerUp(tiles[0], { clientX: 85, clientY: 25, pointerId: 8, pointerType: 'mouse' })
+    fireEvent.click(tiles[0])
+
+    expect(tiles[0]).toHaveAttribute('aria-pressed', 'false')
   })
 
   it('shuffles remaining tiles after all quartets are found while keeping all tiles visible', async () => {
