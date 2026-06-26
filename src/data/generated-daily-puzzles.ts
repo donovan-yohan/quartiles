@@ -308,4 +308,9 @@ export const DAILY_PUZZLES = [
     quartets: [["fin","an","ci","al"],["ex","ce","ptio","ns"],["lo","ca","ti","on"],["exp","eri","me","ntal"],["unf","ort","una","tely"]],
     words: ['alerion', 'anal', 'anon', 'anti', 'came', 'cans', 'captions', 'cation', 'ceca', 'cental', 'cion', 'exceptions', 'exon', 'experimental', 'export', 'fin', 'final', 'finance', 'financial', 'loan', 'location', 'loci', 'loon', 'loti', 'lotion', 'meal', 'mean', 'melons', 'mensal', 'mental', 'once', 'ort', 'time', 'tins', 'unfortunately'],
   },
+  {
+    date: '2026-06-26',
+    quartets: [["inc","ons","is","tent"],["app","rec","ia","tes"],["co","mpa","ri","ng"],["arr","an","gem","ents"],["qu","al","ify","ing"]],
+    words: ['anal', 'anis', 'anons', 'antes', 'appreciates', 'arrangements', 'arris', 'coal', 'coaling', 'comparing', 'coons', 'coring', 'cotes', 'gem', 'incising', 'inconsistent', 'qualia', 'qualify', 'qualifying', 'recapping', 'recons', 'rial', 'ring', 'ringing', 'rites', 'tent', 'tenting'],
+  },
 ] as const
