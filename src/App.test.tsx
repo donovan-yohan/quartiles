@@ -627,6 +627,27 @@ describe('lexitiles app', () => {
     expect(afterDrag.slice(2)).toEqual(beforeDrag.slice(2))
   })
 
+  it('allows touch hold-drag reordering without the browser taking over the gesture', () => {
+    vi.useFakeTimers()
+    renderDaily()
+    const beforeDrag = activeTileLabels()
+    const tiles = stubTileGridRects()
+
+    expect(appCss).toMatch(/\.tile--draggable\s*{[^}]*touch-action:\s*none/)
+
+    fireEvent.pointerDown(tiles[0], { button: 0, clientX: 25, clientY: 25, pointerId: 9, pointerType: 'touch' })
+    act(() => vi.advanceTimersByTime(240))
+
+    expect(screen.getByTestId('tile-grid')).toHaveClass('tile-grid--dragging')
+
+    fireEvent.pointerMove(window, { clientX: 85, clientY: 25, pointerId: 9, pointerType: 'touch' })
+    fireEvent.pointerUp(window, { clientX: 85, clientY: 25, pointerId: 9, pointerType: 'touch' })
+
+    const afterDrag = activeTileLabels()
+    expect(afterDrag[0]).toBe(beforeDrag[1])
+    expect(afterDrag[1]).toBe(beforeDrag[0])
+  })
+
   it('does not select a tile when the hold-drag gesture ends', () => {
     vi.useFakeTimers()
     renderDaily()
