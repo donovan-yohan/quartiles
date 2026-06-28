@@ -318,4 +318,9 @@ export const DAILY_PUZZLES = [
     quartets: [["de","fi","nit","ions"],["dis","cou","ra","ges"],["me","et","in","gs"],["co","nti","nu","ous"],["cir","cums","tan","ces"]],
     words: ['cir', 'circumstances', 'code', 'cogs', 'coin', 'come', 'continuous', 'cums', 'deco', 'definitions', 'deme', 'dis', 'disco', 'discourages', 'distances', 'fico', 'figs', 'income', 'innit', 'ions', 'meet', 'meetings', 'megs', 'menu', 'nit', 'nude', 'races', 'rages', 'rags', 'rain', 'ratan', 'tan', 'tangs'],
   },
+  {
+    date: '2026-06-28',
+    quartets: [["in","tro","du","ces"],["int","ell","ig","ence"],["reg","is","te","ring"],["re","qu","ir","es"],["pe","rso","nal","ly"]],
+    words: ['dues', 'duly', 'dupe', 'during', 'ell', 'enceinte', 'induces', 'inly', 'intelligence', 'intis', 'introduces', 'iris', 'irises', 'lyre', 'pees', 'penal', 'penally', 'personal', 'personally', 'petering', 'quell', 'quin', 'quinces', 'quint', 'quinte', 'quires', 'reduces', 'registering', 'regnal', 'rein', 'rely', 'renal', 'requires', 'rete', 'retro', 'ring', 'tees', 'tepees', 'trope'],
+  },
 ] as const
