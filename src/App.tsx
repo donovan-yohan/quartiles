@@ -422,6 +422,24 @@ const tileAtPoint = (tileNodes: Map<number, HTMLButtonElement>, clientX: number,
   return null
 }
 
+const setTilePointerCapture = (node: HTMLButtonElement, pointerId: number) => {
+  try {
+    node.setPointerCapture?.(pointerId)
+  } catch {
+    // Some browsers/test drivers reject synthetic or already-ended pointers.
+  }
+}
+
+const releaseTilePointerCapture = (node: HTMLButtonElement, pointerId: number) => {
+  try {
+    if (!node.hasPointerCapture || node.hasPointerCapture(pointerId)) {
+      node.releasePointerCapture?.(pointerId)
+    }
+  } catch {
+    // Releasing after pointercancel/up can throw; drag cleanup should still finish.
+  }
+}
+
 const playFlipAnimations = (firstPositions: Map<number, DOMRect>, tileNodes: Map<number, HTMLButtonElement>) => {
   if (shouldReduceTileMotion()) {
     return
@@ -490,7 +508,7 @@ const TileButton = memo(function TileButton({
   onPointerUp,
   registerTileNode,
 }: TileButtonProps) {
-  const className = `tile${foundQuartetTile ? ' tile--quartet' : ''}${exhausted ? ' tile--exhausted' : ''}${selected ? ' tile--selected' : ''}${dragging ? ' tile--drag-source' : ''}${!draggable && !exhausted ? ' tile--fixed' : ''}`
+  const className = `tile${draggable ? ' tile--draggable' : ''}${foundQuartetTile ? ' tile--quartet' : ''}${exhausted ? ' tile--exhausted' : ''}${selected ? ' tile--selected' : ''}${dragging ? ' tile--drag-source' : ''}${!draggable && !exhausted ? ' tile--fixed' : ''}`
   const holoStyle = useMemo(() => (exhausted ? tileHoloVariation(index, label) : undefined), [exhausted, index, label])
   const buttonRef = useCallback((node: HTMLButtonElement | null) => registerTileNode(index, node), [index, registerTileNode])
 
@@ -1073,7 +1091,7 @@ function App() {
         const pending = pendingDrag.current
         if (pending?.pointerId === pointerId) {
           window.clearTimeout(pending.holdTimer)
-          pending.node.releasePointerCapture?.(pointerId)
+          releaseTilePointerCapture(pending.node, pointerId)
         }
 
         pendingDrag.current = null
@@ -1098,7 +1116,7 @@ function App() {
       window.addEventListener('pointercancel', finishFromWindow, true)
       windowDragCleanup.current = cleanupWindowDrag
 
-      node.setPointerCapture?.(pointerId)
+      setTilePointerCapture(node, pointerId)
     },
     [cancelPendingTileDrag, exhaustedTileIds, finishDraggedTile, pinnedTileOrder, startTileDrag],
   )
@@ -1203,7 +1221,7 @@ function App() {
       const pending = pendingDrag.current
       if (pending?.pointerId === event.pointerId) {
         window.clearTimeout(pending.holdTimer)
-        pending.node.releasePointerCapture?.(event.pointerId)
+        releaseTilePointerCapture(pending.node, event.pointerId)
       }
       pendingDrag.current = null
       lastDragSample.current = null
