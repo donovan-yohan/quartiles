@@ -323,4 +323,9 @@ export const DAILY_PUZZLES = [
     quartets: [["in","tro","du","ces"],["int","ell","ig","ence"],["reg","is","te","ring"],["re","qu","ir","es"],["pe","rso","nal","ly"]],
     words: ['dues', 'duly', 'dupe', 'during', 'ell', 'enceinte', 'induces', 'inly', 'intelligence', 'intis', 'introduces', 'iris', 'irises', 'lyre', 'pees', 'penal', 'penally', 'personal', 'personally', 'petering', 'quell', 'quin', 'quinces', 'quint', 'quinte', 'quires', 'reduces', 'registering', 'regnal', 'rein', 'rely', 'renal', 'requires', 'rete', 'retro', 'ring', 'tees', 'tepees', 'trope'],
   },
+  {
+    date: '2026-06-29',
+    quartets: [["mi","no","ri","ty"],["est","ab","li","shed"],["ad","va","nta","ge"],["app","rec","iat","ing"],["ann","oun","ce","ment"]],
+    words: ['abri', 'advantage', 'announce', 'announcement', 'appreciating', 'cement', 'cementing', 'established', 'geest', 'ingest', 'lice', 'limiest', 'lino', 'mice', 'minority', 'mintage', 'miriest', 'noshed', 'nova', 'ounce', 'recapping', 'recce', 'rice', 'rimiest', 'rivage', 'shed', 'tying', 'vantage'],
+  },
 ] as const
