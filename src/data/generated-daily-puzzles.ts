@@ -328,4 +328,9 @@ export const DAILY_PUZZLES = [
     quartets: [["mi","no","ri","ty"],["est","ab","li","shed"],["ad","va","nta","ge"],["app","rec","iat","ing"],["ann","oun","ce","ment"]],
     words: ['abri', 'advantage', 'announce', 'announcement', 'appreciating', 'cement', 'cementing', 'established', 'geest', 'ingest', 'lice', 'limiest', 'lino', 'mice', 'minority', 'mintage', 'miriest', 'noshed', 'nova', 'ounce', 'recapping', 'recce', 'rice', 'rimiest', 'rivage', 'shed', 'tying', 'vantage'],
   },
+  {
+    date: '2026-06-30',
+    quartets: [["ap","pear","an","ce"],["fun","dam","ent","al"],["re","pea","te","dly"],["op","port","unit","ies"],["se","nsi","ti","ve"]],
+    words: ['anal', 'anent', 'ante', 'anti', 'appear', 'appearance', 'appease', 'apse', 'cereal', 'dam', 'daman', 'entre', 'fun', 'fundament', 'fundamental', 'opal', 'opportunities', 'pea', 'peace', 'pear', 'port', 'portal', 'portent', 'real', 'reap', 'reappear', 'redly', 'repeatedly', 'report', 'reseal', 'rete', 'reveal', 'seal', 'sensitive', 'sere', 'severe', 'teal', 'tensive', 'tire', 'tiredly', 'unit', 'unities', 'veal'],
+  },
 ] as const
