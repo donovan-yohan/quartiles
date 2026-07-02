@@ -338,4 +338,9 @@ export const DAILY_PUZZLES = [
     quartets: [["pr","ev","io","us"],["in","ter","nati","onal"],["soph","is","tica","tes"],["enc","ou","rag","ing"],["sus","pi","ci","on"]],
     words: ['cion', 'cites', 'encouraging', 'inciter', 'incites', 'inter', 'international', 'nation', 'national', 'onus', 'outer', 'piing', 'pion', 'previous', 'printer', 'prison', 'rag', 'raging', 'ragis', 'sophister', 'sophisticates', 'suspicion', 'tester', 'using'],
   },
+  {
+    date: '2026-07-02',
+    quartets: [["di","sa","ppe","ar"],["per","su","ad","ing"],["in","var","ia","bly"],["ba","si","cal","ly"],["re","sol","ut","ion"]],
+    words: ['aria', 'bare', 'barely', 'basically', 'calvaria', 'dire', 'direly', 'disappear', 'inion', 'inly', 'insure', 'invariably', 'ion', 'lying', 'lyre', 'per', 'persuading', 'read', 'reading', 'rear', 'rearing', 'rein', 'reining', 'rely', 'relying', 'resoling', 'resolution', 'sain', 'saut', 'sauting', 'savarin', 'sire', 'sol', 'solar', 'solaria', 'soling', 'solution', 'suing', 'super', 'superbly', 'sure', 'surely', 'varia', 'variably'],
+  },
 ] as const
