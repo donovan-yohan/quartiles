@@ -343,4 +343,9 @@ export const DAILY_PUZZLES = [
     quartets: [["di","sa","ppe","ar"],["per","su","ad","ing"],["in","var","ia","bly"],["ba","si","cal","ly"],["re","sol","ut","ion"]],
     words: ['aria', 'bare', 'barely', 'basically', 'calvaria', 'dire', 'direly', 'disappear', 'inion', 'inly', 'insure', 'invariably', 'ion', 'lying', 'lyre', 'per', 'persuading', 'read', 'reading', 'rear', 'rearing', 'rein', 'reining', 'rely', 'relying', 'resoling', 'resolution', 'sain', 'saut', 'sauting', 'savarin', 'sire', 'sol', 'solar', 'solaria', 'soling', 'solution', 'suing', 'super', 'superbly', 'sure', 'surely', 'varia', 'variably'],
   },
+  {
+    date: '2026-07-03',
+    quartets: [["com","pr","ehen","sive"],["au","tomo","bi","le"],["re","duc","ti","on"],["rem","em","be","ring"],["po","lit","ic","al"]],
+    words: ['alle', 'automobile', 'beau', 'bile', 'bionic', 'combe', 'comic', 'comical', 'compo', 'comprehensive', 'ducal', 'ductile', 'icon', 'leal', 'lit', 'poem', 'pole', 'politic', 'political', 'poon', 'pore', 'poring', 'potion', 'prau', 'real', 'reduction', 'remembering', 'retiring', 'ring', 'tibial', 'tile', 'tire', 'tiring'],
+  },
 ] as const
