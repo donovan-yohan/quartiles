@@ -348,4 +348,9 @@ export const DAILY_PUZZLES = [
     quartets: [["com","pr","ehen","sive"],["au","tomo","bi","le"],["re","duc","ti","on"],["rem","em","be","ring"],["po","lit","ic","al"]],
     words: ['alle', 'automobile', 'beau', 'bile', 'bionic', 'combe', 'comic', 'comical', 'compo', 'comprehensive', 'ducal', 'ductile', 'icon', 'leal', 'lit', 'poem', 'pole', 'politic', 'political', 'poon', 'pore', 'poring', 'potion', 'prau', 'real', 'reduction', 'remembering', 'retiring', 'ring', 'tibial', 'tile', 'tire', 'tiring'],
   },
+  {
+    date: '2026-07-04',
+    quartets: [["va","ri","ab","les"],["und","ers","ta","nds"],["unf","ort","unat","ely"],["so","mew","he","re"],["fu","nda","ment","ally"]],
+    words: ['abort', 'abri', 'ally', 'fundament', 'fundamentally', 'funds', 'here', 'mentally', 'mew', 'ort', 'really', 'refunds', 'rends', 'resoles', 'resound', 'riles', 'rinds', 'soles', 'somewhere', 'sore', 'sori', 'sound', 'sounders', 'tales', 'tare', 'understands', 'unfortunately', 'vales', 'vanda', 'variables'],
+  },
 ] as const
