@@ -353,4 +353,9 @@ export const DAILY_PUZZLES = [
     quartets: [["va","ri","ab","les"],["und","ers","ta","nds"],["unf","ort","unat","ely"],["so","mew","he","re"],["fu","nda","ment","ally"]],
     words: ['abort', 'abri', 'ally', 'fundament', 'fundamentally', 'funds', 'here', 'mentally', 'mew', 'ort', 'really', 'refunds', 'rends', 'resoles', 'resound', 'riles', 'rinds', 'soles', 'somewhere', 'sore', 'sori', 'sound', 'sounders', 'tales', 'tare', 'understands', 'unfortunately', 'vales', 'vanda', 'variables'],
   },
+  {
+    date: '2026-07-05',
+    quartets: [["circ","um","sta","nces"],["es","tab","li","sh"],["cons","ide","ra","ble"],["or","igi","nal","ly"],["unne","ces","sa","rily"]],
+    words: ['circumstances', 'cons', 'considerable', 'consumes', 'establish', 'lies', 'lily', 'lira', 'ores', 'original', 'originally', 'races', 'racons', 'rash', 'rashes', 'rashly', 'sable', 'sances', 'sash', 'sashes', 'shes', 'shores', 'stable', 'stances', 'stash', 'stashes', 'tab', 'tabes', 'tabor', 'unnecessarily'],
+  },
 ] as const
