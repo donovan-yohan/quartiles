@@ -358,4 +358,9 @@ export const DAILY_PUZZLES = [
     quartets: [["circ","um","sta","nces"],["es","tab","li","sh"],["cons","ide","ra","ble"],["or","igi","nal","ly"],["unne","ces","sa","rily"]],
     words: ['circumstances', 'cons', 'considerable', 'consumes', 'establish', 'lies', 'lily', 'lira', 'ores', 'original', 'originally', 'races', 'racons', 'rash', 'rashes', 'rashly', 'sable', 'sances', 'sash', 'sashes', 'shes', 'shores', 'stable', 'stances', 'stash', 'stashes', 'tab', 'tabes', 'tabor', 'unnecessarily'],
   },
+  {
+    date: '2026-07-06',
+    quartets: [["emb","ar","rass","ing"],["stat","is","tic","al"],["com","pl","ic","ate"],["doc","umen","tati","on"],["di","sa","dvan","tage"]],
+    words: ['alar', 'alate', 'alembic', 'arising', 'ate', 'comate', 'comic', 'comical', 'coming', 'complicate', 'dial', 'disadvantage', 'doc', 'documentation', 'embarrass', 'embarrassing', 'icing', 'icon', 'ingate', 'oncoming', 'ontic', 'plate', 'plicate', 'sapling', 'static', 'statical', 'stating', 'statistic', 'statistical', 'tic', 'tical'],
+  },
 ] as const
