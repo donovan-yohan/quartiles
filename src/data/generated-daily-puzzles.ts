@@ -363,4 +363,9 @@ export const DAILY_PUZZLES = [
     quartets: [["emb","ar","rass","ing"],["stat","is","tic","al"],["com","pl","ic","ate"],["doc","umen","tati","on"],["di","sa","dvan","tage"]],
     words: ['alar', 'alate', 'alembic', 'arising', 'ate', 'comate', 'comic', 'comical', 'coming', 'complicate', 'dial', 'disadvantage', 'doc', 'documentation', 'embarrass', 'embarrassing', 'icing', 'icon', 'ingate', 'oncoming', 'ontic', 'plate', 'plicate', 'sapling', 'static', 'statical', 'stating', 'statistic', 'statistical', 'tic', 'tical'],
   },
+  {
+    date: '2026-07-07',
+    quartets: [["ex","te","rn","al"],["oth","er","wi","se"],["em","bar","ras","sed"],["ec","on","om","ic"],["cir","cum","stan","ces"]],
+    words: ['bar', 'barer', 'baric', 'baron', 'cir', 'circumstances', 'economic', 'embarrassed', 'emersed', 'exec', 'exon', 'extern', 'external', 'icon', 'omer', 'other', 'otherwise', 'seal', 'sealer', 'seem', 'seer', 'stances', 'teal', 'teem', 'tern', 'wise', 'wised', 'wite'],
+  },
 ] as const
