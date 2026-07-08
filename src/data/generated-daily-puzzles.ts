@@ -368,4 +368,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ex","te","rn","al"],["oth","er","wi","se"],["em","bar","ras","sed"],["ec","on","om","ic"],["cir","cum","stan","ces"]],
     words: ['bar', 'barer', 'baric', 'baron', 'cir', 'circumstances', 'economic', 'embarrassed', 'emersed', 'exec', 'exon', 'extern', 'external', 'icon', 'omer', 'other', 'otherwise', 'seal', 'sealer', 'seem', 'seer', 'stances', 'teal', 'teem', 'tern', 'wise', 'wised', 'wite'],
   },
+  {
+    date: '2026-07-08',
+    quartets: [["ad","ve","rti","ses"],["fe","as","ib","le"],["nec","es","sar","ily"],["rec","omm","en","ded"],["me","ch","an","ics"]],
+    words: ['added', 'advertises', 'anas', 'asses', 'chad', 'chases', 'ended', 'feasible', 'fees', 'feme', 'fertile', 'lead', 'leaden', 'lean', 'leas', 'leases', 'lech', 'leches', 'lees', 'levees', 'mead', 'mean', 'mechanics', 'mesarch', 'necessarily', 'recesses', 'recommended', 'saran'],
+  },
 ] as const
