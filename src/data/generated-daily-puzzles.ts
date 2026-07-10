@@ -378,4 +378,9 @@ export const DAILY_PUZZLES = [
     quartets: [["su","pp","li","ed"],["dis","ap","pe","ars"],["pos","sibi","lit","ies"],["edu","ca","tio","nal"],["pro","fe","ssi","onal"]],
     words: ['aped', 'appears', 'apposed', 'arsed', 'canal', 'cape', 'capos', 'capped', 'dis', 'disappears', 'disposed', 'educational', 'fears', 'feed', 'liars', 'lied', 'life', 'lipped', 'lit', 'pears', 'peed', 'penal', 'pepped', 'posed', 'posies', 'possibilities', 'pro', 'professional', 'proposed', 'propped', 'sued', 'supped', 'supplied'],
   },
+  {
+    date: '2026-07-10',
+    quartets: [["pr","es","en","ted"],["ins","ti","tuti","ons"],["amb","ig","uo","us"],["ed","uc","atio","nal"],["av","ai","la","ble"]],
+    words: ['ambiguous', 'available', 'bleed', 'educational', 'educes', 'ins', 'institutions', 'lated', 'lati', 'presented', 'prig', 'ted', 'tied', 'ties', 'used', 'uses'],
+  },
 ] as const
