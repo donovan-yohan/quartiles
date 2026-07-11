@@ -383,4 +383,9 @@ export const DAILY_PUZZLES = [
     quartets: [["pr","es","en","ted"],["ins","ti","tuti","ons"],["amb","ig","uo","us"],["ed","uc","atio","nal"],["av","ai","la","ble"]],
     words: ['ambiguous', 'available', 'bleed', 'educational', 'educes', 'ins', 'institutions', 'lated', 'lati', 'presented', 'prig', 'ted', 'tied', 'ties', 'used', 'uses'],
   },
+  {
+    date: '2026-07-11',
+    quartets: [["ho","pef","ul","ly"],["dif","fe","re","nces"],["es","pe","ci","ally"],["cor","rec","ti","on"],["spe","cifi","ca","lly"]],
+    words: ['ally', 'cape', 'care', 'cation', 'caul', 'cion', 'cities', 'cores', 'correction', 'differences', 'escape', 'especially', 'fees', 'felly', 'fences', 'hoes', 'holly', 'holy', 'hope', 'hopeful', 'hopefully', 'lyre', 'ones', 'only', 'pees', 'peon', 'really', 'recipe', 'recon', 'recti', 'rely', 'reties', 'specially', 'species', 'specifically', 'specifies', 'ties', 'tire'],
+  },
 ] as const
