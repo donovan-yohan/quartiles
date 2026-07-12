@@ -388,4 +388,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ho","pef","ul","ly"],["dif","fe","re","nces"],["es","pe","ci","ally"],["cor","rec","ti","on"],["spe","cifi","ca","lly"]],
     words: ['ally', 'cape', 'care', 'cation', 'caul', 'cion', 'cities', 'cores', 'correction', 'differences', 'escape', 'especially', 'fees', 'felly', 'fences', 'hoes', 'holly', 'holy', 'hope', 'hopeful', 'hopefully', 'lyre', 'ones', 'only', 'pees', 'peon', 'really', 'recipe', 'recon', 'recti', 'rely', 'reties', 'specially', 'species', 'specifically', 'specifies', 'ties', 'tire'],
   },
+  {
+    date: '2026-07-12',
+    quartets: [["mu","lt","ip","le"],["ind","iv","idu","als"],["in","co","mpat","ible"],["the","or","et","ical"],["poss","ibi","lit","ies"]],
+    words: ['coals', 'coin', 'cole', 'colt', 'compatible', 'incompatible', 'indies', 'individuals', 'ivies', 'ivories', 'leet', 'lethe', 'lit', 'mule', 'multiple', 'orals', 'orle', 'posset', 'possibilities', 'possible', 'the', 'theoretical', 'theories'],
+  },
 ] as const
