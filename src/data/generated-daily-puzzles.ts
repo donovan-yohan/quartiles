@@ -393,4 +393,9 @@ export const DAILY_PUZZLES = [
     quartets: [["mu","lt","ip","le"],["ind","iv","idu","als"],["in","co","mpat","ible"],["the","or","et","ical"],["poss","ibi","lit","ies"]],
     words: ['coals', 'coin', 'cole', 'colt', 'compatible', 'incompatible', 'indies', 'individuals', 'ivies', 'ivories', 'leet', 'lethe', 'lit', 'mule', 'multiple', 'orals', 'orle', 'posset', 'possibilities', 'possible', 'the', 'theoretical', 'theories'],
   },
+  {
+    date: '2026-07-13',
+    quartets: [["co","nse","qu","ence"],["su","sp","ici","on"],["ass","oci","at","es"],["enc","ou","ra","ge"],["pro","fes","sion","al"]],
+    words: ['ales', 'ass', 'asses', 'associates', 'atonal', 'atones', 'coal', 'coat', 'consequence', 'coon', 'encourage', 'gees', 'ones', 'pro', 'profession', 'professional', 'quass', 'rage', 'rasp', 'spat', 'spates', 'spence', 'sponge', 'sues', 'sura', 'suspicion'],
+  },
 ] as const
