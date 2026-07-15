@@ -403,4 +403,9 @@ export const DAILY_PUZZLES = [
     quartets: [["oc","cas","io","nal"],["sim","ult","an","eous"],["fu","nc","ti","on"],["re","com","mend","ing"],["circ","ums","ta","nce"]],
     words: ['annal', 'anon', 'anta', 'anti', 'caseous', 'casing', 'circumstance', 'coming', 'commend', 'commending', 'function', 'iota', 'mend', 'mending', 'occasional', 'oncoming', 'recommend', 'recommending', 'renal', 'retinal', 'sim', 'simultaneous', 'tare', 'tire'],
   },
+  {
+    date: '2026-07-15',
+    quartets: [["aut","om","obi","le"],["as","soc","ia","te"],["ac","co","rdi","ng"],["dev","el","op","ed"],["unf","ort","unat","ely"]],
+    words: ['according', 'aced', 'acedia', 'associate', 'automobile', 'coed', 'cole', 'congas', 'coom', 'coop', 'cooped', 'cording', 'cordite', 'cote', 'develop', 'developed', 'deviate', 'eloped', 'leas', 'leased', 'obi', 'oped', 'opiate', 'ort', 'socle', 'teas', 'teased', 'teasel', 'teed', 'unfed', 'unfortunately'],
+  },
 ] as const
