@@ -413,4 +413,9 @@ export const DAILY_PUZZLES = [
     quartets: [["en","viro","nm","ent"],["jus","tif","ica","tion"],["punc","tua","ti","on"],["els","ew","he","re"],["rel","ati","onsh","ip"]],
     words: ['els', 'elsewhere', 'entire', 'entre', 'environment', 'heels', 'here', 'hereon', 'justification', 'puncheon', 'punctuation', 'reels', 'relation', 'relationship', 'relent', 'tire'],
   },
+  {
+    date: '2026-07-17',
+    quartets: [["pre","fe","ren","ce"],["el","ec","tro","nic"],["fo","rtun","at","ely"],["unr","eas","on","able"],["spec","if","ic","ally"]],
+    words: ['able', 'ally', 'atonally', 'atonic', 'easel', 'electro', 'electronic', 'feat', 'feel', 'fortunately', 'icon', 'nicely', 'once', 'pre', 'preference', 'spec', 'specific', 'specifically', 'troat', 'unreason', 'unreasonable'],
+  },
 ] as const
