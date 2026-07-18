@@ -418,4 +418,9 @@ export const DAILY_PUZZLES = [
     quartets: [["pre","fe","ren","ce"],["el","ec","tro","nic"],["fo","rtun","at","ely"],["unr","eas","on","able"],["spec","if","ic","ally"]],
     words: ['able', 'ally', 'atonally', 'atonic', 'easel', 'electro', 'electronic', 'feat', 'feel', 'fortunately', 'icon', 'nicely', 'once', 'pre', 'preference', 'spec', 'specific', 'specifically', 'troat', 'unreason', 'unreasonable'],
   },
+  {
+    date: '2026-07-18',
+    quartets: [["li","fe","ti","me"],["ac","ad","em","ic"],["in","div","idu","al"],["mo","di","fy","ing"],["op","po","si","te"]],
+    words: ['academic', 'acing', 'acme', 'diadem', 'dial', 'dime', 'diving', 'divining', 'feal', 'feme', 'fetial', 'icing', 'indite', 'individual', 'inti', 'life', 'lifetime', 'lime', 'limo', 'lite', 'mead', 'meal', 'medial', 'memo', 'mesial', 'mete', 'modify', 'modifying', 'mote', 'opal', 'oping', 'opining', 'opposite', 'optime', 'podite', 'poem', 'polite', 'pome', 'poop', 'pooping', 'site', 'teal', 'teem', 'teeming', 'time'],
+  },
 ] as const
