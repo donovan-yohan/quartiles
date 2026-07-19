@@ -423,4 +423,9 @@ export const DAILY_PUZZLES = [
     quartets: [["li","fe","ti","me"],["ac","ad","em","ic"],["in","div","idu","al"],["mo","di","fy","ing"],["op","po","si","te"]],
     words: ['academic', 'acing', 'acme', 'diadem', 'dial', 'dime', 'diving', 'divining', 'feal', 'feme', 'fetial', 'icing', 'indite', 'individual', 'inti', 'life', 'lifetime', 'lime', 'limo', 'lite', 'mead', 'meal', 'medial', 'memo', 'mesial', 'mete', 'modify', 'modifying', 'mote', 'opal', 'oping', 'opining', 'opposite', 'optime', 'podite', 'poem', 'polite', 'pome', 'poop', 'pooping', 'site', 'teal', 'teem', 'teeming', 'time'],
   },
+  {
+    date: '2026-07-19',
+    quartets: [["un","ne","ces","sary"],["se","cu","ri","ty"],["el","ec","tron","ic"],["de","ta","il","ing"],["an","ony","mo","us"]],
+    words: ['aneling', 'anil', 'anonymous', 'anta', 'anus', 'cesta', 'cuing', 'dean', 'deicing', 'deil', 'demo', 'demoing', 'dene', 'detail', 'detailing', 'electron', 'electronic', 'else', 'icing', 'moan', 'moaning', 'mode', 'moil', 'moiling', 'moony', 'mousing', 'mousse', 'necessary', 'rices', 'ride', 'riel', 'rimose', 'rise', 'security', 'seel', 'seeling', 'sene', 'serine', 'tael', 'tail', 'tailing', 'taus', 'tying', 'unnecessary', 'untying', 'usances', 'using'],
+  },
 ] as const
