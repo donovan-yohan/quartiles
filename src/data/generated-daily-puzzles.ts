@@ -428,4 +428,9 @@ export const DAILY_PUZZLES = [
     quartets: [["un","ne","ces","sary"],["se","cu","ri","ty"],["el","ec","tron","ic"],["de","ta","il","ing"],["an","ony","mo","us"]],
     words: ['aneling', 'anil', 'anonymous', 'anta', 'anus', 'cesta', 'cuing', 'dean', 'deicing', 'deil', 'demo', 'demoing', 'dene', 'detail', 'detailing', 'electron', 'electronic', 'else', 'icing', 'moan', 'moaning', 'mode', 'moil', 'moiling', 'moony', 'mousing', 'mousse', 'necessary', 'rices', 'ride', 'riel', 'rimose', 'rise', 'security', 'seel', 'seeling', 'sene', 'serine', 'tael', 'tail', 'tailing', 'taus', 'tying', 'unnecessary', 'untying', 'usances', 'using'],
   },
+  {
+    date: '2026-07-20',
+    quartets: [["sop","his","tic","ated"],["su","bmit","ti","ng"],["en","gin","eer","ed"],["diff","icu","lti","es"],["so","mep","la","ce"]],
+    words: ['difficulties', 'engined', 'engineer', 'engineered', 'engines', 'enlace', 'ensued', 'ensues', 'entice', 'enticed', 'entices', 'gin', 'his', 'lace', 'lati', 'latices', 'sola', 'solace', 'someplace', 'song', 'sop', 'sophistic', 'sophisticated', 'submit', 'submitting', 'sued', 'sues', 'sung', 'tic', 'tied', 'ties', 'tilting', 'ting', 'tinged', 'tinges'],
+  },
 ] as const
