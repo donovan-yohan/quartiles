@@ -433,4 +433,9 @@ export const DAILY_PUZZLES = [
     quartets: [["sop","his","tic","ated"],["su","bmit","ti","ng"],["en","gin","eer","ed"],["diff","icu","lti","es"],["so","mep","la","ce"]],
     words: ['difficulties', 'engined', 'engineer', 'engineered', 'engines', 'enlace', 'ensued', 'ensues', 'entice', 'enticed', 'entices', 'gin', 'his', 'lace', 'lati', 'latices', 'sola', 'solace', 'someplace', 'song', 'sop', 'sophistic', 'sophisticated', 'submit', 'submitting', 'sued', 'sues', 'sung', 'tic', 'tied', 'ties', 'tilting', 'ting', 'tinged', 'tinges'],
   },
+  {
+    date: '2026-07-21',
+    quartets: [["ir","ri","ta","ted"],["so","lu","ti","on"],["ce","rta","in","ly"],["inco","nve","ni","ence"],["rem","emb","er","ed"]],
+    words: ['certain', 'certainly', 'embed', 'ember', 'inconvenience', 'inly', 'inti', 'iron', 'ironed', 'ironer', 'irritated', 'luce', 'nice', 'nicely', 'once', 'only', 'remember', 'remembered', 'rice', 'solution', 'soon', 'sooner', 'sori', 'sorta', 'tace', 'tain', 'tainted', 'ted', 'tied', 'tier', 'tierce', 'tiered', 'tinier'],
+  },
 ] as const
