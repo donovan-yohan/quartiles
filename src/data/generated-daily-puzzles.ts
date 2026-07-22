@@ -438,4 +438,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ir","ri","ta","ted"],["so","lu","ti","on"],["ce","rta","in","ly"],["inco","nve","ni","ence"],["rem","emb","er","ed"]],
     words: ['certain', 'certainly', 'embed', 'ember', 'inconvenience', 'inly', 'inti', 'iron', 'ironed', 'ironer', 'irritated', 'luce', 'nice', 'nicely', 'once', 'only', 'remember', 'remembered', 'rice', 'solution', 'soon', 'sooner', 'sori', 'sorta', 'tace', 'tain', 'tainted', 'ted', 'tied', 'tier', 'tierce', 'tiered', 'tinier'],
   },
+  {
+    date: '2026-07-22',
+    quartets: [["or","ig","in","al"],["di","scou","rag","es"],["ex","peri","me","ntal"],["be","au","tif","ul"],["ann","ounc","em","ent"]],
+    words: ['ales', 'alexin', 'annal', 'annex', 'annexes', 'announcement', 'announces', 'annul', 'audial', 'audient', 'beau', 'beautiful', 'bees', 'dial', 'dies', 'dime', 'discourages', 'eminent', 'exes', 'exigent', 'experimental', 'indies', 'meal', 'medial', 'mental', 'oral', 'ores', 'origin', 'original', 'ounces', 'peri', 'rag', 'rages'],
+  },
 ] as const
