@@ -443,4 +443,9 @@ export const DAILY_PUZZLES = [
     quartets: [["or","ig","in","al"],["di","scou","rag","es"],["ex","peri","me","ntal"],["be","au","tif","ul"],["ann","ounc","em","ent"]],
     words: ['ales', 'alexin', 'annal', 'annex', 'annexes', 'announcement', 'announces', 'annul', 'audial', 'audient', 'beau', 'beautiful', 'bees', 'dial', 'dies', 'dime', 'discourages', 'eminent', 'exes', 'exigent', 'experimental', 'indies', 'meal', 'medial', 'mental', 'oral', 'ores', 'origin', 'original', 'ounces', 'peri', 'rag', 'rages'],
   },
+  {
+    date: '2026-07-23',
+    quartets: [["nu","me","ric","al"],["comp","atib","il","ity"],["di","sco","ura","ge"],["unde","rs","to","od"],["es","tabl","ish","ed"]],
+    words: ['ales', 'alto', 'compatibility', 'comped', 'compiled', 'compiles', 'dial', 'died', 'dies', 'dime', 'dimers', 'diodes', 'disco', 'discoed', 'discourage', 'eddies', 'edge', 'edgers', 'establish', 'established', 'geed', 'gees', 'genu', 'geodes', 'meal', 'medial', 'meed', 'menu', 'numeric', 'numerical', 'nursed', 'nurses', 'odes', 'riced', 'rices', 'tabled', 'tables', 'todies', 'toed', 'toes', 'toil', 'toiled', 'tome', 'tors', 'understood'],
+  },
 ] as const
