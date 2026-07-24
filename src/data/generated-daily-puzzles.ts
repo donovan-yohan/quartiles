@@ -448,4 +448,9 @@ export const DAILY_PUZZLES = [
     quartets: [["nu","me","ric","al"],["comp","atib","il","ity"],["di","sco","ura","ge"],["unde","rs","to","od"],["es","tabl","ish","ed"]],
     words: ['ales', 'alto', 'compatibility', 'comped', 'compiled', 'compiles', 'dial', 'died', 'dies', 'dime', 'dimers', 'diodes', 'disco', 'discoed', 'discourage', 'eddies', 'edge', 'edgers', 'establish', 'established', 'geed', 'gees', 'genu', 'geodes', 'meal', 'medial', 'meed', 'menu', 'numeric', 'numerical', 'nursed', 'nurses', 'odes', 'riced', 'rices', 'tabled', 'tables', 'todies', 'toed', 'toes', 'toil', 'toiled', 'tome', 'tors', 'understood'],
   },
+  {
+    date: '2026-07-24',
+    quartets: [["cont","inu","at","ion"],["acc","iden","tal","ly"],["en","cou","ra","ge"],["ina","bi","li","ty"],["ad","vant","ag","es"]],
+    words: ['accidental', 'accidentally', 'adages', 'advantages', 'agates', 'ages', 'contagion', 'continuation', 'continues', 'contra', 'courage', 'enates', 'encourage', 'enrage', 'gees', 'inability', 'ion', 'lien', 'lies', 'lily', 'lira', 'rabies', 'rage', 'ratal', 'tales', 'talion', 'tallies', 'tally', 'vantages'],
+  },
 ] as const
