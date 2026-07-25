@@ -453,4 +453,9 @@ export const DAILY_PUZZLES = [
     quartets: [["cont","inu","at","ion"],["acc","iden","tal","ly"],["en","cou","ra","ge"],["ina","bi","li","ty"],["ad","vant","ag","es"]],
     words: ['accidental', 'accidentally', 'adages', 'advantages', 'agates', 'ages', 'contagion', 'continuation', 'continues', 'contra', 'courage', 'enates', 'encourage', 'enrage', 'gees', 'inability', 'ion', 'lien', 'lies', 'lily', 'lira', 'rabies', 'rage', 'ratal', 'tales', 'talion', 'tallies', 'tally', 'vantages'],
   },
+  {
+    date: '2026-07-25',
+    quartets: [["co","nsid","era","tion"],["con","tin","uo","us"],["cir","cums","tan","ces"],["de","ri","vi","ng"],["sim","ul","tane","ous"]],
+    words: ['cir', 'circumstances', 'cirri', 'code', 'con', 'congous', 'consideration', 'continuo', 'continuous', 'coring', 'cums', 'deco', 'deriving', 'devices', 'devious', 'era', 'rices', 'ride', 'ring', 'riviera', 'riving', 'sim', 'simultaneous', 'tan', 'tin', 'vices', 'vide'],
+  },
 ] as const
