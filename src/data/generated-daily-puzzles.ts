@@ -458,4 +458,9 @@ export const DAILY_PUZZLES = [
     quartets: [["co","nsid","era","tion"],["con","tin","uo","us"],["cir","cums","tan","ces"],["de","ri","vi","ng"],["sim","ul","tane","ous"]],
     words: ['cir', 'circumstances', 'cirri', 'code', 'con', 'congous', 'consideration', 'continuo', 'continuous', 'coring', 'cums', 'deco', 'deriving', 'devices', 'devious', 'era', 'rices', 'ride', 'ring', 'riviera', 'riving', 'sim', 'simultaneous', 'tan', 'tin', 'vices', 'vide'],
   },
+  {
+    date: '2026-07-26',
+    quartets: [["anno","unc","em","ent"],["pe","rma","ne","ntly"],["arb","it","ra","ry"],["pro","fess","ion","al"],["ex","ten","si","ve"]],
+    words: ['announcement', 'arb', 'arbitrary', 'emit', 'empery', 'entry', 'exit', 'extensive', 'fess', 'ion', 'item', 'peal', 'permanently', 'pro', 'proem', 'profess', 'profession', 'professional', 'prone', 'propene', 'prove', 'rape', 'rave', 'sine', 'ten', 'tenement', 'tensive', 'veal', 'venery', 'very'],
+  },
 ] as const
