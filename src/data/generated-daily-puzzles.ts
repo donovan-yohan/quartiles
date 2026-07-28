@@ -468,4 +468,9 @@ export const DAILY_PUZZLES = [
     quartets: [["qu","al","if","ied"],["rea","so","nab","le"],["as","su","mp","tion"],["un","der","ne","ath"],["ul","tim","at","ely"]],
     words: ['alas', 'alder', 'alle', 'also', 'alulas', 'assumption', 'asunder', 'leal', 'leas', 'nab', 'neat', 'neath', 'qualified', 'reader', 'reasonable', 'sole', 'sone', 'soul', 'sounder', 'sump', 'sumption', 'timely', 'ultimately', 'under', 'underneath', 'unified', 'untimely'],
   },
+  {
+    date: '2026-07-28',
+    quartets: [["aut","om","atic","ally"],["ins","tru","ctio","ns"],["ev","er","yo","ne"],["di","stri","but","ed"],["rep","ro","du","ce"]],
+    words: ['ally', 'automatic', 'automatically', 'but', 'cedi', 'censed', 'censer', 'cero', 'dice', 'died', 'dine', 'dins', 'distributed', 'dually', 'duce', 'dune', 'duns', 'duro', 'erne', 'ever', 'everyone', 'ins', 'instructions', 'need', 'omer', 'rep', 'repro', 'reproduce', 'room', 'roomed', 'roomer', 'truce', 'trued', 'truer'],
+  },
 ] as const
