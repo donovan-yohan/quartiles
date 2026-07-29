@@ -473,4 +473,9 @@ export const DAILY_PUZZLES = [
     quartets: [["aut","om","atic","ally"],["ins","tru","ctio","ns"],["ev","er","yo","ne"],["di","stri","but","ed"],["rep","ro","du","ce"]],
     words: ['ally', 'automatic', 'automatically', 'but', 'cedi', 'censed', 'censer', 'cero', 'dice', 'died', 'dine', 'dins', 'distributed', 'dually', 'duce', 'dune', 'duns', 'duro', 'erne', 'ever', 'everyone', 'ins', 'instructions', 'need', 'omer', 'rep', 'repro', 'reproduce', 'room', 'roomed', 'roomer', 'truce', 'trued', 'truer'],
   },
+  {
+    date: '2026-07-29',
+    quartets: [["eng","ine","er","ing"],["de","sig","ni","ng"],["com","par","is","on"],["rel","ati","onsh","ip"],["rid","ic","ulo","us"]],
+    words: ['comer', 'comic', 'coming', 'comparer', 'comparing', 'comparison', 'deer', 'deicer', 'deicing', 'denier', 'deriding', 'designing', 'engine', 'engineer', 'engineering', 'icing', 'icon', 'nide', 'oncoming', 'onus', 'par', 'parer', 'paring', 'relating', 'relation', 'relationship', 'relic', 'reline', 'rid', 'rider', 'ridiculous', 'riding', 'signing', 'user', 'using'],
+  },
 ] as const
