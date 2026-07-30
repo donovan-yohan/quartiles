@@ -478,4 +478,9 @@ export const DAILY_PUZZLES = [
     quartets: [["eng","ine","er","ing"],["de","sig","ni","ng"],["com","par","is","on"],["rel","ati","onsh","ip"],["rid","ic","ulo","us"]],
     words: ['comer', 'comic', 'coming', 'comparer', 'comparing', 'comparison', 'deer', 'deicer', 'deicing', 'denier', 'deriding', 'designing', 'engine', 'engineer', 'engineering', 'icing', 'icon', 'nide', 'oncoming', 'onus', 'par', 'parer', 'paring', 'relating', 'relation', 'relationship', 'relic', 'reline', 'rid', 'rider', 'ridiculous', 'riding', 'signing', 'user', 'using'],
   },
+  {
+    date: '2026-07-30',
+    quartets: [["impr","ov","em","ents"],["co","mpat","ibil","ity"],["te","chni","qu","es"],["ex","pl","ic","it"],["aut","om","ob","ile"]],
+    words: ['automobile', 'compatibility', 'coom', 'cote', 'emit', 'esteem', 'exes', 'exile', 'exit', 'explicit', 'ices', 'improbity', 'improvements', 'improves', 'item', 'obesity', 'obit', 'omit', 'quit', 'techniques', 'teem', 'tees'],
+  },
 ] as const
