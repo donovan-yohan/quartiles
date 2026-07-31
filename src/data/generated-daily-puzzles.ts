@@ -483,4 +483,9 @@ export const DAILY_PUZZLES = [
     quartets: [["impr","ov","em","ents"],["co","mpat","ibil","ity"],["te","chni","qu","es"],["ex","pl","ic","it"],["aut","om","ob","ile"]],
     words: ['automobile', 'compatibility', 'coom', 'cote', 'emit', 'esteem', 'exes', 'exile', 'exit', 'explicit', 'ices', 'improbity', 'improvements', 'improves', 'item', 'obesity', 'obit', 'omit', 'quit', 'techniques', 'teem', 'tees'],
   },
+  {
+    date: '2026-07-31',
+    quartets: [["con","sump","ti","on"],["th","eo","reti","cal"],["sim","ult","ane","ous"],["unf","ortu","nate","ly"],["in","terv","ent","ion"]],
+    words: ['ane', 'con', 'connate', 'consumption', 'inane', 'inanely', 'inion', 'inly', 'innate', 'innately', 'intervention', 'inti', 'ion', 'onion', 'only', 'sim', 'simultaneous', 'sump', 'sumption', 'thane', 'theoretical', 'thin', 'thinly', 'thous', 'tical', 'unfortunate', 'unfortunately'],
+  },
 ] as const
