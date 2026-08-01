@@ -488,4 +488,9 @@ export const DAILY_PUZZLES = [
     quartets: [["con","sump","ti","on"],["th","eo","reti","cal"],["sim","ult","ane","ous"],["unf","ortu","nate","ly"],["in","terv","ent","ion"]],
     words: ['ane', 'con', 'connate', 'consumption', 'inane', 'inanely', 'inion', 'inly', 'innate', 'innately', 'intervention', 'inti', 'ion', 'onion', 'only', 'sim', 'simultaneous', 'sump', 'sumption', 'thane', 'theoretical', 'thin', 'thinly', 'thous', 'tical', 'unfortunate', 'unfortunately'],
   },
+  {
+    date: '2026-08-01',
+    quartets: [["st","ati","sti","cal"],["po","ten","ti","al"],["ap","pre","cia","ting"],["ex","pe","rien","cing"],["com","pa","rab","le"]],
+    words: ['alle', 'apex', 'appeal', 'appreciating', 'comparable', 'competing', 'compo', 'compost', 'compre', 'exalting', 'experiencing', 'expo', 'leal', 'leap', 'lest', 'pacing', 'pale', 'palest', 'parable', 'past', 'paten', 'patenting', 'peal', 'pest', 'pestle', 'pole', 'pope', 'post', 'postal', 'potential', 'pre', 'staple', 'statical', 'statistical', 'stile', 'stipe', 'ten', 'tenting', 'tical', 'tile', 'ting', 'tingle'],
+  },
 ] as const
