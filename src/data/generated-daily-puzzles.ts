@@ -493,4 +493,9 @@ export const DAILY_PUZZLES = [
     quartets: [["st","ati","sti","cal"],["po","ten","ti","al"],["ap","pre","cia","ting"],["ex","pe","rien","cing"],["com","pa","rab","le"]],
     words: ['alle', 'apex', 'appeal', 'appreciating', 'comparable', 'competing', 'compo', 'compost', 'compre', 'exalting', 'experiencing', 'expo', 'leal', 'leap', 'lest', 'pacing', 'pale', 'palest', 'parable', 'past', 'paten', 'patenting', 'peal', 'pest', 'pestle', 'pole', 'pope', 'post', 'postal', 'potential', 'pre', 'staple', 'statical', 'statistical', 'stile', 'stipe', 'ten', 'tenting', 'tical', 'tile', 'ting', 'tingle'],
   },
+  {
+    date: '2026-08-02',
+    quartets: [["el","ectr","on","ics"],["bro","adc","ast","ing"],["li","ke","wi","se"],["imp","os","si","ble"],["te","rm","in","al"]],
+    words: ['broadcast', 'broadcasting', 'broke', 'brose', 'elastics', 'elastin', 'electrics', 'electron', 'electronics', 'else', 'imp', 'impaling', 'impel', 'imposing', 'impossible', 'keel', 'keeling', 'like', 'likewise', 'lion', 'lite', 'onsite', 'ossein', 'osteal', 'seal', 'sealing', 'seel', 'seeling', 'seining', 'sermon', 'sike', 'site', 'teal', 'term', 'terminal', 'terming', 'wise', 'wite'],
+  },
 ] as const
