@@ -498,4 +498,9 @@ export const DAILY_PUZZLES = [
     quartets: [["el","ectr","on","ics"],["bro","adc","ast","ing"],["li","ke","wi","se"],["imp","os","si","ble"],["te","rm","in","al"]],
     words: ['broadcast', 'broadcasting', 'broke', 'brose', 'elastics', 'elastin', 'electrics', 'electron', 'electronics', 'else', 'imp', 'impaling', 'impel', 'imposing', 'impossible', 'keel', 'keeling', 'like', 'likewise', 'lion', 'lite', 'onsite', 'ossein', 'osteal', 'seal', 'sealing', 'seel', 'seeling', 'seining', 'sermon', 'sike', 'site', 'teal', 'term', 'terminal', 'terming', 'wise', 'wite'],
   },
+  {
+    date: '2026-08-03',
+    quartets: [["act","iv","iti","es"],["reg","ula","ti","on"],["som","ew","he","re"],["dis","cus","sio","ns"],["di","sap","pea","red"]],
+    words: ['act', 'actives', 'activities', 'dies', 'dins', 'dire', 'dis', 'disappeared', 'discus', 'discuses', 'discussions', 'ewes', 'hens', 'here', 'hereon', 'ones', 'pea', 'peahens', 'peans', 'react', 'recuses', 'red', 'redact', 'regulation', 'reties', 'retired', 'sap', 'som', 'somewhere', 'tidies', 'ties', 'tins', 'tire', 'tired'],
+  },
 ] as const
