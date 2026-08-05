@@ -508,4 +508,9 @@ export const DAILY_PUZZLES = [
     quartets: [["re","sol","uti","on"],["so","phi","stic","ated"],["impr","ov","em","ents"],["co","nseq","uen","ces"],["gu","ara","nt","ees"]],
     words: ['coated', 'consequences', 'contents', 'coon', 'core', 'guarantees', 'improvements', 'phi', 'rent', 'resolution', 'sol', 'solon', 'solution', 'soon', 'sophistic', 'sophisticated', 'sore'],
   },
+  {
+    date: '2026-08-05',
+    quartets: [["op","po","si","te"],["un","iv","ers","ity"],["co","mpar","ati","vely"],["emba","rr","as","ses"],["thro","ug","ho","ut"]],
+    words: ['asses', 'coati', 'coho', 'comparatively', 'coop', 'coopers', 'cote', 'embarrasses', 'hoers', 'hoop', 'hoses', 'hosiers', 'opposes', 'opposite', 'poco', 'poop', 'poses', 'pout', 'pouters', 'sises', 'site', 'teas', 'teasers', 'throughout', 'unity', 'university'],
+  },
 ] as const
