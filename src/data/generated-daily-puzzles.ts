@@ -513,4 +513,9 @@ export const DAILY_PUZZLES = [
     quartets: [["op","po","si","te"],["un","iv","ers","ity"],["co","mpar","ati","vely"],["emba","rr","as","ses"],["thro","ug","ho","ut"]],
     words: ['asses', 'coati', 'coho', 'comparatively', 'coop', 'coopers', 'cote', 'embarrasses', 'hoers', 'hoop', 'hoses', 'hosiers', 'opposes', 'opposite', 'poco', 'poop', 'poses', 'pout', 'pouters', 'sises', 'site', 'teas', 'teasers', 'throughout', 'unity', 'university'],
   },
+  {
+    date: '2026-08-06',
+    quartets: [["re","qu","ir","ed"],["mag","ni","tu","de"],["nu","me","ric","al"],["en","cou","ra","ged"],["nev","erth","el","ess"]],
+    words: ['couture', 'deal', 'deed', 'deme', 'denial', 'denied', 'edged', 'encouraged', 'enraged', 'magnitude', 'meal', 'meed', 'menial', 'menu', 'mere', 'nevertheless', 'nide', 'nude', 'numeric', 'numerical', 'raged', 'rare', 'real', 'rede', 'reed', 'reel', 'reeled', 'required', 'riced', 'tude', 'tureen'],
+  },
 ] as const
