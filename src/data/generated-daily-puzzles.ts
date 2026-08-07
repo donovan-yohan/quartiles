@@ -518,4 +518,9 @@ export const DAILY_PUZZLES = [
     quartets: [["re","qu","ir","ed"],["mag","ni","tu","de"],["nu","me","ric","al"],["en","cou","ra","ged"],["nev","erth","el","ess"]],
     words: ['couture', 'deal', 'deed', 'deme', 'denial', 'denied', 'edged', 'encouraged', 'enraged', 'magnitude', 'meal', 'meed', 'menial', 'menu', 'mere', 'nevertheless', 'nide', 'nude', 'numeric', 'numerical', 'raged', 'rare', 'real', 'rede', 'reed', 'reel', 'reeled', 'required', 'riced', 'tude', 'tureen'],
   },
+  {
+    date: '2026-08-07',
+    quartets: [["cir","cums","ta","nce"],["pe","rmi","ssi","on"],["com","pli","cat","ed"],["poss","ib","ili","ties"],["ha","ppe","ni","ng"]],
+    words: ['cat', 'cir', 'circumstance', 'complicated', 'complied', 'cums', 'hailing', 'hance', 'hang', 'hanged', 'happening', 'harming', 'peed', 'pence', 'peng', 'peon', 'perming', 'permission', 'plied', 'possibilities', 'tailing', 'tang', 'tape', 'ties'],
+  },
 ] as const
