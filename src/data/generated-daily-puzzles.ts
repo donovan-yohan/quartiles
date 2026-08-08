@@ -523,4 +523,9 @@ export const DAILY_PUZZLES = [
     quartets: [["cir","cums","ta","nce"],["pe","rmi","ssi","on"],["com","pli","cat","ed"],["poss","ib","ili","ties"],["ha","ppe","ni","ng"]],
     words: ['cat', 'cir', 'circumstance', 'complicated', 'complied', 'cums', 'hailing', 'hance', 'hang', 'hanged', 'happening', 'harming', 'peed', 'pence', 'peng', 'peon', 'perming', 'permission', 'plied', 'possibilities', 'tailing', 'tang', 'tape', 'ties'],
   },
+  {
+    date: '2026-08-08',
+    quartets: [["soph","is","tica","tes"],["op","era","ti","on"],["el","ev","at","or"],["ma","jo","ri","ty"],["im","medi","ate","ly"]],
+    words: ['ate', 'atop', 'elate', 'elevate', 'elevator', 'elevon', 'era', 'immediate', 'immediately', 'maim', 'majority', 'mates', 'mediate', 'mediately', 'mediator', 'only', 'opera', 'operates', 'operation', 'optima', 'option', 'orate', 'orison', 'riel', 'rites', 'sophisticates', 'testily', 'testy'],
+  },
 ] as const
