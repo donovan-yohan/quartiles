@@ -528,4 +528,9 @@ export const DAILY_PUZZLES = [
     quartets: [["soph","is","tica","tes"],["op","era","ti","on"],["el","ev","at","or"],["ma","jo","ri","ty"],["im","medi","ate","ly"]],
     words: ['ate', 'atop', 'elate', 'elevate', 'elevator', 'elevon', 'era', 'immediate', 'immediately', 'maim', 'majority', 'mates', 'mediate', 'mediately', 'mediator', 'only', 'opera', 'operates', 'operation', 'optima', 'option', 'orate', 'orison', 'riel', 'rites', 'sophisticates', 'testily', 'testy'],
   },
+  {
+    date: '2026-08-09',
+    quartets: [["co","ntin","uo","us"],["circ","umst","anc","es"],["pa","rti","cu","lar"],["ann","ounc","em","ent"],["imm","edi","at","ely"]],
+    words: ['annates', 'announcement', 'announces', 'circumstances', 'circus', 'circuses', 'coat', 'continent', 'continuo', 'continuous', 'cues', 'emus', 'escolar', 'immediately', 'lar', 'lares', 'ounces', 'particular', 'parties', 'pauses', 'usances', 'uses'],
+  },
 ] as const
