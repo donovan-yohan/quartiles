@@ -533,4 +533,9 @@ export const DAILY_PUZZLES = [
     quartets: [["co","ntin","uo","us"],["circ","umst","anc","es"],["pa","rti","cu","lar"],["ann","ounc","em","ent"],["imm","edi","at","ely"]],
     words: ['annates', 'announcement', 'announces', 'circumstances', 'circus', 'circuses', 'coat', 'continent', 'continuo', 'continuous', 'cues', 'emus', 'escolar', 'immediately', 'lar', 'lares', 'ounces', 'particular', 'parties', 'pauses', 'usances', 'uses'],
   },
+  {
+    date: '2026-08-10',
+    quartets: [["enc","ount","er","ing"],["oc","ca","si","on"],["mem","be","rs","hip"],["op","por","tuni","ties"],["in","te","rpre","ted"]],
+    words: ['beer', 'being', 'cabers', 'cain', 'cars', 'cate', 'caters', 'encounter', 'encountering', 'errs', 'hip', 'inbeing', 'interpreted', 'inters', 'members', 'membership', 'occasion', 'onsite', 'operon', 'oping', 'opining', 'opportunities', 'opted', 'poring', 'ported', 'porters', 'sirs', 'site', 'sited', 'ted', 'terser', 'ties', 'tunicate'],
+  },
 ] as const
