@@ -538,4 +538,9 @@ export const DAILY_PUZZLES = [
     quartets: [["enc","ount","er","ing"],["oc","ca","si","on"],["mem","be","rs","hip"],["op","por","tuni","ties"],["in","te","rpre","ted"]],
     words: ['beer', 'being', 'cabers', 'cain', 'cars', 'cate', 'caters', 'encounter', 'encountering', 'errs', 'hip', 'inbeing', 'interpreted', 'inters', 'members', 'membership', 'occasion', 'onsite', 'operon', 'oping', 'opining', 'opportunities', 'opted', 'poring', 'ported', 'porters', 'sirs', 'site', 'sited', 'ted', 'terser', 'ties', 'tunicate'],
   },
+  {
+    date: '2026-08-11',
+    quartets: [["in","tell","ig","ence"],["hop","ef","ul","ly"],["ca","te","gor","ies"],["an","al","ys","is"],["enc","ou","rag","ed"]],
+    words: ['algor', 'ally', 'anal', 'anally', 'analysis', 'anis', 'ante', 'cain', 'cate', 'categories', 'caul', 'caulis', 'cays', 'enceinte', 'encouraged', 'goral', 'gored', 'hop', 'hoped', 'hopeful', 'hopefully', 'inly', 'intelligence', 'rag', 'raged', 'ragis', 'teal', 'teed', 'tell', 'tellies'],
+  },
 ] as const
