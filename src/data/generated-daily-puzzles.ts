@@ -543,4 +543,9 @@ export const DAILY_PUZZLES = [
     quartets: [["in","tell","ig","ence"],["hop","ef","ul","ly"],["ca","te","gor","ies"],["an","al","ys","is"],["enc","ou","rag","ed"]],
     words: ['algor', 'ally', 'anal', 'anally', 'analysis', 'anis', 'ante', 'cain', 'cate', 'categories', 'caul', 'caulis', 'cays', 'enceinte', 'encouraged', 'goral', 'gored', 'hop', 'hoped', 'hopeful', 'hopefully', 'inly', 'intelligence', 'rag', 'raged', 'ragis', 'teal', 'teed', 'tell', 'tellies'],
   },
+  {
+    date: '2026-08-12',
+    quartets: [["eq","ui","pm","ent"],["comp","ro","mi","se"],["re","lati","onsh","ip"],["de","fi","nit","ion"],["obs","er","vati","on"]],
+    words: ['component', 'compre', 'compromise', 'deer', 'defier', 'definition', 'demise', 'enter', 'enteron', 'entre', 'equipment', 'fire', 'ion', 'lati', 'mire', 'nit', 'nitro', 'observation', 'onion', 'rede', 'reenter', 'relation', 'relationship', 'remise', 'renitent', 'rode', 'rose', 'seer', 'semi', 'sere'],
+  },
 ] as const
