@@ -548,4 +548,9 @@ export const DAILY_PUZZLES = [
     quartets: [["eq","ui","pm","ent"],["comp","ro","mi","se"],["re","lati","onsh","ip"],["de","fi","nit","ion"],["obs","er","vati","on"]],
     words: ['component', 'compre', 'compromise', 'deer', 'defier', 'definition', 'demise', 'enter', 'enteron', 'entre', 'equipment', 'fire', 'ion', 'lati', 'mire', 'nit', 'nitro', 'observation', 'onion', 'rede', 'reenter', 'relation', 'relationship', 'remise', 'renitent', 'rode', 'rose', 'seer', 'semi', 'sere'],
   },
+  {
+    date: '2026-08-13',
+    quartets: [["fi","nan","ci","al"],["edu","cat","io","nal"],["as","soc","ia","te"],["est","abl","is","hes"],["pr","ofe","ssi","onal"]],
+    words: ['ablest', 'alas', 'asci', 'ashes', 'associate', 'cat', 'cite', 'educational', 'establishes', 'fiestas', 'final', 'financial', 'hes', 'professional', 'teal', 'teas'],
+  },
 ] as const
