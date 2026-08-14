@@ -553,4 +553,9 @@ export const DAILY_PUZZLES = [
     quartets: [["fi","nan","ci","al"],["edu","cat","io","nal"],["as","soc","ia","te"],["est","abl","is","hes"],["pr","ofe","ssi","onal"]],
     words: ['ablest', 'alas', 'asci', 'ashes', 'associate', 'cat', 'cite', 'educational', 'establishes', 'fiestas', 'final', 'financial', 'hes', 'professional', 'teal', 'teas'],
   },
+  {
+    date: '2026-08-14',
+    quartets: [["in","com","pat","ible"],["li","fe","ti","me"],["poss","ib","ili","ties"],["al","tern","ativ","ely"],["unne","ce","ssar","ily"]],
+    words: ['alible', 'alternatively', 'comely', 'compatible', 'compossible', 'feal', 'feme', 'fetial', 'incompatible', 'intern', 'internal', 'inti', 'lice', 'life', 'lifetime', 'lime', 'meal', 'pat', 'patin', 'pattern', 'patties', 'possibilities', 'possible', 'tern', 'ties', 'time', 'unnecessarily'],
+  },
 ] as const
