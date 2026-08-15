@@ -558,4 +558,9 @@ export const DAILY_PUZZLES = [
     quartets: [["in","com","pat","ible"],["li","fe","ti","me"],["poss","ib","ili","ties"],["al","tern","ativ","ely"],["unne","ce","ssar","ily"]],
     words: ['alible', 'alternatively', 'comely', 'compatible', 'compossible', 'feal', 'feme', 'fetial', 'incompatible', 'intern', 'internal', 'inti', 'lice', 'life', 'lifetime', 'lime', 'meal', 'pat', 'patin', 'pattern', 'patties', 'possibilities', 'possible', 'tern', 'ties', 'time', 'unnecessarily'],
   },
+  {
+    date: '2026-08-15',
+    quartets: [["re","me","mb","ers"],["di","sapp","ea","red"],["dem","onst","rat","ion"],["comp","ati","bi","lity"],["cons","ist","en","cy"]],
+    words: ['biers', 'bireme', 'compatibility', 'compre', 'compred', 'cons', 'consist', 'consistency', 'demist', 'demisters', 'demonstration', 'dime', 'dire', 'disappeared', 'eared', 'ion', 'members', 'mere', 'rat', 'raters', 'ration', 'recons', 'red', 'remembers', 'sappers'],
+  },
 ] as const
