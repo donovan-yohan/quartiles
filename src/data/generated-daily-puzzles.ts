@@ -563,4 +563,9 @@ export const DAILY_PUZZLES = [
     quartets: [["re","me","mb","ers"],["di","sapp","ea","red"],["dem","onst","rat","ion"],["comp","ati","bi","lity"],["cons","ist","en","cy"]],
     words: ['biers', 'bireme', 'compatibility', 'compre', 'compred', 'cons', 'consist', 'consistency', 'demist', 'demisters', 'demonstration', 'dime', 'dire', 'disappeared', 'eared', 'ion', 'members', 'mere', 'rat', 'raters', 'ration', 'recons', 'red', 'remembers', 'sappers'],
   },
+  {
+    date: '2026-08-16',
+    quartets: [["ad","mit","te","dly"],["sop","his","tic","ates"],["cer","ta","in","ly"],["sign","ifi","can","ce"],["apo","lo","gi","es"]],
+    words: ['admit', 'admittedly', 'apologies', 'can', 'cancer', 'canes', 'canines', 'cerates', 'ceresin', 'certain', 'certainly', 'estate', 'gite', 'his', 'inly', 'load', 'loin', 'lota', 'lotic', 'lytic', 'mites', 'sign', 'significance', 'signifies', 'sop', 'sophistic', 'sophisticates', 'tace', 'tain', 'tees', 'tic'],
+  },
 ] as const
