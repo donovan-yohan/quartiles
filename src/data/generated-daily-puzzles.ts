@@ -568,4 +568,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ad","mit","te","dly"],["sop","his","tic","ates"],["cer","ta","in","ly"],["sign","ifi","can","ce"],["apo","lo","gi","es"]],
     words: ['admit', 'admittedly', 'apologies', 'can', 'cancer', 'canes', 'canines', 'cerates', 'ceresin', 'certain', 'certainly', 'estate', 'gite', 'his', 'inly', 'load', 'loin', 'lota', 'lotic', 'lytic', 'mites', 'sign', 'significance', 'signifies', 'sop', 'sophistic', 'sophisticates', 'tace', 'tain', 'tees', 'tic'],
   },
+  {
+    date: '2026-08-17',
+    quartets: [["app","lic","ati","on"],["com","mun","ica","te"],["sub","sta","nti","al"],["to","uc","hi","ng"],["suf","fic","ie","ntly"]],
+    words: ['alto', 'application', 'communal', 'communicate', 'hinting', 'onto', 'stang', 'state', 'sub', 'substantial', 'sufficiently', 'teal', 'telic', 'tenting', 'testa', 'tong', 'tote', 'touching'],
+  },
 ] as const
