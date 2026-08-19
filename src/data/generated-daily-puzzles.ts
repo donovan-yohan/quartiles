@@ -578,4 +578,9 @@ export const DAILY_PUZZLES = [
     quartets: [["dis","tr","ibu","ting"],["ima","gina","ti","on"],["acc","id","ent","ally"],["be","li","ev","es"],["ex","per","ien","ced"]],
     words: ['accent', 'accident', 'accidentally', 'ally', 'bees', 'beeves', 'belies', 'believes', 'cedes', 'dis', 'distributing', 'event', 'eves', 'evident', 'exes', 'exon', 'experienced', 'ides', 'imagination', 'lies', 'lion', 'ones', 'per', 'ties', 'ting', 'tinges', 'trident'],
   },
+  {
+    date: '2026-08-19',
+    quartets: [["occa","sio","na","lly"],["pub","li","sh","ing"],["dis","adv","ant","age"],["col","le","cti","on"],["ind","ust","ri","al"]],
+    words: ['advantage', 'age', 'alle', 'ant', 'anting', 'antlion', 'collection', 'colon', 'dis', 'disadvantage', 'industrial', 'ingle', 'leal', 'lection', 'lion', 'narial', 'occasionally', 'pub', 'publish', 'publishing', 'rial', 'riant', 'rile', 'shingle', 'shrilly'],
+  },
 ] as const
