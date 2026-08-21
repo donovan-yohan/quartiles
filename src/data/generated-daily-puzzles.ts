@@ -588,4 +588,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ar","ti","fic","ial"],["dis","co","ur","ages"],["do","cume","nta","tion"],["con","side","rati","on"],["unn","ece","ssa","rily"]],
     words: ['ages', 'artificial', 'con', 'condo', 'consideration', 'coon', 'dis', 'disco', 'discourages', 'documentation', 'dour', 'fiction', 'onside', 'ration', 'side', 'unnecessarily', 'urial'],
   },
+  {
+    date: '2026-08-21',
+    quartets: [["la","bo","ra","tory"],["me","asu","ri","ng"],["co","mbi","nati","ons"],["dis","tin","gu","ish"],["uns","uit","ab","le"]],
+    words: ['able', 'abri', 'bola', 'bole', 'bombing', 'bong', 'boons', 'bora', 'boring', 'cola', 'cole', 'combinations', 'combing', 'come', 'coons', 'coring', 'dis', 'disable', 'disco', 'distingu', 'distinguish', 'gula', 'laboratory', 'lambing', 'lame', 'lari', 'legume', 'measuring', 'nations', 'rale', 'rang', 'raring', 'rile', 'rime', 'ring', 'tin', 'unsuitable'],
+  },
 ] as const
