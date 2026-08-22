@@ -593,4 +593,9 @@ export const DAILY_PUZZLES = [
     quartets: [["la","bo","ra","tory"],["me","asu","ri","ng"],["co","mbi","nati","ons"],["dis","tin","gu","ish"],["uns","uit","ab","le"]],
     words: ['able', 'abri', 'bola', 'bole', 'bombing', 'bong', 'boons', 'bora', 'boring', 'cola', 'cole', 'combinations', 'combing', 'come', 'coons', 'coring', 'dis', 'disable', 'disco', 'distingu', 'distinguish', 'gula', 'laboratory', 'lambing', 'lame', 'lari', 'legume', 'measuring', 'nations', 'rale', 'rang', 'raring', 'rile', 'rime', 'ring', 'tin', 'unsuitable'],
   },
+  {
+    date: '2026-08-22',
+    quartets: [["ge","ne","ra","ted"],["ins","ti","tut","ion"],["els","ew","he","re"],["me","et","in","gs"],["ann","oun","cem","ent"]],
+    words: ['announcement', 'cement', 'els', 'elsewhere', 'entrain', 'entrains', 'entre', 'ethene', 'gene', 'genera', 'generated', 'heels', 'here', 'herein', 'inhere', 'inion', 'ins', 'inset', 'institution', 'inti', 'intine', 'ion', 'meet', 'meetings', 'megs', 'mene', 'mere', 'meted', 'rage', 'rags', 'rain', 'rains', 'rare', 'rated', 'reels', 'rein', 'reins', 'renege', 'ted', 'time', 'tine', 'tire', 'tut', 'tutted', 'tutti'],
+  },
 ] as const
