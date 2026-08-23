@@ -598,4 +598,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ge","ne","ra","ted"],["ins","ti","tut","ion"],["els","ew","he","re"],["me","et","in","gs"],["ann","oun","cem","ent"]],
     words: ['announcement', 'cement', 'els', 'elsewhere', 'entrain', 'entrains', 'entre', 'ethene', 'gene', 'genera', 'generated', 'heels', 'here', 'herein', 'inhere', 'inion', 'ins', 'inset', 'institution', 'inti', 'intine', 'ion', 'meet', 'meetings', 'megs', 'mene', 'mere', 'meted', 'rage', 'rags', 'rain', 'rains', 'rare', 'rated', 'reels', 'rein', 'reins', 'renege', 'ted', 'time', 'tine', 'tire', 'tut', 'tutted', 'tutti'],
   },
+  {
+    date: '2026-08-23',
+    quartets: [["su","per","vi","sor"],["co","mp","os","es"],["el","sew","he","re"],["requ","ir","em","ent"],["cons","id","erat","ion"]],
+    words: ['coheir', 'cohere', 'coir', 'compel', 'composes', 'compre', 'cons', 'consent', 'consideration', 'coos', 'coper', 'core', 'element', 'elides', 'elsewhere', 'emir', 'emos', 'entre', 'heel', 'heir', 'hemp', 'here', 'idem', 'ides', 'ion', 'irides', 'oses', 'per', 'recons', 'reel', 'requirement', 'requires', 'resew', 'sew', 'sores', 'sues', 'sump', 'super', 'supervisor', 'sure', 'vies', 'viper', 'vireos', 'visor'],
+  },
 ] as const
