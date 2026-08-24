@@ -603,4 +603,9 @@ export const DAILY_PUZZLES = [
     quartets: [["su","per","vi","sor"],["co","mp","os","es"],["el","sew","he","re"],["requ","ir","em","ent"],["cons","id","erat","ion"]],
     words: ['coheir', 'cohere', 'coir', 'compel', 'composes', 'compre', 'cons', 'consent', 'consideration', 'coos', 'coper', 'core', 'element', 'elides', 'elsewhere', 'emir', 'emos', 'entre', 'heel', 'heir', 'hemp', 'here', 'idem', 'ides', 'ion', 'irides', 'oses', 'per', 'recons', 'reel', 'requirement', 'requires', 'resew', 'sew', 'sores', 'sues', 'sump', 'super', 'supervisor', 'sure', 'vies', 'viper', 'vireos', 'visor'],
   },
+  {
+    date: '2026-08-24',
+    quartets: [["ci","rcu","msta","nces"],["acc","id","ent","ally"],["pa","rti","cula","rly"],["ul","ti","ma","tely"],["de","dic","at","ed"]],
+    words: ['accent', 'accented', 'accident', 'accidentally', 'ally', 'circumstances', 'dedicated', 'deed', 'diced', 'macula', 'made', 'maid', 'marly', 'martially', 'maul', 'mauled', 'paid', 'partially', 'particularly', 'partied', 'patient', 'tide', 'tied', 'ultima', 'ultimately'],
+  },
 ] as const
