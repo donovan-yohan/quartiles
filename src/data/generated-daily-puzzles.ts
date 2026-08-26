@@ -613,4 +613,9 @@ export const DAILY_PUZZLES = [
     quartets: [["fun","da","ment","al"],["ad","ve","rtis","ing"],["mat","hema","ti","cal"],["ter","min","ol","ogy"],["rec","og","niti","on"]],
     words: ['advertising', 'alter', 'altering', 'calve', 'dater', 'dative', 'fun', 'fundament', 'fundamental', 'mat', 'mathematical', 'mating', 'matter', 'mattering', 'mental', 'mining', 'minter', 'ology', 'recognition', 'recon', 'recti', 'terminal', 'terminology', 'tertial', 'tical', 'veal'],
   },
+  {
+    date: '2026-08-26',
+    quartets: [["fa","cil","it","ies"],["re","la","ti","on"],["ev","er","yt","hing"],["se","par","at","ely"],["ine","vi","tab","ly"]],
+    words: ['atoner', 'atonies', 'attire', 'ever', 'everything', 'facilely', 'facilities', 'faeries', 'fare', 'inevitably', 'lase', 'lati', 'lyre', 'lyse', 'only', 'par', 'parer', 'parfait', 'paries', 'parities', 'parse', 'relation', 'rely', 'reseat', 'revise', 'seat', 'seer', 'seine', 'separately', 'sere', 'tab', 'tabla', 'tier', 'tire', 'vise'],
+  },
 ] as const
