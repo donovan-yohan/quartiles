@@ -628,4 +628,9 @@ export const DAILY_PUZZLES = [
     quartets: [["co","nti","nu","es"],["el","ec","tro","nics"],["ult","im","at","ely"],["fun","dame","nta","lly"],["temp","era","tu","re"]],
     words: ['coat', 'colly', 'conics', 'continues', 'conure', 'core', 'dame', 'elates', 'electro', 'electronics', 'era', 'fun', 'fundamentally', 'reel', 'retro', 'temp', 'tempera', 'temperature', 'troat', 'tunics', 'ultimately'],
   },
+  {
+    date: '2026-08-29',
+    quartets: [["se","pa","ra","tely"],["re","cog","nit","ion"],["em","bar","ras","ses"],["sop","hi","stic","ate"],["tra","nsf","err","ing"]],
+    words: ['ate', 'bar', 'baring', 'barre', 'cog', 'cognition', 'embarrasses', 'err', 'erring', 'hire', 'ingate', 'ion', 'nit', 'paras', 'pare', 'pareses', 'pase', 'rare', 'recognition', 'seem', 'seeming', 'separately', 'sere', 'sop', 'sophistic', 'sophisticate', 'transferring'],
+  },
 ] as const
