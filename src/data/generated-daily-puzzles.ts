@@ -633,4 +633,9 @@ export const DAILY_PUZZLES = [
     quartets: [["se","pa","ra","tely"],["re","cog","nit","ion"],["em","bar","ras","ses"],["sop","hi","stic","ate"],["tra","nsf","err","ing"]],
     words: ['ate', 'bar', 'baring', 'barre', 'cog', 'cognition', 'embarrasses', 'err', 'erring', 'hire', 'ingate', 'ion', 'nit', 'paras', 'pare', 'pareses', 'pase', 'rare', 'recognition', 'seem', 'seeming', 'separately', 'sere', 'sop', 'sophistic', 'sophisticate', 'transferring'],
   },
+  {
+    date: '2026-08-30',
+    quartets: [["del","ib","er","ate"],["cont","in","uo","us"],["de","li","ve","ry"],["ex","is","te","nce"],["qu","al","if","ied"]],
+    words: ['alate', 'alexin', 'alibied', 'alibis', 'ate', 'atelier', 'continuo', 'continuous', 'deal', 'dealate', 'dealer', 'deer', 'deified', 'delate', 'deli', 'deliberate', 'delis', 'delivery', 'delve', 'existence', 'ibex', 'ibis', 'inlier', 'liquate', 'lite', 'live', 'livery', 'qualified', 'queried', 'quin', 'quinate', 'quinte', 'teal', 'user', 'veal', 'veer', 'vein', 'very'],
+  },
 ] as const
