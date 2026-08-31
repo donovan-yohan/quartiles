@@ -638,4 +638,9 @@ export const DAILY_PUZZLES = [
     quartets: [["del","ib","er","ate"],["cont","in","uo","us"],["de","li","ve","ry"],["ex","is","te","nce"],["qu","al","if","ied"]],
     words: ['alate', 'alexin', 'alibied', 'alibis', 'ate', 'atelier', 'continuo', 'continuous', 'deal', 'dealate', 'dealer', 'deer', 'deified', 'delate', 'deli', 'deliberate', 'delis', 'delivery', 'delve', 'existence', 'ibex', 'ibis', 'inlier', 'liquate', 'lite', 'live', 'livery', 'qualified', 'queried', 'quin', 'quinate', 'quinte', 'teal', 'user', 'veal', 'veer', 'vein', 'very'],
   },
+  {
+    date: '2026-08-31',
+    quartets: [["as","so","cia","ting"],["pe","rm","itt","ing"],["ex","peri","en","ce"],["com","pre","hen","sive"],["mat","hema","tic","al"]],
+    words: ['alas', 'also', 'ascetic', 'ashen', 'associating', 'ceasing', 'comas', 'coming', 'competing', 'compre', 'comprehensive', 'enticing', 'exalting', 'experience', 'hen', 'hence', 'mat', 'mathematic', 'mathematical', 'mating', 'matting', 'peal', 'pealing', 'peas', 'peen', 'peri', 'perm', 'perming', 'permitting', 'peso', 'pre', 'preen', 'preening', 'tic', 'tical', 'ting', 'tinging'],
+  },
 ] as const
