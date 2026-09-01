@@ -643,4 +643,9 @@ export const DAILY_PUZZLES = [
     quartets: [["as","so","cia","ting"],["pe","rm","itt","ing"],["ex","peri","en","ce"],["com","pre","hen","sive"],["mat","hema","tic","al"]],
     words: ['alas', 'also', 'ascetic', 'ashen', 'associating', 'ceasing', 'comas', 'coming', 'competing', 'compre', 'comprehensive', 'enticing', 'exalting', 'experience', 'hen', 'hence', 'mat', 'mathematic', 'mathematical', 'mating', 'matting', 'peal', 'pealing', 'peas', 'peen', 'peri', 'perm', 'perming', 'permitting', 'peso', 'pre', 'preen', 'preening', 'tic', 'tical', 'ting', 'tinging'],
   },
+  {
+    date: '2026-09-01',
+    quartets: [["cir","cum","stan","ce"],["me","as","ur","ed"],["com","par","ab","le"],["en","gi","ne","ers"],["ad","di","ti","on"]],
+    words: ['abas', 'abased', 'abed', 'able', 'addition', 'ceased', 'cecum', 'cedi', 'cir', 'circumstance', 'comas', 'comers', 'comparable', 'compared', 'dice', 'died', 'dime', 'dine', 'distance', 'enable', 'engine', 'engineers', 'ennead', 'entice', 'lead', 'leaded', 'leaden', 'leaders', 'leas', 'leased', 'leasers', 'leers', 'legion', 'mead', 'measured', 'medias', 'meed', 'mene', 'need', 'needle', 'neon', 'neuron', 'once', 'par', 'parable', 'paraded', 'paraders', 'paras', 'pared', 'parers', 'partied', 'stance', 'tidied', 'tied', 'tiers', 'tile', 'time', 'tine', 'tineas'],
+  },
 ] as const
