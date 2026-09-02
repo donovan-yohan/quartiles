@@ -648,4 +648,9 @@ export const DAILY_PUZZLES = [
     quartets: [["cir","cum","stan","ce"],["me","as","ur","ed"],["com","par","ab","le"],["en","gi","ne","ers"],["ad","di","ti","on"]],
     words: ['abas', 'abased', 'abed', 'able', 'addition', 'ceased', 'cecum', 'cedi', 'cir', 'circumstance', 'comas', 'comers', 'comparable', 'compared', 'dice', 'died', 'dime', 'dine', 'distance', 'enable', 'engine', 'engineers', 'ennead', 'entice', 'lead', 'leaded', 'leaden', 'leaders', 'leas', 'leased', 'leasers', 'leers', 'legion', 'mead', 'measured', 'medias', 'meed', 'mene', 'need', 'needle', 'neon', 'neuron', 'once', 'par', 'parable', 'paraded', 'paraders', 'paras', 'pared', 'parers', 'partied', 'stance', 'tidied', 'tied', 'tiers', 'tile', 'time', 'tine', 'tineas'],
   },
+  {
+    date: '2026-09-02',
+    quartets: [["com","par","ab","le"],["au","to","ma","tic"],["di","sco","ura","ge"],["ins","tit","uti","on"],["inco","nve","nien","ce"]],
+    words: ['able', 'audile', 'auto', 'automatic', 'cedi', 'comma', 'comparable', 'dice', 'disco', 'discourage', 'inconvenience', 'ins', 'institution', 'lenience', 'mace', 'mage', 'mains', 'male', 'once', 'ontic', 'onto', 'par', 'parable', 'particle', 'tic', 'tit', 'title', 'tole', 'utile'],
+  },
 ] as const
