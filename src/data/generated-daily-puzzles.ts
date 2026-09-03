@@ -653,4 +653,9 @@ export const DAILY_PUZZLES = [
     quartets: [["com","par","ab","le"],["au","to","ma","tic"],["di","sco","ura","ge"],["ins","tit","uti","on"],["inco","nve","nien","ce"]],
     words: ['able', 'audile', 'auto', 'automatic', 'cedi', 'comma', 'comparable', 'dice', 'disco', 'discourage', 'inconvenience', 'ins', 'institution', 'lenience', 'mace', 'mage', 'mains', 'male', 'once', 'ontic', 'onto', 'par', 'parable', 'particle', 'tic', 'tit', 'title', 'tole', 'utile'],
   },
+  {
+    date: '2026-09-03',
+    quartets: [["int","ell","ige","nce"],["unac","cep","ta","ble"],["op","er","at","or"],["di","sc","our","ages"],["dem","onst","rati","on"]],
+    words: ['ages', 'atoner', 'atop', 'attaint', 'bleat', 'demon', 'demonstration', 'disc', 'discourages', 'ell', 'intelligence', 'inter', 'intoner', 'operator', 'operon', 'our', 'ration', 'scat', 'scop', 'scorer', 'scour', 'scourer', 'table', 'taint', 'unacceptable'],
+  },
 ] as const
