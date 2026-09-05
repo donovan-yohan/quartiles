@@ -663,4 +663,9 @@ export const DAILY_PUZZLES = [
     quartets: [["de","fi","nite","ly"],["un","nec","essa","rily"],["circ","ums","ta","nce"],["re","cogn","it","ion"],["inc","onv","eni","ence"]],
     words: ['circumstance', 'cognition', 'definite', 'definitely', 'finite', 'finitely', 'fire', 'incessance', 'inconvenience', 'ion', 'lyre', 'necessarily', 'recognition', 'rede', 'rely', 'reunion', 'tare', 'union', 'unit', 'unnecessarily'],
   },
+  {
+    date: '2026-09-05',
+    quartets: [["ac","ce","pta","ble"],["ma","th","emat","ics"],["ed","uc","at","ion"],["unn","ece","ssa","rily"],["in","ter","nati","onal"]],
+    words: ['acceptable', 'aced', 'atonal', 'bleat', 'bleated', 'bleed', 'education', 'inion', 'inter', 'international', 'ion', 'mace', 'main', 'mater', 'mathematics', 'national', 'terce', 'that', 'thin', 'unnecessarily'],
+  },
 ] as const
