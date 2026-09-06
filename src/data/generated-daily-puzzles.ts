@@ -668,4 +668,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ac","ce","pta","ble"],["ma","th","emat","ics"],["ed","uc","at","ion"],["unn","ece","ssa","rily"],["in","ter","nati","onal"]],
     words: ['acceptable', 'aced', 'atonal', 'bleat', 'bleated', 'bleed', 'education', 'inion', 'inter', 'international', 'ion', 'mace', 'main', 'mater', 'mathematics', 'national', 'terce', 'that', 'thin', 'unnecessarily'],
   },
+  {
+    date: '2026-09-06',
+    quartets: [["art","if","ic","ial"],["comp","re","hens","ive"],["av","ail","ab","le"],["qu","al","ify","ing"],["ca","lcu","la","te"]],
+    words: ['ablate', 'able', 'ail', 'ailing', 'alcaic', 'alive', 'alle', 'art', 'article', 'artificial', 'avail', 'available', 'availing', 'calculate', 'care', 'cate', 'comping', 'complete', 'compre', 'comprehensive', 'hens', 'icing', 'ingle', 'laic', 'laical', 'late', 'leal', 'leaving', 'quail', 'quailing', 'qualify', 'qualifying', 'quart', 'quartic', 'real', 'reaving', 'reify', 'reifying', 'reive', 'relate', 'rete', 'teal'],
+  },
 ] as const
