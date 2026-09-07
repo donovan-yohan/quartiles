@@ -673,4 +673,9 @@ export const DAILY_PUZZLES = [
     quartets: [["art","if","ic","ial"],["comp","re","hens","ive"],["av","ail","ab","le"],["qu","al","ify","ing"],["ca","lcu","la","te"]],
     words: ['ablate', 'able', 'ail', 'ailing', 'alcaic', 'alive', 'alle', 'art', 'article', 'artificial', 'avail', 'available', 'availing', 'calculate', 'care', 'cate', 'comping', 'complete', 'compre', 'comprehensive', 'hens', 'icing', 'ingle', 'laic', 'laical', 'late', 'leal', 'leaving', 'quail', 'quailing', 'qualify', 'qualifying', 'quart', 'quartic', 'real', 'reaving', 'reify', 'reifying', 'reive', 'relate', 'rete', 'teal'],
   },
+  {
+    date: '2026-09-07',
+    quartets: [["ev","ery","thi","ng"],["de","dic","at","es"],["im","med","iat","ely"],["ap","ol","og","ies"],["ex","pan","si","on"]],
+    words: ['apery', 'apes', 'apex', 'apexes', 'apologies', 'atones', 'atonies', 'dedicates', 'dices', 'every', 'everything', 'eves', 'exes', 'exon', 'expansion', 'immediately', 'mediately', 'mediates', 'oles', 'ologies', 'ones', 'onside', 'pan', 'panes', 'pansies', 'side', 'sieves', 'sing', 'singes', 'thievery', 'thieves', 'thing', 'thingies', 'thiol'],
+  },
 ] as const
