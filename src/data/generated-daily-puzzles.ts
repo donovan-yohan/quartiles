@@ -678,4 +678,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ev","ery","thi","ng"],["de","dic","at","es"],["im","med","iat","ely"],["ap","ol","og","ies"],["ex","pan","si","on"]],
     words: ['apery', 'apes', 'apex', 'apexes', 'apologies', 'atones', 'atonies', 'dedicates', 'dices', 'every', 'everything', 'eves', 'exes', 'exon', 'expansion', 'immediately', 'mediately', 'mediates', 'oles', 'ologies', 'ones', 'onside', 'pan', 'panes', 'pansies', 'side', 'sieves', 'sing', 'singes', 'thievery', 'thieves', 'thing', 'thingies', 'thiol'],
   },
+  {
+    date: '2026-09-08',
+    quartets: [["co","nsu","mp","tion"],["ju","sti","fi","es"],["tel","evi","si","on"],["opp","ort","unit","ies"],["op","por","tu","nity"]],
+    words: ['comport', 'consumption', 'coon', 'coop', 'cooption', 'fico', 'jump', 'justifies', 'ones', 'opes', 'opportunities', 'opportunity', 'option', 'ort', 'pores', 'portion', 'simp', 'sties', 'television', 'unit', 'unites', 'unities'],
+  },
 ] as const
