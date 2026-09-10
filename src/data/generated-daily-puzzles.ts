@@ -688,4 +688,9 @@ export const DAILY_PUZZLES = [
     quartets: [["de","fi","ni","te"],["art","ifi","ci","al"],["inv","est","ig","ate"],["lib","ra","ri","es"],["ec","on","om","ic"]],
     words: ['alate', 'ales', 'art', 'artes', 'artificial', 'ate', 'cion', 'cite', 'deal', 'dealate', 'defies', 'definite', 'deices', 'deifies', 'denial', 'denies', 'economic', 'estate', 'estrade', 'finial', 'finite', 'ices', 'icon', 'ignite', 'invest', 'investigate', 'lib', 'libra', 'libraries', 'librate', 'nide', 'nieces', 'ones', 'racial', 'raciest', 'rate', 'rial', 'ride', 'rite', 'teal', 'tees'],
   },
+  {
+    date: '2026-09-10',
+    quartets: [["mi","sle","ad","ing"],["fa","cil","iti","es"],["unf","or","tuna","tely"],["conn","ec","tio","ns"],["en","co","ur","age"]],
+    words: ['adage', 'adores', 'adoring', 'adorns', 'age', 'conn', 'connections', 'conning', 'cons', 'courage', 'encourage', 'facilities', 'fans', 'mien', 'mislead', 'misleading', 'ores', 'tuna', 'unfading', 'unfortunately', 'urns'],
+  },
 ] as const
