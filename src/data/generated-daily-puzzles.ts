@@ -693,4 +693,9 @@ export const DAILY_PUZZLES = [
     quartets: [["mi","sle","ad","ing"],["fa","cil","iti","es"],["unf","or","tuna","tely"],["conn","ec","tio","ns"],["en","co","ur","age"]],
     words: ['adage', 'adores', 'adoring', 'adorns', 'age', 'conn', 'connections', 'conning', 'cons', 'courage', 'encourage', 'facilities', 'fans', 'mien', 'mislead', 'misleading', 'ores', 'tuna', 'unfading', 'unfortunately', 'urns'],
   },
+  {
+    date: '2026-09-11',
+    quartets: [["ded","ic","at","ing"],["pre","fe","rab","le"],["con","tin","ua","tion"],["em","ba","rras","sed"],["just","if","yi","ng"]],
+    words: ['atingle', 'bacon', 'bale', 'bang', 'banging', 'bangle', 'based', 'baying', 'con', 'conic', 'coning', 'continua', 'continuation', 'dedicating', 'embarrassed', 'feat', 'icing', 'ingle', 'just', 'justifying', 'justle', 'pre', 'preferable', 'preying', 'sedating', 'tin'],
+  },
 ] as const
