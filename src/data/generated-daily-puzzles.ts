@@ -698,4 +698,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ded","ic","at","ing"],["pre","fe","rab","le"],["con","tin","ua","tion"],["em","ba","rras","sed"],["just","if","yi","ng"]],
     words: ['atingle', 'bacon', 'bale', 'bang', 'banging', 'bangle', 'based', 'baying', 'con', 'conic', 'coning', 'continua', 'continuation', 'dedicating', 'embarrassed', 'feat', 'icing', 'ingle', 'just', 'justifying', 'justle', 'pre', 'preferable', 'preying', 'sedating', 'tin'],
   },
+  {
+    date: '2026-09-12',
+    quartets: [["expe","rim","en","tal"],["ma","them","ati","cal"],["co","nta","in","ed"],["ano","ny","mo","us"],["na","tu","ra","lly"]],
+    words: ['anonymous', 'coati', 'coed', 'coin', 'coined', 'colly', 'coma', 'contain', 'contained', 'cony', 'cousin', 'experimental', 'main', 'mana', 'manta', 'many', 'mara', 'mathematical', 'molly', 'mora', 'morally', 'moused', 'natal', 'naturally', 'rain', 'rained', 'rally', 'ratal', 'rim', 'rimed', 'talus', 'them', 'themed', 'tuna', 'turaco', 'used'],
+  },
 ] as const
