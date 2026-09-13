@@ -703,4 +703,9 @@ export const DAILY_PUZZLES = [
     quartets: [["expe","rim","en","tal"],["ma","them","ati","cal"],["co","nta","in","ed"],["ano","ny","mo","us"],["na","tu","ra","lly"]],
     words: ['anonymous', 'coati', 'coed', 'coin', 'coined', 'colly', 'coma', 'contain', 'contained', 'cony', 'cousin', 'experimental', 'main', 'mana', 'manta', 'many', 'mara', 'mathematical', 'molly', 'mora', 'morally', 'moused', 'natal', 'naturally', 'rain', 'rained', 'rally', 'ratal', 'rim', 'rimed', 'talus', 'them', 'themed', 'tuna', 'turaco', 'used'],
   },
+  {
+    date: '2026-09-13',
+    quartets: [["cons","id","er","ably"],["hi","sto","ric","al"],["rem","em","be","ring"],["com","mu","nica","tion"],["af","fe","cti","ng"]],
+    words: ['ably', 'affecting', 'beer', 'combe', 'comer', 'communication', 'cons', 'consider', 'considerably', 'erring', 'feal', 'hiemal', 'hiring', 'histoid', 'historic', 'historical', 'idem', 'remembering', 'ricer', 'ring', 'ringer', 'storing'],
+  },
 ] as const
