@@ -708,4 +708,9 @@ export const DAILY_PUZZLES = [
     quartets: [["cons","id","er","ably"],["hi","sto","ric","al"],["rem","em","be","ring"],["com","mu","nica","tion"],["af","fe","cti","ng"]],
     words: ['ably', 'affecting', 'beer', 'combe', 'comer', 'communication', 'cons', 'consider', 'considerably', 'erring', 'feal', 'hiemal', 'hiring', 'histoid', 'historic', 'historical', 'idem', 'remembering', 'ricer', 'ring', 'ringer', 'storing'],
   },
+  {
+    date: '2026-09-14',
+    quartets: [["int","ell","igen","ce"],["st","ru","ctu","re"],["in","trod","uc","ed"],["doc","umen","tati","on"],["phe","no","me","non"]],
+    words: ['doc', 'documentation', 'ell', 'incest', 'intelligence', 'intoned', 'introduced', 'meed', 'mere', 'merest', 'non', 'nonce', 'noon', 'notation', 'noumenon', 'once', 'phenomenon', 'pheon', 'reed', 'rein', 'reined', 'rest', 'rested', 'retrod', 'rued', 'ruin', 'ruined', 'rust', 'rusted', 'stint', 'stinted', 'stoned', 'structure', 'trod'],
+  },
 ] as const
