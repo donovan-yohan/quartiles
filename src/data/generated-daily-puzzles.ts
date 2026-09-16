@@ -713,4 +713,14 @@ export const DAILY_PUZZLES = [
     quartets: [["int","ell","igen","ce"],["st","ru","ctu","re"],["in","trod","uc","ed"],["doc","umen","tati","on"],["phe","no","me","non"]],
     words: ['doc', 'documentation', 'ell', 'incest', 'intelligence', 'intoned', 'introduced', 'meed', 'mere', 'merest', 'non', 'nonce', 'noon', 'notation', 'noumenon', 'once', 'phenomenon', 'pheon', 'reed', 'rein', 'reined', 'rest', 'rested', 'retrod', 'rued', 'ruin', 'ruined', 'rust', 'rusted', 'stint', 'stinted', 'stoned', 'structure', 'trod'],
   },
+  {
+    date: '2026-09-15',
+    quartets: [["te","lev","is","ion"],["suff","ic","ie","ntly"],["inc","ide","ntal","ly"],["so","me","ti","mes"],["in","vest","ig","ate"]],
+    words: ['ate', 'ideate', 'incidental', 'incidentally', 'incision', 'inion', 'inly', 'intently', 'inti', 'invest', 'investigate', 'ion', 'ionic', 'lev', 'levin', 'memes', 'mental', 'mentally', 'mes', 'mesic', 'mete', 'some', 'sometimes', 'sufficiently', 'television', 'time', 'timely', 'times', 'vest'],
+  },
+  {
+    date: '2026-09-16',
+    quartets: [["la","bora","to","ry"],["co","nse","quen","ces"],["res","pect","iv","ely"],["ec","on","om","ic"],["ac","cu","ra","te"]],
+    words: ['accurate', 'acres', 'bora', 'borate', 'cola', 'consequences', 'coom', 'coon', 'cores', 'cote', 'curate', 'cures', 'cute', 'economic', 'icon', 'laboratory', 'laces', 'laic', 'lares', 'late', 'onto', 'pectic', 'races', 'rares', 'rate', 'ratoon', 'respect', 'respectively', 'tense', 'tola', 'tote'],
+  },
 ] as const
