@@ -723,4 +723,9 @@ export const DAILY_PUZZLES = [
     quartets: [["la","bora","to","ry"],["co","nse","quen","ces"],["res","pect","iv","ely"],["ec","on","om","ic"],["ac","cu","ra","te"]],
     words: ['accurate', 'acres', 'bora', 'borate', 'cola', 'consequences', 'coom', 'coon', 'cores', 'cote', 'curate', 'cures', 'cute', 'economic', 'icon', 'laboratory', 'laces', 'laic', 'lares', 'late', 'onto', 'pectic', 'races', 'rares', 'rate', 'ratoon', 'respect', 'respectively', 'tense', 'tola', 'tote'],
   },
+  {
+    date: '2026-09-17',
+    quartets: [["ap","pli","cat","ion"],["pri","mi","ti","ve"],["soph","is","tic","ated"],["dif","fer","enc","es"],["di","stin","gu","ish"]],
+    words: ['apes', 'apish', 'application', 'applies', 'cat', 'cation', 'dies', 'diesis', 'differ', 'differences', 'distingu', 'distinguish', 'dive', 'fer', 'fermi', 'guises', 'ion', 'midi', 'plication', 'plies', 'pries', 'primitive', 'sophistic', 'sophisticated', 'tic', 'tidies', 'ties'],
+  },
 ] as const
