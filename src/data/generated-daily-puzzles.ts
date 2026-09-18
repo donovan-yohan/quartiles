@@ -728,4 +728,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ap","pli","cat","ion"],["pri","mi","ti","ve"],["soph","is","tic","ated"],["dif","fer","enc","es"],["di","stin","gu","ish"]],
     words: ['apes', 'apish', 'application', 'applies', 'cat', 'cation', 'dies', 'diesis', 'differ', 'differences', 'distingu', 'distinguish', 'dive', 'fer', 'fermi', 'guises', 'ion', 'midi', 'plication', 'plies', 'pries', 'primitive', 'sophistic', 'sophisticated', 'tic', 'tidies', 'ties'],
   },
+  {
+    date: '2026-09-18',
+    quartets: [["aut","hor","iti","es"],["in","ade","qu","ate"],["op","por","tun","ity"],["und","ergr","adua","te"],["el","se","wh","ere"]],
+    words: ['adequate', 'ate', 'author', 'authorities', 'authority', 'elate', 'elopes', 'else', 'elsewhere', 'ere', 'esse', 'horse', 'inadequate', 'initiate', 'inundate', 'opes', 'opines', 'opportunity', 'pores', 'quin', 'quinate', 'quinte', 'seel', 'sees', 'seines', 'sequel', 'sequin', 'tees', 'tun', 'tunes', 'undergraduate', 'undines', 'where', 'wherein', 'whin', 'whines', 'whity', 'whop'],
+  },
 ] as const
