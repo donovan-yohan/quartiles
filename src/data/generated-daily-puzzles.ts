@@ -733,4 +733,9 @@ export const DAILY_PUZZLES = [
     quartets: [["aut","hor","iti","es"],["in","ade","qu","ate"],["op","por","tun","ity"],["und","ergr","adua","te"],["el","se","wh","ere"]],
     words: ['adequate', 'ate', 'author', 'authorities', 'authority', 'elate', 'elopes', 'else', 'elsewhere', 'ere', 'esse', 'horse', 'inadequate', 'initiate', 'inundate', 'opes', 'opines', 'opportunity', 'pores', 'quin', 'quinate', 'quinte', 'seel', 'sees', 'seines', 'sequel', 'sequin', 'tees', 'tun', 'tunes', 'undergraduate', 'undines', 'where', 'wherein', 'whin', 'whines', 'whity', 'whop'],
   },
+  {
+    date: '2026-09-19',
+    quartets: [["pot","en","ti","al"],["nece","ss","ar","ily"],["un","acc","epta","ble"],["di","ffe","re","nces"],["ex","ec","ut","ing"]],
+    words: ['acceptable', 'acceptances', 'alar', 'blear', 'blearily', 'bless', 'blessing', 'dial', 'differences', 'dire', 'dissing', 'entire', 'exec', 'executing', 'ingress', 'necessarily', 'pot', 'potential', 'real', 'rear', 'rearing', 'redial', 'tire', 'unacceptable', 'unreal'],
+  },
 ] as const
