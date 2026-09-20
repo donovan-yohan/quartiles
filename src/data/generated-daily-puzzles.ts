@@ -738,4 +738,9 @@ export const DAILY_PUZZLES = [
     quartets: [["pot","en","ti","al"],["nece","ss","ar","ily"],["un","acc","epta","ble"],["di","ffe","re","nces"],["ex","ec","ut","ing"]],
     words: ['acceptable', 'acceptances', 'alar', 'blear', 'blearily', 'bless', 'blessing', 'dial', 'differences', 'dire', 'dissing', 'entire', 'exec', 'executing', 'ingress', 'necessarily', 'pot', 'potential', 'real', 'rear', 'rearing', 'redial', 'tire', 'unacceptable', 'unreal'],
   },
+  {
+    date: '2026-09-20',
+    quartets: [["comp","ara","tiv","ely"],["di","sc","ov","ered"],["pre","par","at","ion"],["con","tin","uati","on"],["res","po","nsib","le"]],
+    words: ['comparatively', 'compleat', 'compres', 'con', 'conation', 'continuation', 'dipole', 'disc', 'discovered', 'ion', 'leered', 'onion', 'ovately', 'ovation', 'par', 'pole', 'poon', 'pores', 'pre', 'preparation', 'resat', 'responsible', 'restively', 'scat', 'scion', 'tin'],
+  },
 ] as const
