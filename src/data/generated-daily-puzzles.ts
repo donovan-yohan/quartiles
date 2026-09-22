@@ -748,4 +748,9 @@ export const DAILY_PUZZLES = [
     quartets: [["su","pe","rvi","sor"],["ex","is","te","nce"],["po","si","ti","ve"],["ir","rit","at","ed"],["acc","id","enta","lly"]],
     words: ['accidentally', 'edentate', 'existence', 'expo', 'iris', 'irritated', 'issued', 'peat', 'peed', 'pence', 'petite', 'poised', 'ponce', 'pope', 'positive', 'potence', 'silly', 'since', 'site', 'sortied', 'sued', 'sully', 'supervisor', 'survive', 'teat', 'teed', 'telly', 'tied'],
   },
+  {
+    date: '2026-09-22',
+    quartets: [["cir","cum","sta","nces"],["ind","epen","de","nt"],["po","li","ci","es"],["co","mbi","na","tion"],["mis","und","erst","and"]],
+    words: ['and', 'cir', 'circumstances', 'code', 'coli', 'combination', 'conation', 'costa', 'deco', 'deepen', 'deli', 'demises', 'dent', 'erst', 'independent', 'lies', 'lint', 'misunderstand', 'nation', 'poco', 'policies', 'ponces', 'pontes', 'potion', 'pound', 'stances', 'station', 'understand'],
+  },
 ] as const
