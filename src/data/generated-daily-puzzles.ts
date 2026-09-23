@@ -753,4 +753,9 @@ export const DAILY_PUZZLES = [
     quartets: [["cir","cum","sta","nces"],["ind","epen","de","nt"],["po","li","ci","es"],["co","mbi","na","tion"],["mis","und","erst","and"]],
     words: ['and', 'cir', 'circumstances', 'code', 'coli', 'combination', 'conation', 'costa', 'deco', 'deepen', 'deli', 'demises', 'dent', 'erst', 'independent', 'lies', 'lint', 'misunderstand', 'nation', 'poco', 'policies', 'ponces', 'pontes', 'potion', 'pound', 'stances', 'station', 'understand'],
   },
+  {
+    date: '2026-09-23',
+    quartets: [["dem","onst","ra","te"],["de","ter","mi","ned"],["dif","fi","cult","ies"],["appl","ic","ati","on"],["in","ab","ili","ty"]],
+    words: ['abies', 'ability', 'abrade', 'application', 'applies', 'cult', 'cultic', 'cultrate', 'defined', 'demon', 'demonic', 'demonstrate', 'deter', 'determined', 'difficult', 'difficulties', 'fined', 'icon', 'inability', 'incult', 'inter', 'interned', 'mined', 'mite', 'rain', 'rate', 'rater', 'termite', 'terra', 'terrain'],
+  },
 ] as const
