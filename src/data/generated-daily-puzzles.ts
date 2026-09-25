@@ -763,4 +763,9 @@ export const DAILY_PUZZLES = [
     quartets: [["fun","dame","nta","lly"],["va","ri","ab","les"],["arti","fi","ci","al"],["si","mult","an","eous"],["ex","pe","rim","ents"]],
     words: ['abri', 'anal', 'ancients', 'artificial', 'dame', 'experiments', 'files', 'filly', 'fun', 'fundamentally', 'peal', 'pean', 'peri', 'rial', 'riles', 'rim', 'ripe', 'silly', 'simultaneous', 'vales', 'vape', 'variables'],
   },
+  {
+    date: '2026-09-25',
+    quartets: [["co","nseq","ue","nces"],["pr","ogr","amm","er"],["li","tera","tu","re"],["uns","ui","ta","ble"],["reg","ula","ti","ons"]],
+    words: ['coble', 'coli', 'consequences', 'coons', 'core', 'lions', 'lire', 'literati', 'literature', 'programmer', 'regulable', 'regulations', 'retable', 'table', 'taco', 'tali', 'tare', 'tier', 'tire', 'unstable', 'unsuitable'],
+  },
 ] as const
