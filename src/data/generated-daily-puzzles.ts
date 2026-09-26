@@ -768,4 +768,9 @@ export const DAILY_PUZZLES = [
     quartets: [["co","nseq","ue","nces"],["pr","ogr","amm","er"],["li","tera","tu","re"],["uns","ui","ta","ble"],["reg","ula","ti","ons"]],
     words: ['coble', 'coli', 'consequences', 'coons', 'core', 'lions', 'lire', 'literati', 'literature', 'programmer', 'regulable', 'regulations', 'retable', 'table', 'taco', 'tali', 'tare', 'tier', 'tire', 'unstable', 'unsuitable'],
   },
+  {
+    date: '2026-09-26',
+    quartets: [["fo","ll","ow","ed"],["sim","ult","an","eous"],["ob","ser","vat","ion"],["co","mmis","si","on"],["in","te","llig","ence"]],
+    words: ['anion', 'anon', 'ante', 'coed', 'coin', 'coined', 'commission', 'coon', 'cote', 'enceinte', 'foin', 'follow', 'followed', 'info', 'inion', 'intelligence', 'ion', 'observation', 'onion', 'onsite', 'owed', 'serin', 'serow', 'sill', 'sim', 'simultaneous', 'site', 'teed', 'tell', 'vat'],
+  },
 ] as const
