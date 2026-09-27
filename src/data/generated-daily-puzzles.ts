@@ -773,4 +773,9 @@ export const DAILY_PUZZLES = [
     quartets: [["fo","ll","ow","ed"],["sim","ult","an","eous"],["ob","ser","vat","ion"],["co","mmis","si","on"],["in","te","llig","ence"]],
     words: ['anion', 'anon', 'ante', 'coed', 'coin', 'coined', 'commission', 'coon', 'cote', 'enceinte', 'foin', 'follow', 'followed', 'info', 'inion', 'intelligence', 'ion', 'observation', 'onion', 'onsite', 'owed', 'serin', 'serow', 'sill', 'sim', 'simultaneous', 'site', 'teed', 'tell', 'vat'],
   },
+  {
+    date: '2026-09-27',
+    quartets: [["ex","am","in","es"],["si","mul","tane","ous"],["co","mpe","tit","ion"],["pe","rmi","ssi","on"],["enc","our","agi","ng"]],
+    words: ['amines', 'amour', 'coin', 'competition', 'congous', 'coon', 'cope', 'encouraging', 'exam', 'examines', 'exes', 'exon', 'inion', 'ion', 'mules', 'ones', 'onion', 'our', 'pees', 'peng', 'peon', 'perming', 'permission', 'petit', 'petites', 'petition', 'simultaneous', 'sing', 'singes', 'sissies', 'tit'],
+  },
 ] as const
