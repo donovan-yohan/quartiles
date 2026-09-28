@@ -778,4 +778,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ex","am","in","es"],["si","mul","tane","ous"],["co","mpe","tit","ion"],["pe","rmi","ssi","on"],["enc","our","agi","ng"]],
     words: ['amines', 'amour', 'coin', 'competition', 'congous', 'coon', 'cope', 'encouraging', 'exam', 'examines', 'exes', 'exon', 'inion', 'ion', 'mules', 'ones', 'onion', 'our', 'pees', 'peng', 'peon', 'perming', 'permission', 'petit', 'petites', 'petition', 'simultaneous', 'sing', 'singes', 'sissies', 'tit'],
   },
+  {
+    date: '2026-09-28',
+    quartets: [["ju","stif","icat","ion"],["ind","epen","den","tly"],["par","ticu","lar","ly"],["as","so","ci","ates"],["fa","mi","li","ar"]],
+    words: ['ardently', 'articular', 'asci', 'associates', 'ciliates', 'den', 'denar', 'familiar', 'family', 'fatly', 'independently', 'indication', 'ion', 'justification', 'lar', 'liar', 'licitly', 'lily', 'miso', 'par', 'paras', 'particular', 'particularly', 'partly', 'soar', 'sofa', 'solar'],
+  },
 ] as const
