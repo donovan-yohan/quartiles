@@ -783,4 +783,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ju","stif","icat","ion"],["ind","epen","den","tly"],["par","ticu","lar","ly"],["as","so","ci","ates"],["fa","mi","li","ar"]],
     words: ['ardently', 'articular', 'asci', 'associates', 'ciliates', 'den', 'denar', 'familiar', 'family', 'fatly', 'independently', 'indication', 'ion', 'justification', 'lar', 'liar', 'licitly', 'lily', 'miso', 'par', 'paras', 'particular', 'particularly', 'partly', 'soar', 'sofa', 'solar'],
   },
+  {
+    date: '2026-09-29',
+    quartets: [["inst","it","uti","ons"],["ot","he","rwi","se"],["suff","ic","ie","ntly"],["imm","ed","iat","ely"],["uns","ui","tab","le"]],
+    words: ['edit', 'heed', 'iced', 'icons', 'immediately', 'institutions', 'otherwise', 'otic', 'seed', 'sufficed', 'sufficiently', 'tab', 'table', 'unstable', 'unsuitable', 'utile'],
+  },
 ] as const
