@@ -788,4 +788,9 @@ export const DAILY_PUZZLES = [
     quartets: [["inst","it","uti","ons"],["ot","he","rwi","se"],["suff","ic","ie","ntly"],["imm","ed","iat","ely"],["uns","ui","tab","le"]],
     words: ['edit', 'heed', 'iced', 'icons', 'immediately', 'institutions', 'otherwise', 'otic', 'seed', 'sufficed', 'sufficiently', 'tab', 'table', 'unstable', 'unsuitable', 'utile'],
   },
+  {
+    date: '2026-09-30',
+    quartets: [["inde","pend","en","tly"],["ev","er","ywhe","re"],["subs","ti","tu","te"],["tel","ep","ho","ne"],["di","ctio","na","ry"]],
+    words: ['dictionary', 'dine', 'dire', 'entire', 'erne', 'even', 'evener', 'ever', 'everywhere', 'hoer', 'hone', 'hotel', 'hotly', 'indene', 'independently', 'nary', 'nature', 'reindeer', 'rete', 'retene', 'retina', 'retune', 'subs', 'substitute', 'teen', 'telephone', 'tidier', 'tier', 'tine', 'tire', 'tuna', 'tune', 'tureen'],
+  },
 ] as const
