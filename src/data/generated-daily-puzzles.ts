@@ -793,4 +793,9 @@ export const DAILY_PUZZLES = [
     quartets: [["inde","pend","en","tly"],["ev","er","ywhe","re"],["subs","ti","tu","te"],["tel","ep","ho","ne"],["di","ctio","na","ry"]],
     words: ['dictionary', 'dine', 'dire', 'entire', 'erne', 'even', 'evener', 'ever', 'everywhere', 'hoer', 'hone', 'hotel', 'hotly', 'indene', 'independently', 'nary', 'nature', 'reindeer', 'rete', 'retene', 'retina', 'retune', 'subs', 'substitute', 'teen', 'telephone', 'tidier', 'tier', 'tine', 'tire', 'tuna', 'tune', 'tureen'],
   },
+  {
+    date: '2026-10-01',
+    quartets: [["in","te","lli","gent"],["ava","il","ab","le"],["oc","cu","pi","ed"],["diff","ic","ul","ty"],["theo","re","tic","al"]],
+    words: ['abed', 'able', 'abulic', 'alle', 'avail', 'available', 'availed', 'cued', 'cure', 'cute', 'cuticle', 'difficulty', 'gent', 'gentle', 'iced', 'intelligent', 'leal', 'occupied', 'pied', 'pile', 'pity', 'real', 'realty', 'reed', 'regent', 'rein', 'reined', 'rete', 'reticle', 'teal', 'teed', 'theoretic', 'theoretical', 'tic', 'tical'],
+  },
 ] as const
