@@ -798,4 +798,9 @@ export const DAILY_PUZZLES = [
     quartets: [["in","te","lli","gent"],["ava","il","ab","le"],["oc","cu","pi","ed"],["diff","ic","ul","ty"],["theo","re","tic","al"]],
     words: ['abed', 'able', 'abulic', 'alle', 'avail', 'available', 'availed', 'cued', 'cure', 'cute', 'cuticle', 'difficulty', 'gent', 'gentle', 'iced', 'intelligent', 'leal', 'occupied', 'pied', 'pile', 'pity', 'real', 'realty', 'reed', 'regent', 'rein', 'reined', 'rete', 'reticle', 'teal', 'teed', 'theoretic', 'theoretical', 'tic', 'tical'],
   },
+  {
+    date: '2026-10-02',
+    quartets: [["ult","im","ate","ly"],["comp","li","ca","te"],["op","er","at","ed"],["un","derg","rad","uate"],["disc","ou","ra","ge"]],
+    words: ['ate', 'atelier', 'atop', 'cage', 'cate', 'comped', 'complicate', 'complied', 'comply', 'disc', 'discourage', 'edge', 'geed', 'lied', 'lieder', 'lily', 'lira', 'lite', 'lyrate', 'oped', 'operate', 'operated', 'rage', 'rate', 'teat', 'teed', 'ultimate', 'ultimately', 'ultra', 'undergrad', 'undergraduate'],
+  },
 ] as const
