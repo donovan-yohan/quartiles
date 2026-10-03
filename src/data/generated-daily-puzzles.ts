@@ -803,4 +803,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ult","im","ate","ly"],["comp","li","ca","te"],["op","er","at","ed"],["un","derg","rad","uate"],["disc","ou","ra","ge"]],
     words: ['ate', 'atelier', 'atop', 'cage', 'cate', 'comped', 'complicate', 'complied', 'comply', 'disc', 'discourage', 'edge', 'geed', 'lied', 'lieder', 'lily', 'lira', 'lite', 'lyrate', 'oped', 'operate', 'operated', 'rage', 'rate', 'teat', 'teed', 'ultimate', 'ultimately', 'ultra', 'undergrad', 'undergraduate'],
   },
+  {
+    date: '2026-10-03',
+    quartets: [["con","ti","nuo","us"],["nec","es","sa","ry"],["unfo","rtun","ate","ly"],["det","er","mi","ne"],["indi","vid","ua","lly"]],
+    words: ['ate', 'con', 'cones', 'continuo', 'continuous', 'deter', 'determine', 'ermine', 'erne', 'indies', 'individually', 'mine', 'miry', 'misally', 'necessary', 'nelly', 'sally', 'sane', 'sanely', 'sati', 'satiate', 'tier', 'ties', 'tine', 'tisane', 'unfortunate', 'unfortunately', 'user', 'uses', 'usually'],
+  },
 ] as const
