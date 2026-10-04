@@ -808,4 +808,9 @@ export const DAILY_PUZZLES = [
     quartets: [["con","ti","nuo","us"],["nec","es","sa","ry"],["unfo","rtun","ate","ly"],["det","er","mi","ne"],["indi","vid","ua","lly"]],
     words: ['ate', 'con', 'cones', 'continuo', 'continuous', 'deter', 'determine', 'ermine', 'erne', 'indies', 'individually', 'mine', 'miry', 'misally', 'necessary', 'nelly', 'sally', 'sane', 'sanely', 'sati', 'satiate', 'tier', 'ties', 'tine', 'tisane', 'unfortunate', 'unfortunately', 'user', 'uses', 'usually'],
   },
+  {
+    date: '2026-10-04',
+    quartets: [["occ","asi","on","al"],["de","te","rm","ine"],["ne","ce","ssar","ily"],["pri","mi","ti","ve"],["dif","ficu","lti","es"]],
+    words: ['ales', 'aside', 'cede', 'deal', 'dene', 'deprive', 'dermal', 'determine', 'difficulties', 'mice', 'mine', 'mite', 'necessarily', 'neon', 'occasion', 'occasional', 'once', 'ones', 'price', 'pride', 'pries', 'primine', 'primitive', 'prion', 'teal', 'tees', 'term', 'tide', 'ties', 'tine', 'veal'],
+  },
 ] as const
