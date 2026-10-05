@@ -813,4 +813,9 @@ export const DAILY_PUZZLES = [
     quartets: [["occ","asi","on","al"],["de","te","rm","ine"],["ne","ce","ssar","ily"],["pri","mi","ti","ve"],["dif","ficu","lti","es"]],
     words: ['ales', 'aside', 'cede', 'deal', 'dene', 'deprive', 'dermal', 'determine', 'difficulties', 'mice', 'mine', 'mite', 'necessarily', 'neon', 'occasion', 'occasional', 'once', 'ones', 'price', 'pride', 'pries', 'primine', 'primitive', 'prion', 'teal', 'tees', 'term', 'tide', 'ties', 'tine', 'veal'],
   },
+  {
+    date: '2026-10-05',
+    quartets: [["re","so","ur","ces"],["ge","ne","ra","te"],["adv","er","ti","se"],["av","ai","lab","le"],["phe","no","men","on"]],
+    words: ['adverse', 'advertise', 'available', 'aver', 'averse', 'erne', 'gene', 'genera', 'generate', 'lab', 'leaver', 'leer', 'leno', 'men', 'mention', 'neon', 'neuron', 'nomen', 'none', 'noon', 'nose', 'note', 'notices', 'notion', 'phenomenon', 'pheon', 'races', 'rage', 'rale', 'ramen', 'rare', 'rate', 'ration', 'reaver', 'renege', 'resole', 'resources', 'rete', 'retene', 'seer', 'semen', 'sene', 'senora', 'sere', 'serene', 'sole', 'sone', 'soon', 'sooner', 'sora', 'sore', 'sour', 'sources', 'sourer', 'tier', 'tierces', 'tile', 'tine', 'tire', 'urge'],
+  },
 ] as const
