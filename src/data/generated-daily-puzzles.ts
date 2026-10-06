@@ -818,4 +818,9 @@ export const DAILY_PUZZLES = [
     quartets: [["re","so","ur","ces"],["ge","ne","ra","te"],["adv","er","ti","se"],["av","ai","lab","le"],["phe","no","men","on"]],
     words: ['adverse', 'advertise', 'available', 'aver', 'averse', 'erne', 'gene', 'genera', 'generate', 'lab', 'leaver', 'leer', 'leno', 'men', 'mention', 'neon', 'neuron', 'nomen', 'none', 'noon', 'nose', 'note', 'notices', 'notion', 'phenomenon', 'pheon', 'races', 'rage', 'rale', 'ramen', 'rare', 'rate', 'ration', 'reaver', 'renege', 'resole', 'resources', 'rete', 'retene', 'seer', 'semen', 'sene', 'senora', 'sere', 'serene', 'sole', 'sone', 'soon', 'sooner', 'sora', 'sore', 'sour', 'sources', 'sourer', 'tier', 'tierces', 'tile', 'tine', 'tire', 'urge'],
   },
+  {
+    date: '2026-10-06',
+    quartets: [["art","if","ici","al"],["ind","iv","idua","lly"],["di","sadv","an","tage"],["so","met","hi","ng"],["doc","umen","tat","ion"]],
+    words: ['also', 'anal', 'anion', 'art', 'artificial', 'dial', 'dilly', 'ding', 'disadvantage', 'doc', 'documentation', 'hiding', 'hilly', 'icing', 'individually', 'ion', 'met', 'metal', 'something', 'song', 'tat'],
+  },
 ] as const
