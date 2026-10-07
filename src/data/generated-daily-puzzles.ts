@@ -823,4 +823,9 @@ export const DAILY_PUZZLES = [
     quartets: [["art","if","ici","al"],["ind","iv","idua","lly"],["di","sadv","an","tage"],["so","met","hi","ng"],["doc","umen","tat","ion"]],
     words: ['also', 'anal', 'anion', 'art', 'artificial', 'dial', 'dilly', 'ding', 'disadvantage', 'doc', 'documentation', 'hiding', 'hilly', 'icing', 'individually', 'ion', 'met', 'metal', 'something', 'song', 'tat'],
   },
+  {
+    date: '2026-10-07',
+    quartets: [["dis","cu","ssi","ng"],["cons","id","erat","ion"],["pol","it","ic","al"],["qua","li","fi","es"],["au","tomo","bi","le"]],
+    words: ['ales', 'alle', 'allies', 'automobile', 'bile', 'binges', 'bingle', 'cons', 'consideration', 'cubing', 'cues', 'cussing', 'dis', 'discussing', 'file', 'filial', 'filing', 'fissile', 'ices', 'ides', 'idle', 'idling', 'ion', 'ionic', 'italic', 'iterates', 'iteration', 'leal', 'lees', 'lies', 'pol', 'poles', 'polices', 'politic', 'political', 'polling', 'qua', 'quale', 'qualifies'],
+  },
 ] as const
