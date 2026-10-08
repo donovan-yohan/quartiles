@@ -828,4 +828,9 @@ export const DAILY_PUZZLES = [
     quartets: [["dis","cu","ssi","ng"],["cons","id","erat","ion"],["pol","it","ic","al"],["qua","li","fi","es"],["au","tomo","bi","le"]],
     words: ['ales', 'alle', 'allies', 'automobile', 'bile', 'binges', 'bingle', 'cons', 'consideration', 'cubing', 'cues', 'cussing', 'dis', 'discussing', 'file', 'filial', 'filing', 'fissile', 'ices', 'ides', 'idle', 'idling', 'ion', 'ionic', 'italic', 'iterates', 'iteration', 'leal', 'lees', 'lies', 'pol', 'poles', 'polices', 'politic', 'political', 'polling', 'qua', 'quale', 'qualifies'],
   },
+  {
+    date: '2026-10-08',
+    quartets: [["def","in","ite","ly"],["di","sc","us","sing"],["nev","ert","hel","ess"],["req","uir","em","ents"],["int","er","pre","ted"]],
+    words: ['defer', 'definer', 'definite', 'definitely', 'disc', 'discus', 'discussing', 'emus', 'eremite', 'indited', 'inert', 'inertly', 'inly', 'intents', 'inter', 'interpreted', 'never', 'nevertheless', 'nevus', 'pre', 'requirements', 'scents', 'sing', 'singer', 'singly', 'ted', 'user'],
+  },
 ] as const
