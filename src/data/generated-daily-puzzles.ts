@@ -833,4 +833,9 @@ export const DAILY_PUZZLES = [
     quartets: [["def","in","ite","ly"],["di","sc","us","sing"],["nev","ert","hel","ess"],["req","uir","em","ents"],["int","er","pre","ted"]],
     words: ['defer', 'definer', 'definite', 'definitely', 'disc', 'discus', 'discussing', 'emus', 'eremite', 'indited', 'inert', 'inertly', 'inly', 'intents', 'inter', 'interpreted', 'never', 'nevertheless', 'nevus', 'pre', 'requirements', 'scents', 'sing', 'singer', 'singly', 'ted', 'user'],
   },
+  {
+    date: '2026-10-09',
+    quartets: [["so","phis","tica","te"],["me","anin","gf","ul"],["rec","og","niti","on"],["com","pat","ib","le"],["gen","er","at","ion"]],
+    words: ['atoner', 'comer', 'compatible', 'generation', 'ion', 'leer', 'meaningful', 'meat', 'mete', 'ogle', 'onion', 'pat', 'phis', 'recognition', 'recon', 'sole', 'some', 'soon', 'sooner', 'sophisticate', 'soul', 'teat'],
+  },
 ] as const
