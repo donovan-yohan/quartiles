@@ -838,4 +838,9 @@ export const DAILY_PUZZLES = [
     quartets: [["so","phis","tica","te"],["me","anin","gf","ul"],["rec","og","niti","on"],["com","pat","ib","le"],["gen","er","at","ion"]],
     words: ['atoner', 'comer', 'compatible', 'generation', 'ion', 'leer', 'meaningful', 'meat', 'mete', 'ogle', 'onion', 'pat', 'phis', 'recognition', 'recon', 'sole', 'some', 'soon', 'sooner', 'sophisticate', 'soul', 'teat'],
   },
+  {
+    date: '2026-10-10',
+    quartets: [["da","ta","ba","se"],["ima","gi","nat","ion"],["en","co","ura","ge"],["re","qu","es","ts"],["des","cri","pti","ons"]],
+    words: ['bare', 'base', 'bats', 'coda', 'codes', 'conation', 'coons', 'core', 'cots', 'courage', 'cries', 'dare', 'data', 'database', 'descries', 'descriptions', 'encodes', 'encore', 'encourage', 'esse', 'gees', 'gets', 'gits', 'image', 'imagination', 'imarets', 'ion', 'nates', 'nation', 'onstage', 'quests', 'recodes', 'regions', 'requests', 'reseda', 'resets', 'rets', 'seen', 'sees', 'senates', 'sere', 'sets', 'taco', 'tare', 'tats'],
+  },
 ] as const
