@@ -843,4 +843,9 @@ export const DAILY_PUZZLES = [
     quartets: [["da","ta","ba","se"],["ima","gi","nat","ion"],["en","co","ura","ge"],["re","qu","es","ts"],["des","cri","pti","ons"]],
     words: ['bare', 'base', 'bats', 'coda', 'codes', 'conation', 'coons', 'core', 'cots', 'courage', 'cries', 'dare', 'data', 'database', 'descries', 'descriptions', 'encodes', 'encore', 'encourage', 'esse', 'gees', 'gets', 'gits', 'image', 'imagination', 'imarets', 'ion', 'nates', 'nation', 'onstage', 'quests', 'recodes', 'regions', 'requests', 'reseda', 'resets', 'rets', 'seen', 'sees', 'senates', 'sere', 'sets', 'taco', 'tare', 'tats'],
   },
+  {
+    date: '2026-10-11',
+    quartets: [["op","port","un","ity"],["ho","li","da","ys"],["di","ffe","ren","tly"],["is","ol","at","ed"],["em","barr","as","sed"]],
+    words: ['atop', 'barred', 'dais', 'days', 'died', 'differently', 'embarrassed', 'hoed', 'holidays', 'hoop', 'hooped', 'hosed', 'hotly', 'hoys', 'isolated', 'lied', 'oped', 'opportunity', 'port', 'ported', 'sedated', 'unbarred', 'unis', 'unity'],
+  },
 ] as const
