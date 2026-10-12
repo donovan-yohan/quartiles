@@ -848,4 +848,9 @@ export const DAILY_PUZZLES = [
     quartets: [["op","port","un","ity"],["ho","li","da","ys"],["di","ffe","ren","tly"],["is","ol","at","ed"],["em","barr","as","sed"]],
     words: ['atop', 'barred', 'dais', 'days', 'died', 'differently', 'embarrassed', 'hoed', 'holidays', 'hoop', 'hooped', 'hosed', 'hotly', 'hoys', 'isolated', 'lied', 'oped', 'opportunity', 'port', 'ported', 'sedated', 'unbarred', 'unis', 'unity'],
   },
+  {
+    date: '2026-10-12',
+    quartets: [["cal","cu","lati","ons"],["re","so","urc","es"],["com","pat","ib","le"],["co","mm","en","ting"],["soph","is","tic","ated"]],
+    words: ['calculations', 'coated', 'cole', 'comes', 'commenting', 'commons', 'compatible', 'coons', 'core', 'cues', 'cure', 'cuticle', 'encore', 'enisle', 'entices', 'escalated', 'ibis', 'ibises', 'isle', 'lati', 'lees', 'leis', 'pat', 'paten', 'patenting', 'pates', 'patting', 'relations', 'resole', 'resources', 'reticle', 'sole', 'sophistic', 'sophisticated', 'sore', 'sources', 'tic', 'ting', 'tinges', 'tingle'],
+  },
 ] as const
