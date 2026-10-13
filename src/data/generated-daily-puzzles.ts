@@ -853,4 +853,9 @@ export const DAILY_PUZZLES = [
     quartets: [["cal","cu","lati","ons"],["re","so","urc","es"],["com","pat","ib","le"],["co","mm","en","ting"],["soph","is","tic","ated"]],
     words: ['calculations', 'coated', 'cole', 'comes', 'commenting', 'commons', 'compatible', 'coons', 'core', 'cues', 'cure', 'cuticle', 'encore', 'enisle', 'entices', 'escalated', 'ibis', 'ibises', 'isle', 'lati', 'lees', 'leis', 'pat', 'paten', 'patenting', 'pates', 'patting', 'relations', 'resole', 'resources', 'reticle', 'sole', 'sophistic', 'sophisticated', 'sore', 'sources', 'tic', 'ting', 'tinges', 'tingle'],
   },
+  {
+    date: '2026-10-13',
+    quartets: [["au","tomo","bi","le"],["int","ro","du","ces"],["an","on","ym","ous"],["bro","ad","cas","ting"],["univ","er","si","ty"]],
+    words: ['adduces', 'anon', 'anonym', 'anonymous', 'anting', 'automobile', 'bier', 'bile', 'biting', 'broad', 'broadcasting', 'broader', 'casting', 'cession', 'duad', 'dubious', 'duro', 'duty', 'inter', 'intoner', 'introduces', 'lead', 'leader', 'lean', 'leaner', 'leer', 'lesion', 'onerous', 'ousting', 'road', 'roan', 'role', 'rosier', 'siting', 'ting', 'tingle', 'tyro', 'university'],
+  },
 ] as const
