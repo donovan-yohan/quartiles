@@ -858,4 +858,9 @@ export const DAILY_PUZZLES = [
     quartets: [["au","tomo","bi","le"],["int","ro","du","ces"],["an","on","ym","ous"],["bro","ad","cas","ting"],["univ","er","si","ty"]],
     words: ['adduces', 'anon', 'anonym', 'anonymous', 'anting', 'automobile', 'bier', 'bile', 'biting', 'broad', 'broadcasting', 'broader', 'casting', 'cession', 'duad', 'dubious', 'duro', 'duty', 'inter', 'intoner', 'introduces', 'lead', 'leader', 'lean', 'leaner', 'leer', 'lesion', 'onerous', 'ousting', 'road', 'roan', 'role', 'rosier', 'siting', 'ting', 'tingle', 'tyro', 'university'],
   },
+  {
+    date: '2026-10-14',
+    quartets: [["ad","dit","ion","al"],["act","iv","it","ies"],["ob","ta","in","ing"],["em","bar","ra","ssed"],["bef","or","eha","nd"]],
+    words: ['act', 'actin', 'actinal', 'acting', 'action', 'activities', 'actor', 'addition', 'additional', 'adit', 'adoring', 'bar', 'baring', 'befit', 'beforehand', 'dit', 'embarrassed', 'emit', 'inaction', 'inditing', 'ingrain', 'inion', 'ion', 'item', 'ivies', 'ivories', 'obit', 'obtain', 'obtaining', 'oral', 'rain', 'raining', 'rand', 'rata', 'tain', 'tandem'],
+  },
 ] as const
