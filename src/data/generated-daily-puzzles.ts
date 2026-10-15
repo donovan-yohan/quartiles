@@ -863,4 +863,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ad","dit","ion","al"],["act","iv","it","ies"],["ob","ta","in","ing"],["em","bar","ra","ssed"],["bef","or","eha","nd"]],
     words: ['act', 'actin', 'actinal', 'acting', 'action', 'activities', 'actor', 'addition', 'additional', 'adit', 'adoring', 'bar', 'baring', 'befit', 'beforehand', 'dit', 'embarrassed', 'emit', 'inaction', 'inditing', 'ingrain', 'inion', 'ion', 'item', 'ivies', 'ivories', 'obit', 'obtain', 'obtaining', 'oral', 'rain', 'raining', 'rand', 'rata', 'tain', 'tandem'],
   },
+  {
+    date: '2026-10-15',
+    quartets: [["bea","ut","if","ul"],["re","li","gi","on"],["ci","rcu","msta","nces"],["un","iv","ersi","ty"],["con","ti","nu","ed"]],
+    words: ['beacon', 'beaut', 'beautiful', 'cion', 'circumstances', 'city', 'con', 'coned', 'continued', 'lied', 'lion', 'lire', 'recon', 'reed', 'region', 'relied', 'religion', 'retied', 'tied', 'tire', 'university', 'untied'],
+  },
 ] as const
