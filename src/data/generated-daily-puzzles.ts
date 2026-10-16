@@ -868,4 +868,9 @@ export const DAILY_PUZZLES = [
     quartets: [["bea","ut","if","ul"],["re","li","gi","on"],["ci","rcu","msta","nces"],["un","iv","ersi","ty"],["con","ti","nu","ed"]],
     words: ['beacon', 'beaut', 'beautiful', 'cion', 'circumstances', 'city', 'con', 'coned', 'continued', 'lied', 'lion', 'lire', 'recon', 'reed', 'region', 'relied', 'religion', 'retied', 'tied', 'tire', 'university', 'untied'],
   },
+  {
+    date: '2026-10-16',
+    quartets: [["sig","nifi","can","ce"],["comb","ina","ti","ons"],["be","li","ev","ed"],["emb","arr","as","sing"],["di","ffi","cul","ty"]],
+    words: ['arras', 'belied', 'believed', 'can', 'candied', 'caned', 'canons', 'canty', 'ceased', 'cedi', 'comb', 'combed', 'combinations', 'dice', 'died', 'difficulty', 'embarrassing', 'embed', 'lice', 'lied', 'lions', 'significance', 'signified', 'sing', 'singed', 'tidied', 'tied'],
+  },
 ] as const
