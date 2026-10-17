@@ -873,4 +873,9 @@ export const DAILY_PUZZLES = [
     quartets: [["sig","nifi","can","ce"],["comb","ina","ti","ons"],["be","li","ev","ed"],["emb","arr","as","sing"],["di","ffi","cul","ty"]],
     words: ['arras', 'belied', 'believed', 'can', 'candied', 'caned', 'canons', 'canty', 'ceased', 'cedi', 'comb', 'combed', 'combinations', 'dice', 'died', 'difficulty', 'embarrassing', 'embed', 'lice', 'lied', 'lions', 'significance', 'signified', 'sing', 'singed', 'tidied', 'tied'],
   },
+  {
+    date: '2026-10-17',
+    quartets: [["del","ib","era","te"],["ba","ck","gro","und"],["inc","on","sist","ent"],["en","co","ura","ge"],["qu","ali","fi","es"]],
+    words: ['alien', 'back', 'background', 'bate', 'cock', 'coon', 'cote', 'courage', 'deliberate', 'encourage', 'entente', 'era', 'fico', 'gees', 'ground', 'inconsistent', 'ones', 'qualifies', 'quinces', 'teen', 'tees', 'underage'],
+  },
 ] as const
