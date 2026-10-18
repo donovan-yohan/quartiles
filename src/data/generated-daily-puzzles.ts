@@ -878,4 +878,9 @@ export const DAILY_PUZZLES = [
     quartets: [["del","ib","era","te"],["ba","ck","gro","und"],["inc","on","sist","ent"],["en","co","ura","ge"],["qu","ali","fi","es"]],
     words: ['alien', 'back', 'background', 'bate', 'cock', 'coon', 'cote', 'courage', 'deliberate', 'encourage', 'entente', 'era', 'fico', 'gees', 'ground', 'inconsistent', 'ones', 'qualifies', 'quinces', 'teen', 'tees', 'underage'],
   },
+  {
+    date: '2026-10-18',
+    quartets: [["det","er","min","ing"],["rec","om","men","ding"],["is","ola","ti","ng"],["ind","ivi","du","ally"],["pa","rtic","ul","ar"]],
+    words: ['ally', 'allying', 'arising', 'artier', 'deter', 'determining', 'ding', 'dinging', 'dually', 'duding', 'dung', 'dunging', 'individually', 'isolating', 'isomer', 'men', 'mending', 'minding', 'miner', 'mining', 'minis', 'mintier', 'minting', 'omer', 'pang', 'particular', 'recommending', 'recti', 'tiding', 'tier', 'ting', 'tinging'],
+  },
 ] as const
