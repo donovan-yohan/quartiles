@@ -883,4 +883,9 @@ export const DAILY_PUZZLES = [
     quartets: [["det","er","min","ing"],["rec","om","men","ding"],["is","ola","ti","ng"],["ind","ivi","du","ally"],["pa","rtic","ul","ar"]],
     words: ['ally', 'allying', 'arising', 'artier', 'deter', 'determining', 'ding', 'dinging', 'dually', 'duding', 'dung', 'dunging', 'individually', 'isolating', 'isomer', 'men', 'mending', 'minding', 'miner', 'mining', 'minis', 'mintier', 'minting', 'omer', 'pang', 'particular', 'recommending', 'recti', 'tiding', 'tier', 'ting', 'tinging'],
   },
+  {
+    date: '2026-10-19',
+    quartets: [["und","er","stan","ding"],["su","perv","is","or"],["ma","jo","ri","ty"],["auto","mat","ica","lly"],["app","re","cia","te"]],
+    words: ['appreciate', 'auto', 'automat', 'automate', 'automatically', 'ding', 'issuer', 'jolly', 'majority', 'mare', 'mat', 'mate', 'mater', 'matte', 'maund', 'maunder', 'rete', 'riding', 'rite', 'standing', 'suer', 'sully', 'supervisor', 'sure', 'surety', 'telly', 'under', 'understanding'],
+  },
 ] as const
