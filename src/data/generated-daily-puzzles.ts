@@ -888,4 +888,9 @@ export const DAILY_PUZZLES = [
     quartets: [["und","er","stan","ding"],["su","perv","is","or"],["ma","jo","ri","ty"],["auto","mat","ica","lly"],["app","re","cia","te"]],
     words: ['appreciate', 'auto', 'automat', 'automate', 'automatically', 'ding', 'issuer', 'jolly', 'majority', 'mare', 'mat', 'mate', 'mater', 'matte', 'maund', 'maunder', 'rete', 'riding', 'rite', 'standing', 'suer', 'sully', 'supervisor', 'sure', 'surety', 'telly', 'under', 'understanding'],
   },
+  {
+    date: '2026-10-20',
+    quartets: [["ex","pe","rie","nce"],["appr","op","ri","ate"],["dis","cus","si","on"],["bu","ild","in","gs"],["es","tab","li","shed"]],
+    words: ['appropriate', 'ate', 'bugs', 'build', 'buildings', 'buries', 'bushed', 'busies', 'dis', 'discus', 'discuses', 'discussion', 'established', 'excuses', 'exes', 'exon', 'experience', 'incus', 'incuses', 'lies', 'lion', 'ones', 'opes', 'opines', 'pees', 'pegs', 'pence', 'peon', 'peri', 'perished', 'rigs', 'ripe', 'shed', 'since', 'tab', 'tabes'],
+  },
 ] as const
