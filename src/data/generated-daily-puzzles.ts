@@ -893,4 +893,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ex","pe","rie","nce"],["appr","op","ri","ate"],["dis","cus","si","on"],["bu","ild","in","gs"],["es","tab","li","shed"]],
     words: ['appropriate', 'ate', 'bugs', 'build', 'buildings', 'buries', 'bushed', 'busies', 'dis', 'discus', 'discuses', 'discussion', 'established', 'excuses', 'exes', 'exon', 'experience', 'incus', 'incuses', 'lies', 'lion', 'ones', 'opes', 'opines', 'pees', 'pegs', 'pence', 'peon', 'peri', 'perished', 'rigs', 'ripe', 'shed', 'since', 'tab', 'tabes'],
   },
+  {
+    date: '2026-10-21',
+    quartets: [["su","pe","rvi","sor"],["inv","it","at","ion"],["ec","on","om","ic"],["unn","eces","sa","ry"],["un","li","ke","ly"]],
+    words: ['atom', 'atomic', 'atonic', 'economic', 'icon', 'invitation', 'ion', 'ionic', 'like', 'likely', 'lily', 'lion', 'omit', 'onion', 'only', 'peat', 'peke', 'peon', 'sake', 'sorry', 'suit', 'supervisor', 'union', 'unit', 'unlike', 'unlikely', 'unnecessary'],
+  },
 ] as const
