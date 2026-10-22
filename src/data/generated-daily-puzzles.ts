@@ -898,4 +898,9 @@ export const DAILY_PUZZLES = [
     quartets: [["su","pe","rvi","sor"],["inv","it","at","ion"],["ec","on","om","ic"],["unn","eces","sa","ry"],["un","li","ke","ly"]],
     words: ['atom', 'atomic', 'atonic', 'economic', 'icon', 'invitation', 'ion', 'ionic', 'like', 'likely', 'lily', 'lion', 'omit', 'onion', 'only', 'peat', 'peke', 'peon', 'sake', 'sorry', 'suit', 'supervisor', 'union', 'unit', 'unlike', 'unlikely', 'unnecessary'],
   },
+  {
+    date: '2026-10-22',
+    quartets: [["irr","el","eva","nt"],["app","ropr","ia","te"],["int","erpr","et","ing"],["ab","il","iti","es"],["co","nfe","ren","ce"]],
+    words: ['abeles', 'abet', 'abilities', 'appel', 'appropriate', 'ceil', 'ceiling', 'cent', 'coil', 'coiling', 'conference', 'cote', 'elevate', 'ilia', 'interpret', 'interpreting', 'irrelevant', 'tees', 'tent', 'tenting'],
+  },
 ] as const
