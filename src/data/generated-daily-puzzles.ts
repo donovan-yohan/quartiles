@@ -903,4 +903,9 @@ export const DAILY_PUZZLES = [
     quartets: [["irr","el","eva","nt"],["app","ropr","ia","te"],["int","erpr","et","ing"],["ab","il","iti","es"],["co","nfe","ren","ce"]],
     words: ['abeles', 'abet', 'abilities', 'appel', 'appropriate', 'ceil', 'ceiling', 'cent', 'coil', 'coiling', 'conference', 'cote', 'elevate', 'ilia', 'interpret', 'interpreting', 'irrelevant', 'tees', 'tent', 'tenting'],
   },
+  {
+    date: '2026-10-23',
+    quartets: [["exp","eri","me","ntal"],["un","reas","onab","le"],["ex","am","in","ed"],["en","co","ura","ged"],["adm","it","te","dly"]],
+    words: ['admen', 'admit', 'admittedly', 'amen', 'coed', 'coin', 'coined', 'cole', 'come', 'cote', 'edged', 'edit', 'encouraged', 'exam', 'examen', 'examined', 'exit', 'exited', 'experimental', 'expunged', 'income', 'meed', 'mental', 'mete', 'reasonable', 'team', 'teamed', 'teed', 'teen', 'unit', 'united', 'unreasonable'],
+  },
 ] as const
