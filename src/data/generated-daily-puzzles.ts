@@ -908,4 +908,9 @@ export const DAILY_PUZZLES = [
     quartets: [["exp","eri","me","ntal"],["un","reas","onab","le"],["ex","am","in","ed"],["en","co","ura","ged"],["adm","it","te","dly"]],
     words: ['admen', 'admit', 'admittedly', 'amen', 'coed', 'coin', 'coined', 'cole', 'come', 'cote', 'edged', 'edit', 'encouraged', 'exam', 'examen', 'examined', 'exit', 'exited', 'experimental', 'expunged', 'income', 'meed', 'mental', 'mete', 'reasonable', 'team', 'teamed', 'teed', 'teen', 'unit', 'united', 'unreasonable'],
   },
+  {
+    date: '2026-10-24',
+    quartets: [["per","fo","rma","nce"],["en","cou","rag","es"],["co","nfu","si","ng"],["cont","inu","ous","ly"],["ter","mi","nol","ogy"]],
+    words: ['coly', 'coming', 'confusing', 'confuter', 'congous', 'contester', 'continues', 'continuous', 'continuously', 'coper', 'encourages', 'enrages', 'enter', 'ester', 'foes', 'forages', 'mien', 'mince', 'mirages', 'ouster', 'per', 'performance', 'perming', 'perter', 'rag', 'rages', 'since', 'sing', 'singes', 'singly', 'sinology', 'terming', 'terminology'],
+  },
 ] as const
