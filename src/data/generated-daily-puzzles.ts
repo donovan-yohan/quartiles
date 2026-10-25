@@ -913,4 +913,9 @@ export const DAILY_PUZZLES = [
     quartets: [["per","fo","rma","nce"],["en","cou","rag","es"],["co","nfu","si","ng"],["cont","inu","ous","ly"],["ter","mi","nol","ogy"]],
     words: ['coly', 'coming', 'confusing', 'confuter', 'congous', 'contester', 'continues', 'continuous', 'continuously', 'coper', 'encourages', 'enrages', 'enter', 'ester', 'foes', 'forages', 'mien', 'mince', 'mirages', 'ouster', 'per', 'performance', 'perming', 'perter', 'rag', 'rages', 'since', 'sing', 'singes', 'singly', 'sinology', 'terming', 'terminology'],
   },
+  {
+    date: '2026-10-25',
+    quartets: [["oc","ca","si","onal"],["dif","fer","en","ce"],["asso","ci","at","es"],["ac","cep","ta","ble"],["eff","ec","tive","ly"]],
+    words: ['acceptable', 'aces', 'actable', 'active', 'actively', 'associates', 'atonal', 'atonally', 'bleat', 'cable', 'ceca', 'cicely', 'citable', 'differ', 'difference', 'effaces', 'effective', 'effectively', 'enates', 'fer', 'occasional', 'siesta', 'table', 'tace'],
+  },
 ] as const
