@@ -918,4 +918,9 @@ export const DAILY_PUZZLES = [
     quartets: [["oc","ca","si","onal"],["dif","fer","en","ce"],["asso","ci","at","es"],["ac","cep","ta","ble"],["eff","ec","tive","ly"]],
     words: ['acceptable', 'aces', 'actable', 'active', 'actively', 'associates', 'atonal', 'atonally', 'bleat', 'cable', 'ceca', 'cicely', 'citable', 'differ', 'difference', 'effaces', 'effective', 'effectively', 'enates', 'fer', 'occasional', 'siesta', 'table', 'tace'],
   },
+  {
+    date: '2026-10-26',
+    quartets: [["ge","ne","rati","on"],["ac","hi","ev","ed"],["rid","icu","lo","us"],["pu","bli","ci","ty"],["va","ri","at","ion"]],
+    words: ['aced', 'achieved', 'acne', 'acrid', 'atoned', 'cine', 'cion', 'city', 'edge', 'geed', 'gene', 'generation', 'geneva', 'hiatus', 'hied', 'ion', 'loci', 'loge', 'lone', 'loon', 'loused', 'lovage', 'neat', 'need', 'neon', 'onion', 'onus', 'publicity', 'purine', 'purity', 'ration', 'rationed', 'rid', 'ridge', 'ridiculous', 'rivage', 'used', 'vane', 'variation', 'varied'],
+  },
 ] as const
