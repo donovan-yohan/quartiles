@@ -923,4 +923,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ge","ne","rati","on"],["ac","hi","ev","ed"],["rid","icu","lo","us"],["pu","bli","ci","ty"],["va","ri","at","ion"]],
     words: ['aced', 'achieved', 'acne', 'acrid', 'atoned', 'cine', 'cion', 'city', 'edge', 'geed', 'gene', 'generation', 'geneva', 'hiatus', 'hied', 'ion', 'loci', 'loge', 'lone', 'loon', 'loused', 'lovage', 'neat', 'need', 'neon', 'onion', 'onus', 'publicity', 'purine', 'purity', 'ration', 'rationed', 'rid', 'ridge', 'ridiculous', 'rivage', 'used', 'vane', 'variation', 'varied'],
   },
+  {
+    date: '2026-10-27',
+    quartets: [["poss","ib","ili","ties"],["resp","ect","iv","ely"],["beg","in","ni","ng"],["ad","eq","ua","te"],["ge","ne","rat","es"]],
+    words: ['adequate', 'beg', 'begin', 'beginning', 'equate', 'gees', 'gene', 'generates', 'genies', 'inning', 'nine', 'nineties', 'posses', 'possibilities', 'rat', 'rates', 'respect', 'respectively', 'tees', 'ties'],
+  },
 ] as const
