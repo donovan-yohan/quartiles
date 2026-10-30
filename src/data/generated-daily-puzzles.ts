@@ -928,4 +928,19 @@ export const DAILY_PUZZLES = [
     quartets: [["poss","ib","ili","ties"],["resp","ect","iv","ely"],["beg","in","ni","ng"],["ad","eq","ua","te"],["ge","ne","rat","es"]],
     words: ['adequate', 'beg', 'begin', 'beginning', 'equate', 'gees', 'gene', 'generates', 'genies', 'inning', 'nine', 'nineties', 'posses', 'possibilities', 'rat', 'rates', 'respect', 'respectively', 'tees', 'ties'],
   },
+  {
+    date: '2026-10-28',
+    quartets: [["em","er","ge","ncy"],["alt","og","et","her"],["so","me","ti","mes"],["se","cu","ri","ty"],["mi","sle","ad","ing"]],
+    words: ['adherer', 'adhering', 'alter', 'altering', 'altogether', 'cuing', 'emerge', 'emergency', 'ether', 'her', 'mead', 'meet', 'meeting', 'memes', 'mes', 'mime', 'mimes', 'mirier', 'mislead', 'misleading', 'miso', 'rime', 'rimes', 'rimier', 'rise', 'seadog', 'security', 'seem', 'seeming', 'seer', 'semi', 'sleet', 'sleeting', 'some', 'sometimes', 'sori', 'tier', 'time', 'times', 'tying'],
+  },
+  {
+    date: '2026-10-29',
+    quartets: [["pos","si","bili","ties"],["re","so","lut","ion"],["und","ergr","ad","uate"],["pr","od","ucti","on"],["con","sequ","enc","es"]],
+    words: ['con', 'cones', 'consequences', 'encodes', 'ion', 'lutes', 'odes', 'ones', 'onion', 'poses', 'possibilities', 'posties', 'prion', 'prod', 'production', 'read', 'recon', 'reposes', 'resolution', 'resound', 'reties', 'sequences', 'sire', 'solutes', 'solution', 'soon', 'sore', 'sound', 'ties', 'undergrad', 'undergraduate'],
+  },
+  {
+    date: '2026-10-30',
+    quartets: [["in","stit","ut","ions"],["re","li","ab","le"],["rec","omm","en","ds"],["unf","ort","un","ate"],["res","pe","ctiv","ely"]],
+    words: ['abate', 'able', 'abort', 'abortions', 'abut', 'ate', 'enable', 'enate', 'ends', 'institutions', 'ions', 'liable', 'lids', 'lien', 'lire', 'ort', 'peen', 'recommends', 'recreate', 'recut', 'reds', 'rein', 'reliable', 'resin', 'resinate', 'resort', 'respectively', 'reunions', 'unable', 'unfortunate', 'unions'],
+  },
 ] as const
