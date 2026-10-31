@@ -943,4 +943,9 @@ export const DAILY_PUZZLES = [
     quartets: [["in","stit","ut","ions"],["re","li","ab","le"],["rec","omm","en","ds"],["unf","ort","un","ate"],["res","pe","ctiv","ely"]],
     words: ['abate', 'able', 'abort', 'abortions', 'abut', 'ate', 'enable', 'enate', 'ends', 'institutions', 'ions', 'liable', 'lids', 'lien', 'lire', 'ort', 'peen', 'recommends', 'recreate', 'recut', 'reds', 'rein', 'reliable', 'resin', 'resinate', 'resort', 'respectively', 'reunions', 'unable', 'unfortunate', 'unions'],
   },
+  {
+    date: '2026-10-31',
+    quartets: [["ca","te","go","ry"],["no","wa","da","ys"],["int","erpr","et","ed"],["unac","cep","tab","le"],["dis","ap","pe","ars"]],
+    words: ['aped', 'appears', 'arsed', 'canoed', 'cape', 'cate', 'category', 'cays', 'dago', 'dale', 'datable', 'date', 'days', 'dis', 'disappears', 'gory', 'goys', 'interpret', 'interpreted', 'leap', 'leet', 'leno', 'leys', 'nope', 'notable', 'note', 'nowadays', 'noways', 'pears', 'pedate', 'peed', 'tab', 'table', 'tears', 'teed', 'unacceptable', 'wadis', 'wale', 'wary', 'watery', 'ways'],
+  },
 ] as const
