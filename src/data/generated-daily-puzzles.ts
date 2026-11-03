@@ -948,4 +948,19 @@ export const DAILY_PUZZLES = [
     quartets: [["ca","te","go","ry"],["no","wa","da","ys"],["int","erpr","et","ed"],["unac","cep","tab","le"],["dis","ap","pe","ars"]],
     words: ['aped', 'appears', 'arsed', 'canoed', 'cape', 'cate', 'category', 'cays', 'dago', 'dale', 'datable', 'date', 'days', 'dis', 'disappears', 'gory', 'goys', 'interpret', 'interpreted', 'leap', 'leet', 'leno', 'leys', 'nope', 'notable', 'note', 'nowadays', 'noways', 'pears', 'pedate', 'peed', 'tab', 'table', 'tears', 'teed', 'unacceptable', 'wadis', 'wale', 'wary', 'watery', 'ways'],
   },
+  {
+    date: '2026-11-01',
+    quartets: [["ma","the","mat","ical"],["impl","ica","ti","on"],["dif","fi","cult","ies"],["fa","mi","li","ar"],["co","nfi","rm","ed"]],
+    words: ['codifies', 'coed', 'coli', 'coma', 'confirm', 'confirmed', 'coon', 'corm', 'cult', 'difficult', 'difficulties', 'faculties', 'familiar', 'farm', 'farmed', 'fico', 'firm', 'firmed', 'implication', 'implies', 'liar', 'lied', 'lion', 'lithe', 'mat', 'mated', 'mathematical', 'the', 'tied', 'tithe'],
+  },
+  {
+    date: '2026-11-02',
+    quartets: [["mat","hem","at","ical"],["auto","ma","tica","lly"],["di","ff","ere","nce"],["te","le","visi","on"],["com","pli","cat","ed"]],
+    words: ['atoned', 'auto', 'automat', 'automate', 'automated', 'automatically', 'automaton', 'cat', 'comical', 'comma', 'complicated', 'complied', 'died', 'difference', 'dilly', 'division', 'ere', 'hem', 'male', 'mat', 'mate', 'mated', 'mathematical', 'matte', 'plied', 'teat', 'teed', 'television', 'telly', 'vision', 'visioned'],
+  },
+  {
+    date: '2026-11-03',
+    quartets: [["am","bi","gu","ous"],["temp","er","at","ure"],["in","tell","ig","ence"],["rep","ro","du","ce"],["en","gin","ee","red"]],
+    words: ['ambiguous', 'amen', 'amerce', 'bice', 'bier', 'cered', 'cero', 'dubious', 'duce', 'duro', 'endured', 'engineered', 'erred', 'gin', 'induce', 'intelligence', 'inure', 'red', 'rep', 'repiner', 'repro', 'reproduce', 'roam', 'roamer', 'tell', 'teller', 'temp', 'temper', 'temperature'],
+  },
 ] as const
