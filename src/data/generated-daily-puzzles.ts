@@ -963,4 +963,14 @@ export const DAILY_PUZZLES = [
     quartets: [["am","bi","gu","ous"],["temp","er","at","ure"],["in","tell","ig","ence"],["rep","ro","du","ce"],["en","gin","ee","red"]],
     words: ['ambiguous', 'amen', 'amerce', 'bice', 'bier', 'cered', 'cero', 'dubious', 'duce', 'duro', 'endured', 'engineered', 'erred', 'gin', 'induce', 'intelligence', 'inure', 'red', 'rep', 'repiner', 'repro', 'reproduce', 'roam', 'roamer', 'tell', 'teller', 'temp', 'temper', 'temperature'],
   },
+  {
+    date: '2026-11-04',
+    quartets: [["sta","ti","sti","cs"],["di","sap","pea","ring"],["tem","por","ari","ly"],["con","seq","uen","ces"],["obs","erv","at","ion"]],
+    words: ['arista', 'attics', 'attiring', 'con', 'conation', 'consequences', 'dices', 'disappearing', 'ion', 'observation', 'pea', 'peaces', 'ring', 'sap', 'sequences', 'staring', 'statics', 'statistics', 'temporarily', 'tics', 'tidily', 'tiring'],
+  },
+  {
+    date: '2026-11-05',
+    quartets: [["pr","ev","io","us"],["re","qu","irem","ent"],["co","nseq","uen","ce"],["de","di","ca","ting"],["con","ve","nti","onal"]],
+    words: ['cade', 'cadi', 'care', 'cave', 'ceca', 'cede', 'cedi', 'cereus', 'coca', 'code', 'con', 'concave', 'concede', 'consequence', 'contingent', 'conventional', 'core', 'cove', 'coveting', 'decare', 'deco', 'dedicating', 'dice', 'dire', 'dive', 'entre', 'event', 'iodide', 'prevent', 'previous', 'recede', 'recode', 'recon', 'rede', 'requirement', 'ting'],
+  },
 ] as const
