@@ -973,4 +973,9 @@ export const DAILY_PUZZLES = [
     quartets: [["pr","ev","io","us"],["re","qu","irem","ent"],["co","nseq","uen","ce"],["de","di","ca","ting"],["con","ve","nti","onal"]],
     words: ['cade', 'cadi', 'care', 'cave', 'ceca', 'cede', 'cedi', 'cereus', 'coca', 'code', 'con', 'concave', 'concede', 'consequence', 'contingent', 'conventional', 'core', 'cove', 'coveting', 'decare', 'deco', 'dedicating', 'dice', 'dire', 'dive', 'entre', 'event', 'iodide', 'prevent', 'previous', 'recede', 'recode', 'recon', 'rede', 'requirement', 'ting'],
   },
+  {
+    date: '2026-11-06',
+    quartets: [["comb","ina","ti","on"],["pos","sib","ili","ties"],["as","so","ci","ates"],["esp","ec","ia","lly"],["ca","lcu","lat","ion"]],
+    words: ['asci', 'associates', 'calculation', 'capos', 'cation', 'cion', 'cities', 'comb', 'combination', 'especially', 'ion', 'onion', 'possibilities', 'posties', 'sib', 'soon', 'ties'],
+  },
 ] as const
