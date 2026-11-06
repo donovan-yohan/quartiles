@@ -6718,5 +6718,110 @@
         "red"
       ]
     ]
+  },
+  {
+    "date": "2026-11-04",
+    "quartets": [
+      [
+        "sta",
+        "ti",
+        "sti",
+        "cs"
+      ],
+      [
+        "di",
+        "sap",
+        "pea",
+        "ring"
+      ],
+      [
+        "tem",
+        "por",
+        "ari",
+        "ly"
+      ],
+      [
+        "con",
+        "seq",
+        "uen",
+        "ces"
+      ],
+      [
+        "obs",
+        "erv",
+        "at",
+        "ion"
+      ]
+    ]
+  },
+  {
+    "date": "2026-11-05",
+    "quartets": [
+      [
+        "pr",
+        "ev",
+        "io",
+        "us"
+      ],
+      [
+        "re",
+        "qu",
+        "irem",
+        "ent"
+      ],
+      [
+        "co",
+        "nseq",
+        "uen",
+        "ce"
+      ],
+      [
+        "de",
+        "di",
+        "ca",
+        "ting"
+      ],
+      [
+        "con",
+        "ve",
+        "nti",
+        "onal"
+      ]
+    ]
+  },
+  {
+    "date": "2026-11-06",
+    "quartets": [
+      [
+        "comb",
+        "ina",
+        "ti",
+        "on"
+      ],
+      [
+        "pos",
+        "sib",
+        "ili",
+        "ties"
+      ],
+      [
+        "as",
+        "so",
+        "ci",
+        "ates"
+      ],
+      [
+        "esp",
+        "ec",
+        "ia",
+        "lly"
+      ],
+      [
+        "ca",
+        "lcu",
+        "lat",
+        "ion"
+      ]
+    ]
   }
 ]

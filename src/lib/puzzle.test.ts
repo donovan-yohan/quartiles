@@ -266,18 +266,16 @@ describe('daily puzzle dictionary coverage', () => {
     }
   })
 
-  it('rejects generated daily boards unless each date has exactly its own five target quartets', () => {
-    for (const date of AVAILABLE_DAILY_DATES) {
-      const puzzle = createDailyPuzzle(date)
-      const targetQuartetWords = resolveDailyPuzzleData(date).quartets
-        .map((quartet) => quartet.join(''))
-        .sort((left, right) => left.localeCompare(right))
+  it.each(AVAILABLE_DAILY_DATES)('rejects generated daily boards unless %s has exactly its own five target quartets', (date) => {
+    const puzzle = createDailyPuzzle(date)
+    const targetQuartetWords = resolveDailyPuzzleData(date).quartets
+      .map((quartet) => quartet.join(''))
+      .sort((left, right) => left.localeCompare(right))
 
-      expect(validateExactQuartetPuzzle(puzzle, targetQuartetWords), `${date} failed exact quartet validation`).toMatchObject({
-        ok: true,
-        quartetWords: targetQuartetWords,
-      })
-    }
+    expect(validateExactQuartetPuzzle(puzzle, targetQuartetWords), `${date} failed exact quartet validation`).toMatchObject({
+      ok: true,
+      quartetWords: targetQuartetWords,
+    })
   })
 
   it('reports extra valid four-tile words when a candidate puzzle is not strict enough', () => {
