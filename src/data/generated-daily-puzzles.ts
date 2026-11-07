@@ -978,4 +978,9 @@ export const DAILY_PUZZLES = [
     quartets: [["comb","ina","ti","on"],["pos","sib","ili","ties"],["as","so","ci","ates"],["esp","ec","ia","lly"],["ca","lcu","lat","ion"]],
     words: ['asci', 'associates', 'calculation', 'capos', 'cation', 'cion', 'cities', 'comb', 'combination', 'especially', 'ion', 'onion', 'possibilities', 'posties', 'sib', 'soon', 'ties'],
   },
+  {
+    date: '2026-11-07',
+    quartets: [["ag","re","em","ent"],["di","sa","ppe","ars"],["de","libe","ra","tely"],["sci","en","tif","ic"],["ad","va","nta","ge"]],
+    words: ['advantage', 'agent', 'agreement', 'arsenic', 'dead', 'deaden', 'dears', 'deem', 'deliberately', 'diadem', 'dire', 'disappears', 'diva', 'endears', 'enrage', 'entre', 'gears', 'icemen', 'rage', 'rare', 'ravage', 'read', 'reagent', 'rears', 'rede', 'redeem', 'sage', 'savage', 'scientific', 'vantage', 'vara', 'vasa'],
+  },
 ] as const
