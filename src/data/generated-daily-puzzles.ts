@@ -988,4 +988,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ap","prec","ia","ting"],["mea","ni","ng","ful"],["ma","them","ati","cal"],["art","if","ici","al"],["con","ti","nuo","usly"]],
     words: ['apart', 'appreciating', 'art', 'artful', 'artificial', 'con', 'conning', 'continuo', 'continuously', 'icing', 'mathematical', 'mating', 'meaning', 'meaningful', 'them', 'tical', 'ting'],
   },
+  {
+    date: '2026-11-09',
+    quartets: [["re","sp","on","se"],["be","for","eh","and"],["unf","ort","unat","ely"],["do","cum","en","ting"],["cons","ide","ra","ble"]],
+    words: ['and', 'been', 'beforehand', 'berating', 'cons', 'consenting', 'considerable', 'consort', 'documenting', 'dose', 'doting', 'for', 'fordo', 'forehand', 'ort', 'racons', 'rare', 'rasp', 'rating', 'recons', 'redo', 'response', 'seen', 'sere', 'sport', 'ting', 'unfortunately'],
+  },
 ] as const
