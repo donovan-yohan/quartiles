@@ -993,4 +993,9 @@ export const DAILY_PUZZLES = [
     quartets: [["re","sp","on","se"],["be","for","eh","and"],["unf","ort","unat","ely"],["do","cum","en","ting"],["cons","ide","ra","ble"]],
     words: ['and', 'been', 'beforehand', 'berating', 'cons', 'consenting', 'considerable', 'consort', 'documenting', 'dose', 'doting', 'for', 'fordo', 'forehand', 'ort', 'racons', 'rare', 'rasp', 'rating', 'recons', 'redo', 'response', 'seen', 'sere', 'sport', 'ting', 'unfortunately'],
   },
+  {
+    date: '2026-11-10',
+    quartets: [["cir","cum","stan","ces"],["ind","ivid","ua","lly"],["qu","ali","fi","es"],["disc","ou","ra","ge"],["res","pon","sib","le"]],
+    words: ['cir', 'circumstances', 'cirques', 'disc', 'discourage', 'file', 'filly', 'fires', 'gees', 'individually', 'lees', 'ponces', 'pones', 'qualifies', 'races', 'rage', 'rale', 'rally', 'rares', 'responsible', 'sib', 'stances'],
+  },
 ] as const
