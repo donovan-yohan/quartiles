@@ -1003,4 +1003,9 @@ export const DAILY_PUZZLES = [
     quartets: [["exp","eri","men","ts"],["au","tho","rit","ies"],["oc","cu","pi","es"],["en","gi","nee","red"],["av","ail","ab","le"]],
     words: ['abies', 'able', 'ail', 'ailments', 'authored', 'authorities', 'avail', 'available', 'cues', 'cured', 'cuts', 'enable', 'engineered', 'experiments', 'gits', 'leaven', 'leaves', 'lees', 'lets', 'men', 'occupies', 'pies', 'pile', 'pits', 'red', 'rites', 'tho', 'thole', 'thorites'],
   },
+  {
+    date: '2026-11-12',
+    quartets: [["ev","er","yo","ne"],["pa","rti","cul","ar"],["rec","om","mend","ing"],["ac","ad","em","ic"],["te","le","vi","sion"]],
+    words: ['academic', 'acing', 'acne', 'arte', 'culpa', 'emersion', 'empale', 'erne', 'evader', 'evading', 'ever', 'eversion', 'everyone', 'icing', 'ingle', 'lead', 'leader', 'leading', 'leer', 'leering', 'lesion', 'levier', 'mend', 'mender', 'mending', 'near', 'nearer', 'nearing', 'nevi', 'omer', 'pale', 'pane', 'particular', 'partite', 'pate', 'recommend', 'recommending', 'tear', 'tearer', 'tearing', 'teem', 'teeming', 'television', 'vile', 'vine', 'vision', 'visioning'],
+  },
 ] as const
