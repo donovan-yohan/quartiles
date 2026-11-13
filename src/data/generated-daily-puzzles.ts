@@ -1008,4 +1008,9 @@ export const DAILY_PUZZLES = [
     quartets: [["ev","er","yo","ne"],["pa","rti","cul","ar"],["rec","om","mend","ing"],["ac","ad","em","ic"],["te","le","vi","sion"]],
     words: ['academic', 'acing', 'acne', 'arte', 'culpa', 'emersion', 'empale', 'erne', 'evader', 'evading', 'ever', 'eversion', 'everyone', 'icing', 'ingle', 'lead', 'leader', 'leading', 'leer', 'leering', 'lesion', 'levier', 'mend', 'mender', 'mending', 'near', 'nearer', 'nearing', 'nevi', 'omer', 'pale', 'pane', 'particular', 'partite', 'pate', 'recommend', 'recommending', 'tear', 'tearer', 'tearing', 'teem', 'teeming', 'television', 'vile', 'vine', 'vision', 'visioning'],
   },
+  {
+    date: '2026-11-13',
+    quartets: [["rest","ric","ti","ng"],["unr","easo","na","ble"],["def","in","it","ive"],["ma","int","ai","ned"],["an","al","og","ue"]],
+    words: ['alive', 'anal', 'analogue', 'anna', 'anti', 'anting', 'definitive', 'defog', 'inti', 'intima', 'main', 'maintained', 'mana', 'maned', 'mating', 'naan', 'naive', 'namable', 'ogive', 'rest', 'restive', 'restricting', 'tined', 'ting', 'unreasonable', 'unreasoned'],
+  },
 ] as const
