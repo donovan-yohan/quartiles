@@ -1013,4 +1013,9 @@ export const DAILY_PUZZLES = [
     quartets: [["rest","ric","ti","ng"],["unr","easo","na","ble"],["def","in","it","ive"],["ma","int","ai","ned"],["an","al","og","ue"]],
     words: ['alive', 'anal', 'analogue', 'anna', 'anti', 'anting', 'definitive', 'defog', 'inti', 'intima', 'main', 'maintained', 'mana', 'maned', 'mating', 'naan', 'naive', 'namable', 'ogive', 'rest', 'restive', 'restricting', 'tined', 'ting', 'unreasonable', 'unreasoned'],
   },
+  {
+    date: '2026-11-14',
+    quartets: [["su","per","vi","sor"],["int","ell","ige","nce"],["co","mpre","hens","ive"],["resp","ons","ib","le"],["dist","ri","bu","tes"]],
+    words: ['cole', 'compre', 'comprehensive', 'conceive', 'coons', 'coper', 'cotes', 'distributes', 'ell', 'hens', 'intelligence', 'leper', 'per', 'respell', 'responsible', 'responsive', 'rile', 'riper', 'rites', 'suint', 'super', 'supervisor', 'vile', 'viper', 'virile', 'virions', 'visor'],
+  },
 ] as const
