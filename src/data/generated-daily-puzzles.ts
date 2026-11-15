@@ -1018,4 +1018,9 @@ export const DAILY_PUZZLES = [
     quartets: [["su","per","vi","sor"],["int","ell","ige","nce"],["co","mpre","hens","ive"],["resp","ons","ib","le"],["dist","ri","bu","tes"]],
     words: ['cole', 'compre', 'comprehensive', 'conceive', 'coons', 'coper', 'cotes', 'distributes', 'ell', 'hens', 'intelligence', 'leper', 'per', 'respell', 'responsible', 'responsive', 'rile', 'riper', 'rites', 'suint', 'super', 'supervisor', 'vile', 'viper', 'virile', 'virions', 'visor'],
   },
+  {
+    date: '2026-11-15',
+    quartets: [["dif","fe","re","ntly"],["dis","cou","ra","ge"],["desc","rip","ti","ons"],["ho","li","da","ys"],["appr","ec","ia","ted"]],
+    words: ['appreciated', 'courage', 'dare', 'dated', 'days', 'descriptions', 'differently', 'dis', 'discourage', 'echo', 'feted', 'gently', 'holidays', 'hora', 'hoys', 'life', 'lions', 'lira', 'lire', 'onshore', 'rage', 'rare', 'rated', 'rations', 'rays', 'reecho', 'rip', 'ted', 'tire'],
+  },
 ] as const
