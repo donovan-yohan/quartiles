@@ -1023,4 +1023,9 @@ export const DAILY_PUZZLES = [
     quartets: [["dif","fe","re","ntly"],["dis","cou","ra","ge"],["desc","rip","ti","ons"],["ho","li","da","ys"],["appr","ec","ia","ted"]],
     words: ['appreciated', 'courage', 'dare', 'dated', 'days', 'descriptions', 'differently', 'dis', 'discourage', 'echo', 'feted', 'gently', 'holidays', 'hora', 'hoys', 'life', 'lions', 'lira', 'lire', 'onshore', 'rage', 'rare', 'rated', 'rations', 'rays', 'reecho', 'rip', 'ted', 'tire'],
   },
+  {
+    date: '2026-11-16',
+    quartets: [["de","li","ve","ry"],["ex","am","in","ed"],["unf","or","tuna","te"],["con","sid","erab","ly"],["co","nseq","ue","nces"]],
+    words: ['code', 'coed', 'coin', 'coined', 'coli', 'coly', 'con', 'coned', 'consequences', 'considerably', 'conte', 'cote', 'cove', 'deco', 'deed', 'deli', 'delivery', 'exam', 'examined', 'indeed', 'inly', 'lied', 'lily', 'lite', 'live', 'lively', 'livery', 'sided', 'team', 'teamed', 'teed', 'tuna', 'unfed', 'unfortunate', 'vein', 'veined', 'very'],
+  },
 ] as const
