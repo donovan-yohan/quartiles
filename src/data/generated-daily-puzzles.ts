@@ -1028,4 +1028,9 @@ export const DAILY_PUZZLES = [
     quartets: [["de","li","ve","ry"],["ex","am","in","ed"],["unf","or","tuna","te"],["con","sid","erab","ly"],["co","nseq","ue","nces"]],
     words: ['code', 'coed', 'coin', 'coined', 'coli', 'coly', 'con', 'coned', 'consequences', 'considerably', 'conte', 'cote', 'cove', 'deco', 'deed', 'deli', 'delivery', 'exam', 'examined', 'indeed', 'inly', 'lied', 'lily', 'lite', 'live', 'lively', 'livery', 'sided', 'team', 'teamed', 'teed', 'tuna', 'unfed', 'unfortunate', 'vein', 'veined', 'very'],
   },
+  {
+    date: '2026-11-17',
+    quartets: [["tem","pe","rat","ure"],["edu","ca","ti","onal"],["pot","en","tia","lly"],["in","tro","duc","ed"],["part","icu","la","rly"]],
+    words: ['cain', 'cape', 'carat', 'educational', 'induced', 'inti', 'introduced', 'inure', 'lain', 'lati', 'part', 'parted', 'particularly', 'peed', 'peen', 'pot', 'potentially', 'rat', 'rated', 'temperature', 'tied', 'trope'],
+  },
 ] as const
