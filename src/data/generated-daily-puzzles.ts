@@ -1038,4 +1038,9 @@ export const DAILY_PUZZLES = [
     quartets: [["circ","ums","ta","nce"],["dis","ap","pear","ed"],["regi","ste","ri","ng"],["in","for","mati","on"],["ev","en","tu","ally"]],
     words: ['ally', 'aped', 'appear', 'appeared', 'circumstance', 'dis', 'disappear', 'disappeared', 'distance', 'distaste', 'even', 'evened', 'eventually', 'for', 'formation', 'forums', 'information', 'mating', 'pear', 'region', 'regionally', 'registering', 'ring', 'ringed', 'ritually', 'steed', 'stein', 'tain', 'tang', 'taring', 'taste'],
   },
+  {
+    date: '2026-11-19',
+    quartets: [["circ","um","stan","ces"],["var","ia","ti","on"],["unfo","rtu","nat","ely"],["pe","rsu","ad","ed"],["in","vari","ab","ly"]],
+    words: ['abed', 'ably', 'circumstances', 'inly', 'innately', 'instances', 'inti', 'invariably', 'nattily', 'only', 'peed', 'peon', 'persuaded', 'stances', 'tied', 'unfortunately', 'varia', 'variably', 'variation', 'varices', 'varied', 'variedly'],
+  },
 ] as const
