@@ -1043,4 +1043,9 @@ export const DAILY_PUZZLES = [
     quartets: [["circ","um","stan","ces"],["var","ia","ti","on"],["unfo","rtu","nat","ely"],["pe","rsu","ad","ed"],["in","vari","ab","ly"]],
     words: ['abed', 'ably', 'circumstances', 'inly', 'innately', 'instances', 'inti', 'invariably', 'nattily', 'only', 'peed', 'peon', 'persuaded', 'stances', 'tied', 'unfortunately', 'varia', 'variably', 'variation', 'varices', 'varied', 'variedly'],
   },
+  {
+    date: '2026-11-20',
+    quartets: [["es","sen","tia","lly"],["enc","ou","ra","ges"],["ap","plic","ati","ons"],["auth","or","it","ies"],["ma","te","ri","al"]],
+    words: ['ales', 'apatite', 'apes', 'applications', 'author', 'authorities', 'encores', 'encourages', 'essentially', 'mages', 'mara', 'mate', 'material', 'oral', 'orations', 'ores', 'plications', 'rages', 'rally', 'rate', 'rial', 'risen', 'rite', 'senor', 'senores', 'sente', 'teal', 'tees', 'telly', 'tiara'],
+  },
 ] as const
