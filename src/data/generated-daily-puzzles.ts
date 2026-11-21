@@ -1048,4 +1048,9 @@ export const DAILY_PUZZLES = [
     quartets: [["es","sen","tia","lly"],["enc","ou","ra","ges"],["ap","plic","ati","ons"],["auth","or","it","ies"],["ma","te","ri","al"]],
     words: ['ales', 'apatite', 'apes', 'applications', 'author', 'authorities', 'encores', 'encourages', 'essentially', 'mages', 'mara', 'mate', 'material', 'oral', 'orations', 'ores', 'plications', 'rages', 'rally', 'rate', 'rial', 'risen', 'rite', 'senor', 'senores', 'sente', 'teal', 'tees', 'telly', 'tiara'],
   },
+  {
+    date: '2026-11-21',
+    quartets: [["di","sa","ppe","ar"],["in","ade","qu","ate"],["requ","ire","me","nts"],["app","re","ciat","ing"],["dis","co","ura","ged"]],
+    words: ['adequate', 'appreciating', 'ate', 'coin', 'coining', 'come', 'core', 'dime', 'dints', 'dire', 'dis', 'disappear', 'disco', 'discoing', 'discouraged', 'inadequate', 'income', 'ingate', 'ire', 'mediate', 'medico', 'mere', 'mesa', 'quin', 'quinate', 'quire', 'rear', 'rearing', 'recoin', 'rein', 'reining', 'rents', 'require', 'requirements', 'sain', 'same'],
+  },
 ] as const
