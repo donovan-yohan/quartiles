@@ -1058,4 +1058,9 @@ export const DAILY_PUZZLES = [
     quartets: [["co","mpo","si","tion"],["un","derg","rad","uate"],["in","sur","an","ce"],["ad","va","nta","ge"],["el","ev","at","or"]],
     words: ['advantage', 'coat', 'coin', 'compo', 'composition', 'contain', 'elevator', 'evince', 'gean', 'insurance', 'orange', 'orcein', 'orgeat', 'surge', 'undergrad', 'undergraduate', 'vain', 'vantage'],
   },
+  {
+    date: '2026-11-23',
+    quartets: [["disc","our","ag","es"],["dif","fe","re","nce"],["ca","nd","id","ate"],["phe","nom","en","on"],["su","bsti","tu","te"]],
+    words: ['agate', 'ages', 'agnomen', 'agon', 'agrees', 'ate', 'candid', 'candidate', 'care', 'careen', 'cate', 'difference', 'disc', 'discourages', 'discrete', 'enate', 'ensues', 'ensure', 'fees', 'fence', 'fend', 'ides', 'nomen', 'ones', 'our', 'phenom', 'phenomenon', 'pheon', 'rend', 'rete', 'substitute', 'sues', 'sure', 'suture', 'teen', 'tees', 'tend', 'tendon', 'tureen'],
+  },
 ] as const
