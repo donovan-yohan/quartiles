@@ -1063,4 +1063,9 @@ export const DAILY_PUZZLES = [
     quartets: [["disc","our","ag","es"],["dif","fe","re","nce"],["ca","nd","id","ate"],["phe","nom","en","on"],["su","bsti","tu","te"]],
     words: ['agate', 'ages', 'agnomen', 'agon', 'agrees', 'ate', 'candid', 'candidate', 'care', 'careen', 'cate', 'difference', 'disc', 'discourages', 'discrete', 'enate', 'ensues', 'ensure', 'fees', 'fence', 'fend', 'ides', 'nomen', 'ones', 'our', 'phenom', 'phenomenon', 'pheon', 'rend', 'rete', 'substitute', 'sues', 'sure', 'suture', 'teen', 'tees', 'tend', 'tendon', 'tureen'],
   },
+  {
+    date: '2026-11-24',
+    quartets: [["co","nsi","der","ably"],["com","pa","tib","le"],["di","sa","st","er"],["un","for","tuna","tely"],["in","dust","ri","al"]],
+    words: ['ably', 'alder', 'alle', 'coal', 'coaler', 'coder', 'coin', 'coiner', 'cole', 'comer', 'compatible', 'consider', 'considerably', 'consist', 'cost', 'costal', 'dial', 'disaster', 'distal', 'dust', 'duster', 'erst', 'for', 'forerun', 'fortunately', 'incomer', 'industrial', 'leal', 'leer', 'lest', 'pain', 'pale', 'palest', 'past', 'rial', 'rider', 'rile', 'sadist', 'sain', 'sale', 'sari', 'stably', 'staler', 'strider', 'stun', 'tuna', 'under', 'unfortunately', 'unstably'],
+  },
 ] as const
