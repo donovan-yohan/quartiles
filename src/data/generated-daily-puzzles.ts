@@ -1068,4 +1068,9 @@ export const DAILY_PUZZLES = [
     quartets: [["co","nsi","der","ably"],["com","pa","tib","le"],["di","sa","st","er"],["un","for","tuna","tely"],["in","dust","ri","al"]],
     words: ['ably', 'alder', 'alle', 'coal', 'coaler', 'coder', 'coin', 'coiner', 'cole', 'comer', 'compatible', 'consider', 'considerably', 'consist', 'cost', 'costal', 'dial', 'disaster', 'distal', 'dust', 'duster', 'erst', 'for', 'forerun', 'fortunately', 'incomer', 'industrial', 'leal', 'leer', 'lest', 'pain', 'pale', 'palest', 'past', 'rial', 'rider', 'rile', 'sadist', 'sain', 'sale', 'sari', 'stably', 'staler', 'strider', 'stun', 'tuna', 'under', 'unfortunately', 'unstably'],
   },
+  {
+    date: '2026-11-25',
+    quartets: [["sh","or","ta","ge"],["so","mep","la","ce"],["unne","ces","sar","ily"],["fe","as","ib","le"],["fun","da","ment","ally"]],
+    words: ['ally', 'cement', 'cesta', 'dace', 'daces', 'daily', 'dale', 'dash', 'data', 'feasible', 'feta', 'fun', 'fundament', 'fundamentally', 'lace', 'laces', 'lament', 'lash', 'leas', 'mentally', 'mentor', 'orally', 'orle', 'sarge', 'shortage', 'soda', 'sola', 'solace', 'solaces', 'sole', 'someplace', 'tace', 'tala', 'tale', 'unnecessarily'],
+  },
 ] as const
