@@ -1073,4 +1073,9 @@ export const DAILY_PUZZLES = [
     quartets: [["sh","or","ta","ge"],["so","mep","la","ce"],["unne","ces","sar","ily"],["fe","as","ib","le"],["fun","da","ment","ally"]],
     words: ['ally', 'cement', 'cesta', 'dace', 'daces', 'daily', 'dale', 'dash', 'data', 'feasible', 'feta', 'fun', 'fundament', 'fundamentally', 'lace', 'laces', 'lament', 'lash', 'leas', 'mentally', 'mentor', 'orally', 'orle', 'sarge', 'shortage', 'soda', 'sola', 'solace', 'solaces', 'sole', 'someplace', 'tace', 'tala', 'tale', 'unnecessarily'],
   },
+  {
+    date: '2026-11-26',
+    quartets: [["am","bi","guo","us"],["eve","ry","whe","re"],["ev","id","en","ce"],["ci","rcul","ati","on"],["as","soc","ia","tes"]],
+    words: ['ambiguous', 'amen', 'amid', 'asci', 'ascites', 'associates', 'bias', 'bice', 'bites', 'cereus', 'cion', 'circulation', 'cites', 'eve', 'even', 'every', 'everywhere', 'evidence', 'once', 'onus', 'ream', 'reason', 'recites', 'reeve', 'ryas', 'wheen', 'where', 'whereas', 'whereon'],
+  },
 ] as const
