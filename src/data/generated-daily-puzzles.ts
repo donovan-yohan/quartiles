@@ -1078,4 +1078,9 @@ export const DAILY_PUZZLES = [
     quartets: [["am","bi","guo","us"],["eve","ry","whe","re"],["ev","id","en","ce"],["ci","rcul","ati","on"],["as","soc","ia","tes"]],
     words: ['ambiguous', 'amen', 'amid', 'asci', 'ascites', 'associates', 'bias', 'bice', 'bites', 'cereus', 'cion', 'circulation', 'cites', 'eve', 'even', 'every', 'everywhere', 'evidence', 'once', 'onus', 'ream', 'reason', 'recites', 'reeve', 'ryas', 'wheen', 'where', 'whereas', 'whereon'],
   },
+  {
+    date: '2026-11-27',
+    quartets: [["ap","ol","ogi","es"],["del","iber","ate","ly"],["de","fi","niti","ve"],["unne","ce","ssa","rily"],["em","bar","ra","ssed"]],
+    words: ['apes', 'apologies', 'ate', 'bar', 'barde', 'bares', 'cede', 'debar', 'deem', 'defies', 'definitive', 'delate', 'deliberate', 'deliberately', 'delve', 'embarrassed', 'emcees', 'five', 'lyssa', 'ogive', 'oles', 'ologies', 'race', 'rave', 'unnecessarily', 'verily'],
+  },
 ] as const
